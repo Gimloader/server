@@ -105,3 +105,19 @@ export interface CapsuleCollider {
 }
 
 export type ColliderOptions = BoxCollider | CircleCollider | CapsuleCollider;
+
+export interface KitAnswer {
+    correct: boolean;
+    _id: string;
+    text: string;
+    textType: number;
+}
+
+export interface KitQuestion {
+    _id: string;
+    position: number;
+    isActive: boolean;
+    game: string;
+    answers: KitAnswer[];
+    type: "text" | "mc";
+}

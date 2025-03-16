@@ -1,5 +1,5 @@
 import { colyseusPort } from '../consts.js';
-import express from '../express.js';
+import express from '../net/express.js';
 import { generateGameCode } from '../utils.js';
 
 interface ClientIntent {

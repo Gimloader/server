@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import { expressPort } from './consts.js';
+import { expressPort } from '../consts.js';
 
 const app = express();
 app.use(cors());

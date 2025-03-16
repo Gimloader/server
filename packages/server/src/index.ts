@@ -1,4 +1,4 @@
-import express from './express.js';
+import express from './net/express.js';
 import { Server } from "colyseus";
 import { BunWebSockets } from "@colyseus/bun-websockets";
 import { GameRoom } from './colyseus/room.js';

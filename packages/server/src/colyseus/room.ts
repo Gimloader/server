@@ -5,7 +5,6 @@ import fs from 'fs';
 import DeviceManager from "./deviceManager.js";
 import { MapInfo } from "../types.js";
 import TileManager from "./tileManager.js";
-import { defaultPhysicsState } from "../consts.js";
 import Player from "../objects/player.js";
 import PhysicsManager from "./physics.js";
 
@@ -102,7 +101,7 @@ export class GameRoom extends Room<GimkitState> {
         this.physics.dispose();
     }
 
-    onJoin(client: Client, options: ClientOptions) {
+    async onJoin(client: Client, options: ClientOptions) {
         let name: string;
 
         // if the intentId is that of the game they are the host
@@ -120,9 +119,12 @@ export class GameRoom extends Room<GimkitState> {
             this.game.clientIntents.delete(options.intentId);
         }
         client.userData = { id: options.intentId };
+        await this.devices.devicesLoaded;
 
         let player = new Player(this, client, options.intentId, name);
         this.players.set(client, player);
+
+        this.devices.onJoin(player);
 
         console.log(name, "joined the game!");
     }

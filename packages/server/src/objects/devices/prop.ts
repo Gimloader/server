@@ -1,14 +1,12 @@
-import { GameRoom } from "../../colyseus/room.js";
 import { propOptions } from "../../consts.js";
-import { DeviceInfo } from "../../types.js";
 import { degToRad } from "../../utils.js";
 import BaseDevice from "./base.js";
 
 export default class PropDevice extends BaseDevice {
-    constructor(room: GameRoom, info: DeviceInfo) {
-        super(room, info);
+    globalState = { visible: true, healthPercent: 1 };
 
-        if(info.options.UseColliders) {
+    init() {
+        if(this.options.UseColliders) {
             this.createColliders();
         }
     }

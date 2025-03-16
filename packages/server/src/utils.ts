@@ -11,6 +11,22 @@ export function randomItem<T>(array: T[]): T {
     return array[random(0, array.length - 1)];
 }
 
+export function shuffled<T>(array: T[]): T[] {
+    let arr = [...array];
+
+    let currentIndex = arr.length;
+    while(currentIndex !== 0) {
+        let index = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+
+        let temp = arr[index];
+        arr[index] = arr[currentIndex];
+        arr[currentIndex] = temp;
+    }
+
+    return arr;
+}
+
 export function degToRad(deg: number) {
     return deg * Math.PI / 180;
 }
