@@ -28,6 +28,13 @@ export interface CodeGrid {
     updatedAt: number;
 }
 
+export interface Wire {
+    json: string;
+    triggerType: string;
+    createdAt: number;
+    updatedAt: number;
+}
+
 type MapStyle = "platformer" | "topDown";
 
 export interface MapInfo {
@@ -35,6 +42,7 @@ export interface MapInfo {
     codeGrids: Record<string, Record<string, CodeGrid>>;
     devices: DeviceInfo[];
     tiles: TileInfo[];
+    wires: Wire[];
 }
 
 export interface CharacterOptions {

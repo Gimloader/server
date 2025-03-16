@@ -1,4 +1,4 @@
-// This script needs to be run in the console before joining a Gimkit 2D game with Gimloader installed to work.
+// This script needs to be run in the console before joining a creative map with Gimloader installed to work.
 
 (function() {
     let exported = {};
@@ -21,7 +21,7 @@
             exported.codeGrids[deviceId] = {};
             for(let [id, grid] of value.items.entries()) {
                 exported.codeGrids[deviceId][id] = {
-                    json: JSON.parse(grid.json),
+                    json: JSON.parse(grid.json || '""'),
                     triggerType: grid.triggerType,
                     triggerValue: grid.triggerValue,
                     createdAt: grid.createdAt,
@@ -63,9 +63,11 @@
     });
 
     // devices
-    GL.net.once("WORLD_CHANGES", ({ devices: { addedDevices: { devices, values } } }) => {
+    GL.net.once("WORLD_CHANGES", (message) => {
         exported.devices = [];
 
+        // devices
+        let { addedDevices: { devices, values } } = message.devices;
         for(let device of devices) {
             let getValue = (index) => values[index];
             let [id, x, y, depth, layer, deviceId, options] = device;
@@ -73,6 +75,14 @@
             deviceId = getValue(deviceId);
             options = Object.fromEntries(options.map(([k, v]) => [getValue(k), getValue(v)]));
             exported.devices.push({ id, x, y, depth, layer, deviceId, options });
+        }
+
+        // wires
+        if(message.wires) {
+            exported.wires = message.wires.addedWires;
+        } else {
+            exported.wires = [];
+            console.warn("Wires were not sent! This script only works when in your own creative map.")
         }
 
         advanceCompleted();
