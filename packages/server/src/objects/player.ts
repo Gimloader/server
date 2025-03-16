@@ -91,7 +91,10 @@ export default class Player {
     }
 
     getSpawnpoint() {
+        let phase = this.room.state.session.phase;
+        let spawnpadPhase = phase === "preGame" ? "Pre-Game" : "Game";
         let spawnPads = this.room.devices.getDevices("characterSpawnPad");
+        spawnPads = spawnPads.filter((s) => s.options.phase === spawnpadPhase);
         
         let x = 16000, y = 16000;
         if(spawnPads.length > 0) {
