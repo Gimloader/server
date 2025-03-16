@@ -265,6 +265,842 @@
             "fillUrl": "/assets/map/tilesets/team_color_tile/fill.png",
             "minimumRoleLevel": 90,
             "previewUrl": "/assets/map/tilesets/team_color_tile/preview.png"
+        },
+        {
+            "id": "Asphalt Road",
+            "name": "Asphalt Road",
+            "maskTilesUrl": "/assets/map/tilesets/asphalt_road/29_asphalt_road_mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/asphalt_road/29_asphalt_road_border.png",
+            "fillUrl": "/assets/map/tilesets/asphalt_road/29_asphalt_road_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/asphalt_road/29_asphalt_road_preview.png"
+        },
+        {
+            "id": "Concrete Blastball Field",
+            "name": "Blastball Court",
+            "maskTilesUrl": "/assets/map/tilesets/concrete_blastball_field/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/concrete_blastball_field/border.png",
+            "fillUrl": "/assets/map/tilesets/concrete_blastball_field/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/concrete_blastball_field/preview.png"
+        },
+        {
+            "id": "Boardwalk",
+            "name": "Boardwalk",
+            "maskTilesUrl": "/assets/map/tilesets/boardwalk/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/boardwalk/border.png",
+            "fillUrl": "/assets/map/tilesets/boardwalk/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/boardwalk/preview.png"
+        },
+        {
+            "id": "Castle Tile Green",
+            "name": "Castle Tile (Green)",
+            "maskTilesUrl": "/assets/map/tilesets/castle_tile/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/castle_tile/green_border.png",
+            "fillUrl": "/assets/map/tilesets/castle_tile/green_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/castle_tile/green_preview.png"
+        },
+        {
+            "id": "Castle Tile Purple",
+            "name": "Castle Tile (Purple)",
+            "maskTilesUrl": "/assets/map/tilesets/castle_tile/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/castle_tile/purple_border.png",
+            "fillUrl": "/assets/map/tilesets/castle_tile/purple_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/castle_tile/purple_preview.png"
+        },
+        {
+            "id": "Castle Tile Red",
+            "name": "Castle Tile (Red)",
+            "maskTilesUrl": "/assets/map/tilesets/castle_tile/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/castle_tile/red_border.png",
+            "fillUrl": "/assets/map/tilesets/castle_tile/red_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/castle_tile/red_preview.png"
+        },
+        {
+            "id": "Cinema",
+            "name": "Cinema Carpet",
+            "maskTilesUrl": "/assets/map/tilesets/cinema/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/cinema/border.png",
+            "fillUrl": "/assets/map/tilesets/cinema/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/cinema/preview.png"
+        },
+        {
+            "id": "Concrete",
+            "name": "Concrete",
+            "maskTilesUrl": "/assets/map/tilesets/concrete/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/concrete/border.png",
+            "fillUrl": "/assets/map/tilesets/concrete/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/concrete/preview.png"
+        },
+        {
+            "id": "Cracked Wood",
+            "name": "Cracked Oak",
+            "maskTilesUrl": "/assets/map/tilesets/cracked_wood/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/cracked_wood/border.png",
+            "fillUrl": "/assets/map/tilesets/cracked_wood/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/cracked_wood/preview.png"
+        },
+        {
+            "id": "crackled_earth_red",
+            "name": "Crackled Desert (Red)",
+            "maskTilesUrl": "/assets/map/tilesets/crackled_earth/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/crackled_earth/border_red.png",
+            "fillUrl": "/assets/map/tilesets/crackled_earth/fill_red.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "seasonTicketRequired": true,
+            "previewUrl": "/assets/map/tilesets/crackled_earth/preview_red.png"
+        },
+        {
+            "id": "crackled_earth_white",
+            "name": "Crackled Desert (White)",
+            "maskTilesUrl": "/assets/map/tilesets/crackled_earth/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/crackled_earth/border_white.png",
+            "fillUrl": "/assets/map/tilesets/crackled_earth/fill_white.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "seasonTicketRequired": true,
+            "previewUrl": "/assets/map/tilesets/crackled_earth/preview_white.png"
+        },
+        {
+            "id": "Dark Scraps",
+            "name": "Dark Scraps",
+            "maskTilesUrl": "/assets/map/tilesets/scraps/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/scraps/dark_border.png",
+            "fillUrl": "/assets/map/tilesets/scraps/dark_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/scraps/dark_preview.png"
+        },
+        {
+            "id": "Dirt",
+            "name": "Dirt",
+            "maskTilesUrl": "/assets/map/tilesets/dirt/27_dirt_mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dirt/27_dirt_border.png",
+            "fillUrl": "/assets/map/tilesets/dirt/27_dirt_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/dirt/27_dirt_preview.png"
+        },
+        {
+            "id": "Disco",
+            "name": "Disco",
+            "maskTilesUrl": "/assets/map/tilesets/disco/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/disco/border.png",
+            "fillUrl": "/assets/map/tilesets/disco/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/disco/preview.png"
+        },
+        {
+            "id": "Dry Grass",
+            "name": "Dry Grass",
+            "maskTilesUrl": "/assets/map/tilesets/grass/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/grass/26_grass_dry_border.png",
+            "fillUrl": "/assets/map/tilesets/grass/26_grass_dry_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/grass/26_grass_dry_preview.png"
+        },
+        {
+            "id": "Dungeon Blue",
+            "name": "Dungeon (Blue)",
+            "maskTilesUrl": "/assets/map/tilesets/dungeon/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dungeon/border_blue.png",
+            "fillUrl": "/assets/map/tilesets/dungeon/fill_blue.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/dungeon/preview_blue.png"
+        },
+        {
+            "id": "Dungeon Gray",
+            "name": "Dungeon (Gray)",
+            "maskTilesUrl": "/assets/map/tilesets/dungeon/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dungeon/border_gray.png",
+            "fillUrl": "/assets/map/tilesets/dungeon/fill_gray.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/dungeon/preview_gray.png"
+        },
+        {
+            "id": "Dungeon Green",
+            "name": "Dungeon (Green)",
+            "maskTilesUrl": "/assets/map/tilesets/dungeon/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dungeon/border_green.png",
+            "fillUrl": "/assets/map/tilesets/dungeon/fill_green.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/dungeon/preview_green.png"
+        },
+        {
+            "id": "Dungeon Purple",
+            "name": "Dungeon (Purple)",
+            "maskTilesUrl": "/assets/map/tilesets/dungeon/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dungeon/border_purple.png",
+            "fillUrl": "/assets/map/tilesets/dungeon/fill_purple.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/dungeon/preview_purple.png"
+        },
+        {
+            "id": "Dynamic Copper",
+            "name": "Dynamic Copper",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/copper/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/copper/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/copper/preview.png",
+            "health": 50
+        },
+        {
+            "id": "Dynamic Diamond",
+            "name": "Dynamic Diamond",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/diamond/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/diamond/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/diamond/preview.png",
+            "health": 1500
+        },
+        {
+            "id": "Dynamic Dirt",
+            "name": "Dynamic Dirt",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/dirt/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/dirt/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/dirt/preview.png",
+            "health": 2
+        },
+        {
+            "id": "Dynamic Gold",
+            "name": "Dynamic Gold",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/gold/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/gold/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/gold/preview.png",
+            "health": 250
+        },
+        {
+            "id": "Dynamic Ruby",
+            "name": "Dynamic Ruby",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/ruby/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/ruby/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/ruby/preview.png",
+            "health": 500
+        },
+        {
+            "id": "Dynamic Sand",
+            "name": "Dynamic Sand",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/sand/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/sand/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/sand/preview.png",
+            "health": 5
+        },
+        {
+            "id": "Dynamic Silver",
+            "name": "Dynamic Silver",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/silver/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/silver/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/silver/preview.png",
+            "health": 100
+        },
+        {
+            "id": "Dynamic Stone",
+            "name": "Dynamic Stone",
+            "maskTilesUrl": "/assets/map/tilesets/dynamic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/dynamic/stone/border.png",
+            "fillUrl": "/assets/map/tilesets/dynamic/stone/fill.png",
+            "previewUrl": "/assets/map/tilesets/dynamic/stone/preview.png",
+            "health": 10
+        },
+        {
+            "id": "Exposed Boardwalk",
+            "name": "Exposed Boardwalk",
+            "maskTilesUrl": "/assets/map/tilesets/exposed_boardwalk/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/exposed_boardwalk/border.png",
+            "fillUrl": "/assets/map/tilesets/exposed_boardwalk/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/exposed_boardwalk/preview.png"
+        },
+        {
+            "id": "Frozen Lake",
+            "name": "Frozen Lake",
+            "maskTilesUrl": "/assets/map/tilesets/snow/32_frozen_lake_mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/snow/32_frozen_lake_border.png",
+            "fillUrl": "/assets/map/tilesets/snow/32_frozen_lake_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/snow/32_frozen_lake_preview.png"
+        },
+        {
+            "id": "Grass",
+            "name": "Grass",
+            "maskTilesUrl": "/assets/map/tilesets/grass/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/grass/10_grass_border.png",
+            "fillUrl": "/assets/map/tilesets/grass/10_grass_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/grass/10_grass_preview.png"
+        },
+        {
+            "id": "Gym Floor",
+            "name": "Gym Floor",
+            "maskTilesUrl": "/assets/map/tilesets/gym/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/gym/border.png",
+            "fillUrl": "/assets/map/tilesets/gym/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/gym/preview.png"
+        },
+        {
+            "id": "Sci-Fi Lab Floor Blue",
+            "name": "Lab Floor (Blue)",
+            "maskTilesUrl": "/assets/map/tilesets/scifi_lab_floor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/scifi_lab_floor/border_blue.png",
+            "fillUrl": "/assets/map/tilesets/scifi_lab_floor/fill_blue.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/scifi_lab_floor/preview_blue.png"
+        },
+        {
+            "id": "Sci-Fi Lab Floor Green",
+            "name": "Lab Floor (Green)",
+            "maskTilesUrl": "/assets/map/tilesets/scifi_lab_floor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/scifi_lab_floor/border_green.png",
+            "fillUrl": "/assets/map/tilesets/scifi_lab_floor/fill_green.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/scifi_lab_floor/preview_green.png"
+        },
+        {
+            "id": "Sci-Fi Lab Floor Red",
+            "name": "Lab Floor (Magenta)",
+            "maskTilesUrl": "/assets/map/tilesets/scifi_lab_floor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/scifi_lab_floor/border_red.png",
+            "fillUrl": "/assets/map/tilesets/scifi_lab_floor/fill_red.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/scifi_lab_floor/preview_red.png"
+        },
+        {
+            "id": "Sci-Fi Lab Floor White",
+            "name": "Lab Floor (White)",
+            "maskTilesUrl": "/assets/map/tilesets/scifi_lab_floor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/scifi_lab_floor/border_white.png",
+            "fillUrl": "/assets/map/tilesets/scifi_lab_floor/fill_white.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/scifi_lab_floor/preview_white.png"
+        },
+        {
+            "id": "Light Scraps",
+            "name": "Light Scraps",
+            "maskTilesUrl": "/assets/map/tilesets/scraps/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/scraps/light_border.png",
+            "fillUrl": "/assets/map/tilesets/scraps/light_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/scraps/light_preview.png"
+        },
+        {
+            "id": "Marble Stone Dark",
+            "name": "Marble Stone (Dark)",
+            "maskTilesUrl": "/assets/map/tilesets/marble/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/marble/08_marble_dark_border.png",
+            "fillUrl": "/assets/map/tilesets/marble/08_marble_dark_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/marble/08_marble_dark_preview.png"
+        },
+        {
+            "id": "Marble Stone",
+            "name": "Marble Stone (Light)",
+            "maskTilesUrl": "/assets/map/tilesets/marble/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/marble/07_marble_border.png",
+            "fillUrl": "/assets/map/tilesets/marble/07_marble_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/marble/07_marble_preview.png"
+        },
+        {
+            "id": "Metallic Dark",
+            "name": "Metallic (Dark)",
+            "maskTilesUrl": "/assets/map/tilesets/metallic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/metallic/border_dark.png",
+            "fillUrl": "/assets/map/tilesets/metallic/fill_dark.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/metallic/preview_dark.png"
+        },
+        {
+            "id": "Metallic Light",
+            "name": "Metallic (Light)",
+            "maskTilesUrl": "/assets/map/tilesets/metallic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/metallic/border_light.png",
+            "fillUrl": "/assets/map/tilesets/metallic/fill_light.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/metallic/preview_light.png"
+        },
+        {
+            "id": "mud",
+            "name": "Mud",
+            "maskTilesUrl": "/assets/map/tilesets/mud/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/mud/border.png",
+            "fillUrl": "/assets/map/tilesets/mud/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/mud/preview.png"
+        },
+        {
+            "id": "Plastic Blue",
+            "name": "Plastic (Blue)",
+            "maskTilesUrl": "/assets/map/tilesets/plastic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/plastic/blue_border.png",
+            "fillUrl": "/assets/map/tilesets/plastic/blue_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/plastic/blue_preview.png"
+        },
+        {
+            "id": "Plastic Green",
+            "name": "Plastic (Green)",
+            "maskTilesUrl": "/assets/map/tilesets/plastic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/plastic/green_border.png",
+            "fillUrl": "/assets/map/tilesets/plastic/green_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/plastic/green_preview.png"
+        },
+        {
+            "id": "Plastic Purple",
+            "name": "Plastic (Purple)",
+            "maskTilesUrl": "/assets/map/tilesets/plastic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/plastic/purple_border.png",
+            "fillUrl": "/assets/map/tilesets/plastic/purple_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/plastic/purple_preview.png"
+        },
+        {
+            "id": "Plastic Red",
+            "name": "Plastic (Red)",
+            "maskTilesUrl": "/assets/map/tilesets/plastic/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/plastic/red_border.png",
+            "fillUrl": "/assets/map/tilesets/plastic/red_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/plastic/red_preview.png"
+        },
+        {
+            "id": "Purple Grass",
+            "name": "Purple Grass",
+            "maskTilesUrl": "/assets/map/tilesets/grass/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/grass/14_grass_purple_border.png",
+            "fillUrl": "/assets/map/tilesets/grass/14_grass_purple_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/grass/14_grass_purple_preview.png"
+        },
+        {
+            "id": "Purple Sand",
+            "name": "Purple Sand",
+            "maskTilesUrl": "/assets/map/tilesets/purple_sand/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/purple_sand/border.png",
+            "fillUrl": "/assets/map/tilesets/purple_sand/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/purple_sand/preview.png"
+        },
+        {
+            "id": "rusty_metallic_floor",
+            "name": "Rusty Metallic",
+            "maskTilesUrl": "/assets/map/tilesets/rusty_metallic_floor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/rusty_metallic_floor/border.png",
+            "fillUrl": "/assets/map/tilesets/rusty_metallic_floor/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "seasonTicketRequired": true,
+            "previewUrl": "/assets/map/tilesets/rusty_metallic_floor/preview.png"
+        },
+        {
+            "id": "Sand",
+            "name": "Sand",
+            "maskTilesUrl": "/assets/map/tilesets/sand/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/sand/border.png",
+            "fillUrl": "/assets/map/tilesets/sand/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/sand/preview.png"
+        },
+        {
+            "id": "Snow",
+            "name": "Snow",
+            "maskTilesUrl": "/assets/map/tilesets/snow/30_snow_mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/snow/30_snow_border.png",
+            "fillUrl": "/assets/map/tilesets/snow/30_snow_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/snow/30_snow_preview.png"
+        },
+        {
+            "id": "Snowy Grass",
+            "name": "Snowy Grass",
+            "maskTilesUrl": "/assets/map/tilesets/snow/31_snowy_grass_mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/snow/31_snowy_grass_border.png",
+            "fillUrl": "/assets/map/tilesets/snow/31_snowy_grass_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/snow/31_snowy_grass_preview.png"
+        },
+        {
+            "id": "Space",
+            "name": "Space",
+            "maskTilesUrl": "/assets/map/tilesets/space/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/space/border.png",
+            "fillUrl": "/assets/map/tilesets/space/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/space/preview.png"
+        },
+        {
+            "id": "Space (Moving)",
+            "name": "Space (Moving)",
+            "maskTilesUrl": "/assets/map/tilesets/space/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/space/border.png",
+            "fillUrl": "/assets/map/tilesets/space/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/space/preview.png"
+        },
+        {
+            "id": "Space Rock",
+            "name": "Space Rock",
+            "maskTilesUrl": "/assets/map/tilesets/space_rock/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/space_rock/border.png",
+            "fillUrl": "/assets/map/tilesets/space_rock/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/space_rock/preview.png"
+        },
+        {
+            "id": "Spaceship Catwalk B",
+            "name": "Spaceship Catwalk (Grills)",
+            "maskTilesUrl": "/assets/map/tilesets/spaceship_catwalk/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/spaceship_catwalk/border.png",
+            "fillUrl": "/assets/map/tilesets/spaceship_catwalk/fill_b.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/spaceship_catwalk/preview_b.png"
+        },
+        {
+            "id": "Spaceship Catwalk A",
+            "name": "Spaceship Catwalk (Lined)",
+            "maskTilesUrl": "/assets/map/tilesets/spaceship_catwalk/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/spaceship_catwalk/border.png",
+            "fillUrl": "/assets/map/tilesets/spaceship_catwalk/fill_a.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/spaceship_catwalk/preview_a.png"
+        },
+        {
+            "id": "Spaceship Corridor Gray",
+            "name": "Spaceship Corridor",
+            "maskTilesUrl": "/assets/map/tilesets/spaceship_corridor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/spaceship_corridor/border.png",
+            "fillUrl": "/assets/map/tilesets/spaceship_corridor/fill_gray.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/spaceship_corridor/preview_gray.png"
+        },
+        {
+            "id": "Spaceship Corridor White",
+            "name": "Spaceship Corridor (White)",
+            "maskTilesUrl": "/assets/map/tilesets/spaceship_corridor/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/spaceship_corridor/border.png",
+            "fillUrl": "/assets/map/tilesets/spaceship_corridor/fill_white.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/spaceship_corridor/preview_white.png"
+        },
+        {
+            "id": "Spaceship Wall",
+            "name": "Spaceship Interior",
+            "maskTilesUrl": "/assets/map/tilesets/spaceship_wall/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/spaceship_wall/border.png",
+            "fillUrl": "/assets/map/tilesets/spaceship_wall/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/spaceship_wall/preview.png"
+        },
+        {
+            "id": "Speckled Gray",
+            "name": "Speckled Gray",
+            "maskTilesUrl": "/assets/map/tilesets/speckled_gray/28_speckled_gray_mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/speckled_gray/28_speckled_gray_border.png",
+            "fillUrl": "/assets/map/tilesets/speckled_gray/28_speckled_gray_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/speckled_gray/28_speckled_gray_preview.png"
+        },
+        {
+            "id": "Stone Brown",
+            "name": "Stone (Brown)",
+            "maskTilesUrl": "/assets/map/tilesets/stone/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/stone/brown_border.png",
+            "fillUrl": "/assets/map/tilesets/stone/brown_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/stone/brown_preview.png"
+        },
+        {
+            "id": "Stone Dark",
+            "name": "Stone (Dark)",
+            "maskTilesUrl": "/assets/map/tilesets/stone/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/stone/dark_border.png",
+            "fillUrl": "/assets/map/tilesets/stone/dark_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/stone/dark_preview.png"
+        },
+        {
+            "id": "Stone Light",
+            "name": "Stone (Light)",
+            "maskTilesUrl": "/assets/map/tilesets/stone/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/stone/light_border.png",
+            "fillUrl": "/assets/map/tilesets/stone/light_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/stone/light_preview.png"
+        },
+        {
+            "id": "Stone Pavement Dry Grass",
+            "name": "Stone Pavement (Dry Grass)",
+            "maskTilesUrl": "/assets/map/tilesets/stone_pavement/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/stone_pavement/border.png",
+            "fillUrl": "/assets/map/tilesets/stone_pavement/fill_dry_grass.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/stone_pavement/preview_dry_grass.png"
+        },
+        {
+            "id": "Stone Pavement Grass",
+            "name": "Stone Pavement (Grass)",
+            "maskTilesUrl": "/assets/map/tilesets/stone_pavement/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/stone_pavement/border.png",
+            "fillUrl": "/assets/map/tilesets/stone_pavement/fill_grass.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/stone_pavement/preview_grass.png"
+        },
+        {
+            "id": "Stone Pavement Purple Grass",
+            "name": "Stone Pavement (Purple Grass)",
+            "maskTilesUrl": "/assets/map/tilesets/stone_pavement/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/stone_pavement/border.png",
+            "fillUrl": "/assets/map/tilesets/stone_pavement/fill_purple_grass.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/stone_pavement/preview_purple_grass.png"
+        },
+        {
+            "id": "team_color_tile",
+            "name": "Team Color Tile",
+            "maskTilesUrl": "/assets/map/tilesets/team_color_tile/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/team_color_tile/border.png",
+            "fillUrl": "/assets/map/tilesets/team_color_tile/fill.png",
+            "minimumRoleLevel": 90,
+            "previewUrl": "/assets/map/tilesets/team_color_tile/preview.png"
+        },
+        {
+            "id": "toxic_water",
+            "name": "Toxic Water",
+            "maskTilesUrl": "/assets/map/tilesets/toxic_water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/toxic_water/border.png",
+            "fillUrl": "/assets/map/tilesets/toxic_water/fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "minimumRoleLevel": 90,
+            "previewUrl": "/assets/map/tilesets/toxic_water/preview.png"
+        },
+        {
+            "id": "wsteland_standard",
+            "name": "Wasteland",
+            "maskTilesUrl": "/assets/map/tilesets/wasteland/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/wasteland/border_standard.png",
+            "fillUrl": "/assets/map/tilesets/wasteland/fill_standard.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "seasonTicketRequired": true,
+            "previewUrl": "/assets/map/tilesets/wasteland/preview_standard.png"
+        },
+        {
+            "id": "wsteland_clear",
+            "name": "Wasteland (Clear)",
+            "maskTilesUrl": "/assets/map/tilesets/wasteland/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/wasteland/border_clear.png",
+            "fillUrl": "/assets/map/tilesets/wasteland/fill_clear.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "seasonTicketRequired": true,
+            "previewUrl": "/assets/map/tilesets/wasteland/preview_clear.png"
+        },
+        {
+            "id": "wsteland_red",
+            "name": "Wasteland (Red)",
+            "maskTilesUrl": "/assets/map/tilesets/wasteland/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/wasteland/border_red.png",
+            "fillUrl": "/assets/map/tilesets/wasteland/fill_red.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "seasonTicketRequired": true,
+            "previewUrl": "/assets/map/tilesets/wasteland/preview_red.png"
+        },
+        {
+            "id": "Water",
+            "name": "Water",
+            "maskTilesUrl": "/assets/map/tilesets/water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/water/01_water_border.png",
+            "fillUrl": "/assets/map/tilesets/water/01_water_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/water/01_water_preview.png"
+        },
+        {
+            "id": "Water Dark",
+            "name": "Water (Dark Blue)",
+            "maskTilesUrl": "/assets/map/tilesets/water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/water/02_water_dark_border.png",
+            "fillUrl": "/assets/map/tilesets/water/02_water_dark_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/water/02_water_dark_preview.png"
+        },
+        {
+            "id": "Water Space",
+            "name": "Water (Gray)",
+            "maskTilesUrl": "/assets/map/tilesets/water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/water/04_water_space_border.png",
+            "fillUrl": "/assets/map/tilesets/water/04_water_space_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/water/04_water_space_preview.png"
+        },
+        {
+            "id": "Water Berry",
+            "name": "Water (Pink)",
+            "maskTilesUrl": "/assets/map/tilesets/water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/water/06_water_berry_border.png",
+            "fillUrl": "/assets/map/tilesets/water/06_water_berry_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/water/06_water_berry_preview.png"
+        },
+        {
+            "id": "Water Purple",
+            "name": "Water (Purple)",
+            "maskTilesUrl": "/assets/map/tilesets/water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/water/03_water_purple_border.png",
+            "fillUrl": "/assets/map/tilesets/water/03_water_purple_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/water/03_water_purple_preview.png"
+        },
+        {
+            "id": "Water Space Milky",
+            "name": "Water (White)",
+            "maskTilesUrl": "/assets/map/tilesets/water/mask.png",
+            "borderTilesUrl": "/assets/map/tilesets/water/05_water_space_milky_border.png",
+            "fillUrl": "/assets/map/tilesets/water/05_water_space_milky_fill.png",
+            "blockedMapStyles": [
+                "platformer"
+            ],
+            "previewUrl": "/assets/map/tilesets/water/05_water_space_milky_preview.png"
         }
     ],
     "itemOptions": [
