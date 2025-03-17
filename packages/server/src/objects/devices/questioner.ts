@@ -15,12 +15,16 @@ export default class QuestionerDevice extends BaseDevice {
     playerQuestionQueue = new Map<string, string[]>();
 
     async init() {
+        this.questions = await getKitQuestions(this.options.kitId);
+        this.updateGlobalState("questions", JSON.stringify(this.questions));
+    }
+
+    restore() {
+        this.updateGlobalState("enabled", true);
         this.updateGlobalState("correctText", this.options.textShownWhenAnsweringCorrectly);
         this.updateGlobalState("incorrectText", this.options.textShownWhenAnsweringIncorrectly);
 
-        this.questions = await getKitQuestions(this.options.kitId);
-        this.updateGlobalState("questions", JSON.stringify(this.questions));
-
+        this.playerQuestionQueue.clear();
         for(let player of this.room.players.values()) {
             this.onJoin(player);
         }
@@ -47,5 +51,13 @@ export default class QuestionerDevice extends BaseDevice {
         // TODO: Handle correct/incorrect
         this.updatePlayerState(player.id, "currentQuestionId", this.playerStates[player.id].nextQuestionId);
         this.updatePlayerState(player.id, "nextQuestionId", this.getQuestion(player.id));
+    }
+
+    onChannel(channel: string) {
+        if(channel === this.options.disableWhenReceivingOn) {
+            this.updateGlobalState("enabled", false);
+        } else if(channel === this.options.enableWhenReceivingOn) {
+            this.updateGlobalState("enabled", true);
+        }
     }
 }

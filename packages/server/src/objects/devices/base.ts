@@ -37,21 +37,23 @@ export default class BaseDevice {
     }
 
     init?(): void;
+    restore?(): void;
     onJoin?(player: Player): void;
     onMessage?(player: Player, key: string, data: any): void;
+    onChannel?(channel: string): void;
 
-    updateGlobalState(key: string, value: string) {
+    updateGlobalState(key: string, value: any) {
         this.globalState[key] = value;
         this.deviceManager.addChange(this.id, `GLOBAL_${key}`, value);
     }
     
-    updateTeamState(team: string, key: string, value: string) {
+    updateTeamState(team: string, key: string, value: any) {
         if(!this.teamStates[team]) this.teamStates[team] = {};
         this.teamStates[team][key] = value;
         this.deviceManager.addChange(this.id, `TEAM_${team}_${key}`, value);
     }
     
-    updatePlayerState(player: string, key: string, value: string) {
+    updatePlayerState(player: string, key: string, value: any) {
         if(!this.playerStates[player]) this.playerStates[player] = {};
         this.playerStates[player][key] = value;
         this.deviceManager.addChange(this.id, `PLAYER_${player}_${key}`, value);

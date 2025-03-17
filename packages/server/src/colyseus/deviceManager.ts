@@ -3,8 +3,6 @@ import { propOptions } from "../consts.js";
 import { createValuesArray } from "../utils.js";
 import { GameRoom } from "./room.js";
 import BaseDevice from "../objects/devices/base.js";
-import PropDevice from "../objects/devices/prop.js";
-import QuestionerDevice from "../objects/devices/questioner.js";
 import Player from "../objects/player.js";
 import devices from "../objects/devices/devices.js";
 import { Client } from "colyseus";
@@ -24,11 +22,19 @@ export default class DeviceManager {
         this.devices = this.map.devices.map((d) => this.createDevice(d));
         this.room.onMessage("MESSAGE_FOR_DEVICE", this.onMessage.bind(this));
 
+        // setTimeout to avoid some jank with this.room being undefined
         let inits = this.devices.map((d) => Promise.resolve(d.init?.()));
         Promise.all(inits).then(() => {
+            this.restore();
             this.resDevicesLoaded()
             this.initialized = true;
         });
+    }
+
+    restore() {
+        for(let device of this.devices) {
+            device.restore?.();
+        }
     }
 
     createDevice(info: DeviceInfo) {
@@ -166,6 +172,12 @@ export default class DeviceManager {
     onJoin(player: Player) {
         for(let device of this.devices) {
             if(device.onJoin) device.onJoin(player);
+        }
+    }
+
+    triggerChannel(channel: string) {
+        for(let device of this.devices) {
+            device.onChannel?.(channel);
         }
     }
 
