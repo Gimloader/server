@@ -2,31 +2,64 @@ import Player from "../player.js";
 import BaseDevice from "./base.js";
 
 export default class ButtonDevice extends BaseDevice {
-    globalState = { active: true };
-
     restore() {
-        this.updateGlobalState("active", this.options.activeOnStart);
+        if(this.options.scope === "global") {
+            this.updateGlobalState("active", this.options.activeOnStart);
+        } else if(this.options.scope === "team") {
+            // TODO: Teams
+        } else {
+            for(let player of this.room.players.values()) {
+                this.updatePlayerState(player.id, "active", this.options.activeOnStart);
+            }
+        }
+    }
+    
+    onJoin(player: Player) {
+        this.updatePlayerState(player.id, "active", this.options.activeOnStart);
     }
 
-    onChannel(channel: string) {
-        if(channel === this.options.activateChannel) {
-            this.updateGlobalState("active", true);
-        } else if(channel === this.options.deactivateChannel) {
-            this.updateGlobalState("active", false);
+    setActive(active: boolean, player: Player) {
+        if(this.options.scope === "global") {
+            this.updateGlobalState("active", active);
+        } else if(this.options.scope === "team") {
+
+        } else {
+            this.updatePlayerState(player.id, "active", active);
         }
     }
 
-    onMessage(player: Player, key: string): void {
+    isActive(player: Player) {
+        if(this.options.scope === "global") {
+            return this.globalState.active;
+        } else if(this.options.scope === "team") {
+
+        } else {
+            return this.playerStates[player.id].active;
+        }
+    }
+
+    onChannel(channel: string, player: Player) {
+        if(channel === this.options.activateChannel) this.setActive(true, player);
+        else if(channel === this.options.deactivateChannel) this.setActive(false, player);
+    }
+
+    onMessage(player: Player, key: string) {
         if(key !== "interacted") return;
-        if(!this.globalState.active) return;
+        if(!this.isActive(player)) return;
 
         // verify that the player is within the radius
         let { x, y } = player.player;
         let distance = Math.sqrt((this.x - x) ** 2 + (this.y - y) ** 2);
         if(distance > this.options.radius + 20) return;
 
+        this.triggerWire("pressed", player);
         if(this.options.channel) {
-            this.deviceManager.triggerChannel(this.options.channel);
+            this.deviceManager.triggerChannel(this.options.channel, player);
         }
+    }
+
+    onWire(connection: string, player: Player) {
+        if(connection === "enable") this.setActive(true, player);
+        else if(connection === "disable") this.setActive(false, player);
     }
 }

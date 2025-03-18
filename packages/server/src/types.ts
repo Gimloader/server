@@ -29,10 +29,11 @@ export interface CodeGrid {
 }
 
 export interface Wire {
-    json: string;
-    triggerType: string;
-    createdAt: number;
-    updatedAt: number;
+    id: string;
+    startDevice: string;
+    endDevice: string;
+    startConnection: string;
+    endConnection: string;
 }
 
 type MapStyle = "platformer" | "topDown";

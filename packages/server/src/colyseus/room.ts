@@ -85,6 +85,7 @@ export class GameRoom extends Room<GimkitState> {
 
             this.state.session.phase = "preGame";
             this.showLoading(1200, () => {
+                this.broadcast("RESET");
                 this.devices.restore();
                 for(let p of this.players.values()) p.moveToSpawnpoint();
             });

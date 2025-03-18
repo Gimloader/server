@@ -14,24 +14,37 @@ export default class DeviceManager {
     resDevicesLoaded: () => void;
     devicesLoaded = new Promise<void>((res) => this.resDevicesLoaded = res);
     changes = new Map<string, Record<string, any>>();
+    removedIds: string[] = [];
     initialized = false;
     
     constructor(map: MapInfo, room: GameRoom) {
         this.map = map;
         this.room = room;
         this.devices = this.map.devices.map((d) => this.createDevice(d));
+
+        // connect wires to the devices
+        for(let wire of this.map.wires) {
+            let device = this.getById(wire.startDevice);
+            if(!device) continue;
+            device.wires.push(wire);
+        }
+
         this.room.onMessage("MESSAGE_FOR_DEVICE", this.onMessage.bind(this));
 
         // setTimeout to avoid some jank with this.room being undefined
         let inits = this.devices.map((d) => Promise.resolve(d.init?.()));
         Promise.all(inits).then(() => {
-            this.restore();
+            this.restore(true);
             this.resDevicesLoaded()
             this.initialized = true;
         });
     }
 
-    restore() {
+    restore(initial = false) {
+        if(!initial) {
+            this.removedIds = this.devices.map(d => d.id);
+        }
+
         for(let device of this.devices) {
             device.restore?.();
         }
@@ -42,13 +55,9 @@ export default class DeviceManager {
         return new Device(this, this.room, info);
     }
 
-    getDevices(type: string) {
-        return this.devices.filter((d) => d.deviceId === type);
-    }
-
-    getDevice(type: string) {
-        return this.devices.find((d) => d.deviceId === type);
-    }
+    getDevices(type: string) { return this.devices.filter((d) => d.deviceId === type) };
+    getDevice(type: string) { return this.devices.find((d) => d.deviceId === type) };
+    getById(id: string) { return this.devices.find((d) => d.id === id) };
 
     getMapSettings() {
         let mapOptions = this.getDevice("mapOptions");
@@ -117,7 +126,7 @@ export default class DeviceManager {
         }
 
         let changes = this.getChanges(true);
-        this.changes.clear();
+        this.resetChanges();
         return changes;
     }
 
@@ -139,9 +148,14 @@ export default class DeviceManager {
         }
     }
 
+    resetChanges() {
+        this.changes.clear();
+        this.removedIds = [];
+    }
+
     broadcastChanges() {
         let changes = this.getChanges();
-        this.changes.clear();
+        this.resetChanges();
         this.room.broadcast("DEVICES_STATES_CHANGES", changes);
     }
 
@@ -164,7 +178,7 @@ export default class DeviceManager {
         return {
             changes,
             initial,
-            removedIds: [],
+            removedIds: this.removedIds,
             values
         };
     }
@@ -175,9 +189,9 @@ export default class DeviceManager {
         }
     }
 
-    triggerChannel(channel: string) {
+    triggerChannel(channel: string, player: Player) {
         for(let device of this.devices) {
-            device.onChannel?.(channel);
+            device.onChannel?.(channel, player);
         }
     }
 

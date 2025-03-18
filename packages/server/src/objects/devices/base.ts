@@ -1,5 +1,5 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { ColliderInfo, ColliderOptions, DeviceInfo } from "../../types.js";
+import { ColliderInfo, ColliderOptions, DeviceInfo, Wire } from "../../types.js";
 import { degToRad } from "../../utils.js";
 import { GameRoom } from "../../colyseus/room.js";
 import { physicsScale } from "../../consts.js";
@@ -22,6 +22,7 @@ export default class BaseDevice {
     teamStates: Record<string, Record<string, any>> = {};
     playerStates: Record<string, Record<string, any>> = {};
     colliders: ColliderInfo[] = [];
+    wires: Wire[] = [];
 
     constructor(deviceManager: DeviceManager, room: GameRoom, info: DeviceInfo) {
         this.deviceManager = deviceManager;
@@ -40,7 +41,8 @@ export default class BaseDevice {
     restore?(): void;
     onJoin?(player: Player): void;
     onMessage?(player: Player, key: string, data: any): void;
-    onChannel?(channel: string): void;
+    onChannel?(channel: string, player: Player): void;
+    onWire?(connection: string, player: Player): void;
 
     updateGlobalState(key: string, value: any) {
         this.globalState[key] = value;
@@ -91,5 +93,13 @@ export default class BaseDevice {
         let collider = this.room.world.createCollider(colliderDesc, rb);
         
         this.colliders.push({ rb, collider });
+    }
+
+    triggerWire(connection: string, player: Player) {
+        for(let wire of this.wires) {
+            if(wire.startConnection !== connection) continue;
+            let device = this.deviceManager.getById(wire.endDevice);
+            device.onWire?.(wire.endConnection, player);
+        }
     }
 }
