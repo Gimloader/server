@@ -130,3 +130,26 @@ export interface KitQuestion {
     answers: KitAnswer[];
     type: "text" | "mc";
 }
+
+export interface ExperienceCategory {
+    _id: string;
+    name: string;
+    items: ExperienceInfo[];
+}
+
+export interface ExperienceInfo {
+    _id: string;
+    name: string;
+    tagline: string;
+    imageUrl: string;
+    source: "map";
+    pageId: string;
+    mapId: string;
+    isPremiumExperience: boolean;
+    tag: string;
+    labels: {
+        c: string; // complexity
+        d: string; // duration
+        s: string; // style
+    }
+}

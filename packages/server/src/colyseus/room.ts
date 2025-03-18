@@ -1,5 +1,5 @@
 import { Client, Room } from "colyseus";
-import Matchmaker, { Game } from "./matchmaker.js";
+import Matchmaker, { Game } from "../net/matchmaker.js";
 import { GimkitState } from "./schema.js";
 import fs from 'fs';
 import DeviceManager from "./deviceManager.js";
@@ -7,6 +7,8 @@ import { MapInfo } from "../types.js";
 import TileManager from "./tileManager.js";
 import Player from "../objects/player.js";
 import PhysicsManager from "./physics.js";
+import MapData from "../net/mapData.js";
+import RAPIER from "@dimforge/rapier2d-compat";
 
 interface RoomOptions {
     intentId: string;
@@ -19,27 +21,35 @@ interface ClientOptions {
 
 export class GameRoom extends Room<GimkitState> {
     game: Game;
-    map: MapInfo = JSON.parse(fs.readFileSync("./maps/test.json").toString());
-    physics = new PhysicsManager(this);
-    world = this.physics.world;
-    devices = new DeviceManager(this.map, this);
-    mapSettings = this.devices.getMapSettings();
-    terrain = new TileManager(this.map, this);
+    map: MapInfo;
+    physics: PhysicsManager;
+    world: RAPIER.World;
+    devices: DeviceManager;
+    mapSettings: Record<string, any>;
+    terrain: TileManager;
     updateTimeInterval: Timer;
     players = new Map<Client, Player>();
 
     onCreate(options: RoomOptions) {
         this.game = Matchmaker.getByHostIntent(options.intentId);
 
-        this.setState(new GimkitState({
-            gameCode: this.game.code,
-            ownerId: options.intentId,
-            map: this.map,
-            mapSettings: this.mapSettings
-        }));
-
         if(this.game) {
             this.game.colyseusRoomId = this.roomId;
+            let map = MapData.getByMapId(this.game.mapId);
+
+            this.map = JSON.parse(fs.readFileSync(`./maps/${map.file}`).toString());
+            this.physics = new PhysicsManager(this);
+            this.world = this.physics.world;
+            this.devices = new DeviceManager(this.map, this);
+            this.mapSettings = this.devices.getMapSettings();
+            this.terrain = new TileManager(this.map, this);
+
+            this.setState(new GimkitState({
+                gameCode: this.game.code,
+                ownerId: options.intentId,
+                map: this.map,
+                mapSettings: this.mapSettings
+            }));
         } else {
             this.disconnect();
             return;

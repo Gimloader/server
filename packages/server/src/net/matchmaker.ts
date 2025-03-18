@@ -1,6 +1,7 @@
 import { colyseusPort } from '../consts.js';
-import express from '../net/express.js';
+import express from './express.js';
 import { generateGameCode } from '../utils.js';
+import MapData from './mapData.js';
 
 interface ClientIntent {
     name: string;
@@ -37,18 +38,24 @@ export default class Matchmaker {
     static init() {
         // creating games
         express.post("/api/matchmaker/intent/map/play/create", async (req, res) => {
+            let map = MapData.getById(req.body.experienceId);
+            if(!map) {
+                res.status(404).send();
+                return;
+            }
+
             // random map for now
             let game: Game = {
                 intentId: crypto.randomUUID(),
                 roomId: crypto.randomUUID(),
                 clientIntents: new Map(),
-                mapId: crypto.randomUUID(),
+                mapId: map.mapId,
                 code: generateGameCode()
             };
             this.games.push(game);
 
             console.log("Room created with code", game.code);
-            res.send(game.intentId);
+            res.send(`${game.intentId}&custom=true`);
         });
 
         express.get("/api/matchmaker/intent/fetch-source/:id", (req, res) => {
