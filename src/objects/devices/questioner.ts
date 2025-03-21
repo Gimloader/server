@@ -48,9 +48,11 @@ export default class QuestionerDevice extends BaseDevice {
     onMessage(player: Player, key: string, data: any) {
         if(key !== "answered") return;
         
-        // TODO: Handle correct/incorrect
         this.updatePlayerState(player.id, "currentQuestionId", this.playerStates[player.id].nextQuestionId);
         this.updatePlayerState(player.id, "nextQuestionId", this.getQuestion(player.id));
+        
+        // TODO: Check that the player was, indeed, correct
+        this.triggerBlock("whenQuestionAnsweredCorrectly", player);
     }
 
     onChannel(channel: string) {

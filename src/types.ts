@@ -119,16 +119,17 @@ export interface KitAnswer {
     correct: boolean;
     _id: string;
     text: string;
-    textType: number;
+    textType?: number;
 }
 
 export interface KitQuestion {
     _id: string;
-    position: number;
-    isActive: boolean;
-    game: string;
+    position?: number;
+    isActive?: boolean;
+    game?: string;
     answers: KitAnswer[];
     type: "text" | "mc";
+    text: string;
 }
 
 export interface ExperienceCategory {

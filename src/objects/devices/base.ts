@@ -1,10 +1,11 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { ColliderInfo, ColliderOptions, DeviceInfo, Wire } from "../../types.js";
+import { CodeGrid, ColliderInfo, ColliderOptions, DeviceInfo, Wire } from "../../types.js";
 import { degToRad } from "../../utils.js";
 import { GameRoom } from "../../colyseus/room.js";
 import { physicsScale } from "../../consts.js";
 import Player from "../player.js";
 import DeviceManager from "../../colyseus/deviceManager.js";
+import { runBlock } from "../../blocks/run.js";
 
 export default class BaseDevice {
     deviceManager: DeviceManager;
@@ -22,7 +23,9 @@ export default class BaseDevice {
     teamStates: Record<string, Record<string, any>> = {};
     playerStates: Record<string, Record<string, any>> = {};
     colliders: ColliderInfo[] = [];
+    
     wires: Wire[] = [];
+    codeGrids: CodeGrid[] = [];
 
     constructor(deviceManager: DeviceManager, room: GameRoom, info: DeviceInfo) {
         this.deviceManager = deviceManager;
@@ -35,6 +38,9 @@ export default class BaseDevice {
         this.layer = info.layer;
         this.deviceId = info.deviceId;
         this.options = info.options;
+
+        let grids = this.room.map.codeGrids[this.id];
+        if(grids) this.codeGrids = Object.values(grids);
     }
 
     init?(): void;
@@ -100,6 +106,16 @@ export default class BaseDevice {
             if(wire.startConnection !== connection) continue;
             let device = this.deviceManager.getById(wire.endDevice);
             device.onWire?.(wire.endConnection, player);
+        }
+    }
+
+    triggerBlock(type: string, player: Player) {
+        for(let grid of this.codeGrids) {
+            if(grid.triggerType !== type) continue;
+
+            for(let block of grid.json.blocks.blocks) {
+                runBlock(block, this.room, player);
+            }
         }
     }
 }
