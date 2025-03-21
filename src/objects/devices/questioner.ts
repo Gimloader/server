@@ -1,5 +1,5 @@
 import { getKitQuestions } from "../../net/gimkitApi.js";
-import { KitQuestion } from "../../types.js";
+import { CustomBlock, KitQuestion } from "../../types.js";
 import { shuffled } from "../../utils.js";
 import Player from "../player.js";
 import BaseDevice from "./base.js";
@@ -13,6 +13,13 @@ export default class QuestionerDevice extends BaseDevice {
     }
     questions: KitQuestion[] = [];
     playerQuestionQueue = new Map<string, string[]>();
+
+    customBlocks: Record<string, CustomBlock> = {
+        "message_correct_answer": (block, room, player, run) => {
+            let text = run(block.inputs.set_message_shown_when_player_answers_correctly.block);
+            this.updateGlobalState("correctText", text);
+        }
+    }
 
     async init() {
         this.questions = await getKitQuestions(this.options.kitId);

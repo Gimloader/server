@@ -1,4 +1,6 @@
 import RAPIER from "@dimforge/rapier2d-compat";
+import { GameRoom } from "./colyseus/room.js";
+import Player from "./objects/player.js";
 
 export interface DeviceInfo {
     id: string;
@@ -154,3 +156,13 @@ export interface ExperienceInfo {
         s: string; // style
     }
 }
+
+export interface Block {
+    type: string;
+    id: string;
+    inputs?: Record<string, any>;
+    fields?: Record<string, any>;
+    next?: { block: Block };
+}
+
+export type CustomBlock = (block: Block, room: GameRoom, player: Player, run: (block: Block) => any) => any;

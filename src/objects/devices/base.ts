@@ -1,11 +1,12 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { CodeGrid, ColliderInfo, ColliderOptions, DeviceInfo, Wire } from "../../types.js";
+import { CodeGrid, ColliderInfo, ColliderOptions, CustomBlock, DeviceInfo, Wire } from "../../types.js";
 import { degToRad } from "../../utils.js";
 import { GameRoom } from "../../colyseus/room.js";
 import { physicsScale } from "../../consts.js";
 import Player from "../player.js";
 import DeviceManager from "../../colyseus/deviceManager.js";
-import { runBlock } from "../../blocks/run.js";
+import { runBlock } from "../../blocks/runBlock.js";
+import { runGrid } from "../../blocks/runGrid.js";
 
 export default class BaseDevice {
     deviceManager: DeviceManager;
@@ -26,6 +27,8 @@ export default class BaseDevice {
     
     wires: Wire[] = [];
     codeGrids: CodeGrid[] = [];
+    customBlocks: Record<string, CustomBlock> = {};
+    customGridBlocks: Record<string, Record<string, CustomBlock>> = {};
 
     constructor(deviceManager: DeviceManager, room: GameRoom, info: DeviceInfo) {
         this.deviceManager = deviceManager;
@@ -113,9 +116,7 @@ export default class BaseDevice {
         for(let grid of this.codeGrids) {
             if(grid.triggerType !== type) continue;
 
-            for(let block of grid.json.blocks.blocks) {
-                runBlock(block, this.room, player);
-            }
+            runGrid(grid, this, this.room, player);
         }
     }
 }
