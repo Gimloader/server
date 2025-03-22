@@ -18,18 +18,26 @@ export default class QuestionerDevice extends BaseDevice {
         "message_correct_answer": (run) => {
             let text = run("set_message_shown_when_player_answers_correctly");
             this.updateGlobalState("correctText", text);
+        },
+        "message_incorrect_answer": (run) => {
+            let text = run("set_message_shown_when_player_answers_incorrectly");
+            this.updateGlobalState("incorrectText", text);
         }
     }
 
     async init() {
         this.questions = await getKitQuestions(this.options.kitId);
+
         this.updateGlobalState("questions", JSON.stringify(this.questions));
     }
 
     restore() {
         this.updateGlobalState("enabled", true);
-        this.updateGlobalState("correctText", this.options.textShownWhenAnsweringCorrectly);
-        this.updateGlobalState("incorrectText", this.options.textShownWhenAnsweringIncorrectly);
+
+        let correctText = this.options.textShownWhenAnsweringCorrectly || "Correct!";
+        let incorrectText = this.options.textShownWhenAnsweringIncorrectly || "Incorrect!";
+        this.updateForAll(this.options.textShownWhenAnsweringScope, "correctText", correctText);
+        this.updateForAll(this.options.textShownWhenAnsweringScope, "incorrectText", incorrectText);
 
         this.playerQuestionQueue.clear();
         for(let player of this.room.players.values()) {
@@ -54,19 +62,84 @@ export default class QuestionerDevice extends BaseDevice {
     
     onMessage(player: Player, key: string, data: any) {
         if(key !== "answered") return;
+        if(!this.globalState.enabled) return;
         
+        let correct = this.isCorrect(this.playerStates[player.id].nextQuestionId, data.answer);
+
         this.updatePlayerState(player.id, "currentQuestionId", this.playerStates[player.id].nextQuestionId);
         this.updatePlayerState(player.id, "nextQuestionId", this.getQuestion(player.id));
         
-        // TODO: Check that the player was, indeed, correct
-        this.triggerBlock("whenQuestionAnsweredCorrectly", player);
+        if(correct) {
+            this.triggerBlock("whenQuestionAnsweredCorrectly", player);
+            this.triggerWire("questionCorrect", player);
+            this.deviceManager.triggerChannel(this.options.whenAnsweredCorrectlyTransmitOn, player);
+        } else {
+            this.triggerBlock("whenQuestionAnsweredIncorrectly", player);
+            this.triggerWire("questionIncorrect", player);
+            this.deviceManager.triggerChannel(this.options.whenAnsweredIncorrectlyTransmitOn, player);
+        }
     }
 
-    onChannel(channel: string) {
+    onChannel(channel: string, player: Player) {
         if(channel === this.options.disableWhenReceivingOn) {
             this.updateGlobalState("enabled", false);
         } else if(channel === this.options.enableWhenReceivingOn) {
             this.updateGlobalState("enabled", true);
+        } else if(channel === this.options.openWhenReceivingOn) {
+            this.open(player);
+        } else if(channel === this.options.closeWhenReceivingOn) {
+            this.close(player);
         }
+    }
+
+    open(player: Player) {
+        player.player.openDeviceUI = this.id;
+        player.player.openDeviceUIChangeCounter++;
+    }
+
+    close(player: Player) {
+        player.player.openDeviceUI = "";
+        player.player.openDeviceUIChangeCounter++;
+    }
+
+    onWire(connection: string, player: Player) {
+        if(connection === "open") this.open(player);
+        else if(connection === "close") this.close(player);
+        else if(connection === "enable") this.updateGlobalState("enabled", true);
+        else if(connection === "disable") this.updateGlobalState("enabled", false);
+        else if(connection === "codeGrid") this.triggerBlock("wire", player);
+    }
+
+    isCorrect(id: string, answered: string) {
+        let question = this.questions.find((q) => q._id === id);
+        if(!question) return false;
+
+        if(question.type === "mc") {
+            let answer = question.answers.find(q => q._id === answered);
+            if(!answer) return false;
+            return answer.correct;
+        } else {
+            for(let answer of question.answers) {
+                if(answer.textType === 2) {
+                    if(answered.includes(answer.text)) return true;
+                } else {
+                    if(answered === answer.text) return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    onOpen(player: Player) {
+        if(!this.globalState.enabled) return;
+        this.deviceManager.triggerChannel(this.options.whenOpenedChannel, player);
+        this.triggerWire("opened", player);
+    }
+    
+    onClose(player: Player) {
+        if(!this.globalState.enabled) return;
+        this.deviceManager.triggerChannel(this.options.whenClosedChannel, player);
+        this.triggerWire("closed", player);
     }
 }

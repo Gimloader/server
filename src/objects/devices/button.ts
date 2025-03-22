@@ -3,15 +3,7 @@ import BaseDevice from "./base.js";
 
 export default class ButtonDevice extends BaseDevice {
     restore() {
-        if(this.options.scope === "global") {
-            this.updateGlobalState("active", this.options.activeOnStart);
-        } else if(this.options.scope === "team") {
-            // TODO: Teams
-        } else {
-            for(let player of this.room.players.values()) {
-                this.updatePlayerState(player.id, "active", this.options.activeOnStart);
-            }
-        }
+        this.updateForAll(this.options.scope, "active", this.options.activeOnStart);
     }
     
     onJoin(player: Player) {

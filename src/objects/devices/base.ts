@@ -5,7 +5,6 @@ import { GameRoom } from "../../colyseus/room.js";
 import { physicsScale } from "../../consts.js";
 import Player from "../player.js";
 import DeviceManager from "../../colyseus/deviceManager.js";
-import { runBlock } from "../../blocks/runBlock.js";
 import { runGrid } from "../../blocks/runGrid.js";
 
 export default class BaseDevice {
@@ -52,6 +51,8 @@ export default class BaseDevice {
     onMessage?(player: Player, key: string, data: any): void;
     onChannel?(channel: string, player: Player): void;
     onWire?(connection: string, player: Player): void;
+    onOpen?(player: Player): void;
+    onClose?(player: Player): void;
 
     updateGlobalState(key: string, value: any) {
         this.globalState[key] = value;
@@ -68,6 +69,21 @@ export default class BaseDevice {
         if(!this.playerStates[player]) this.playerStates[player] = {};
         this.playerStates[player][key] = value;
         this.deviceManager.addChange(this.id, `PLAYER_${player}_${key}`, value);
+    }
+
+    updateForAll(scope: "global" | "team" | "player", key: string, value: any) {
+        if(scope === "global") {
+            this.globalState[key] = value;
+        } else if(scope === "team") {
+            // TODO: Teams
+        } else {
+            for(let player of this.room.players.values()) {
+                if(!this.playerStates[player.id]) this.playerStates[player.id] = {};
+                this.playerStates[player.id][key] = value;
+            }
+        }
+
+        this.deviceManager.addChange(this.id, `GLOBAL_${key}`, value);
     }
 
     createCollider(options: ColliderOptions) {
@@ -112,9 +128,10 @@ export default class BaseDevice {
         }
     }
 
-    triggerBlock(type: string, player: Player) {
+    triggerBlock(type: string, player: Player, value?: string) {
         for(let grid of this.codeGrids) {
             if(grid.triggerType !== type) continue;
+            if(value && grid.triggerValue !== value) continue;
 
             runGrid(grid, this, this.room, player);
         }

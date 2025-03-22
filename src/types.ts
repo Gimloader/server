@@ -117,22 +117,30 @@ export interface CapsuleCollider {
 
 export type ColliderOptions = BoxCollider | CircleCollider | CapsuleCollider;
 
-export interface KitAnswer {
+export interface MCKitAnswer {
     correct: boolean;
     _id: string;
     text: string;
-    textType?: number;
+    image: string;
 }
 
-export interface KitQuestion {
+export interface TextKitAnswer {
+    correct: boolean;
+    _id: string;
+    text: string;
+    textType?: number; // 2 means include, undefined means match exactly
+}
+
+export type KitQuestion = {
     _id: string;
     position?: number;
     isActive?: boolean;
     game?: string;
-    answers: KitAnswer[];
-    type: "text" | "mc";
     text: string;
-}
+} & (
+    { type: "mc", answers: MCKitAnswer[] } |
+    { type: "text", answers: TextKitAnswer[] }
+)
 
 export interface ExperienceCategory {
     _id: string;

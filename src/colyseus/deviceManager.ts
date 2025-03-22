@@ -31,6 +31,7 @@ export default class DeviceManager {
         }
 
         this.room.onMessage("MESSAGE_FOR_DEVICE", this.onMessage.bind(this));
+        this.room.onMessage("UPDATE_DEVICE_UI_PRESENCE", this.updateUI.bind(this));
 
         // setTimeout to avoid some jank with this.room being undefined
         let inits = this.devices.map((d) => Promise.resolve(d.init?.()));
@@ -193,8 +194,11 @@ export default class DeviceManager {
     }
 
     triggerChannel(channel: string, player: Player) {
+        if(!channel) return;
+        
         for(let device of this.devices) {
             device.onChannel?.(channel, player);
+            device.triggerBlock("channel_radio", player, channel);
         }
     }
 
@@ -202,5 +206,20 @@ export default class DeviceManager {
         let player = this.room.players.get(client);
         let device = this.devices.find(d => d.id === deviceId);
         device.onMessage?.(player, key, data);
+    }
+
+    updateUI(client: Client, { action, deviceId }: { action: string, deviceId: string }) {
+        let player = this.room.players.get(client);
+        let device = this.devices.find(d => d.id === deviceId);
+        if(!device) return
+
+        if(action === "OPEN") {
+            device.onOpen?.(player);
+            player.player.openDeviceUI = deviceId;
+        } else {
+            device.onClose?.(player);
+            player.player.openDeviceUI = "";
+        }
+        player.player.openDeviceUIChangeCounter++;
     }
 }
