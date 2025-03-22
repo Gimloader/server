@@ -9,6 +9,7 @@ import Player from "../objects/player.js";
 import PhysicsManager from "./physics.js";
 import MapData from "../net/mapData.js";
 import RAPIER from "@dimforge/rapier2d-compat";
+import TeamManager from "./teamManager.js";
 
 interface RoomOptions {
     intentId: string;
@@ -28,8 +29,10 @@ export class GameRoom extends Room<GimkitState> {
     mapSettings: Record<string, any>;
     terrain: TileManager;
     updateTimeInterval: Timer;
+    teams: TeamManager;
     players = new Map<Client, Player>();
     host: Player;
+    gameStarted: number = 0;
 
     onCreate(options: RoomOptions) {
         this.game = Matchmaker.getByHostIntent(options.intentId);
@@ -44,6 +47,7 @@ export class GameRoom extends Room<GimkitState> {
             this.devices = new DeviceManager(this.map, this);
             this.mapSettings = this.devices.getMapSettings();
             this.terrain = new TileManager(this.map, this);
+            this.teams = new TeamManager(this);
 
             this.setState(new GimkitState({
                 gameCode: this.game.code,
@@ -78,7 +82,9 @@ export class GameRoom extends Room<GimkitState> {
 
             this.state.session.phase = "game";
             this.state.session.gameSession.phase = "game";
+            this.gameStarted = Date.now() + 1200;
             this.showLoading(1200, () => {
+                this.teams.start();
                 for(let p of this.players.values()) p.moveToSpawnpoint();
             });
         });
@@ -98,6 +104,7 @@ export class GameRoom extends Room<GimkitState> {
             this.showLoading(1200, () => {
                 this.broadcast("RESET");
                 this.devices.restore();
+                this.teams.restore();
                 for(let p of this.players.values()) p.moveToSpawnpoint();
             });
         });
@@ -149,6 +156,7 @@ export class GameRoom extends Room<GimkitState> {
             if(!player) return;
 
             player.leaveGame();
+            this.teams.onLeave(player);
             this.players.delete(client);
         }
 

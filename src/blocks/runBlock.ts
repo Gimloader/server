@@ -56,17 +56,19 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
             break;
         }
         case "current_character_team_number":
-            break;
+            return player.player.teamId;
         case "triggering_player_score":
-            break;
+            return player.player.score;
         case "get_team_score":
-            break;
+            let teamId = run("get_score_of_team");
+            return room.teams.scores[teamId] ?? 0;
         case "is_a_live_game":
             return true;
         case "is_an_assignment":
             return false;
         case "seconds_into_game":
-            break;
+            let elapsed = Date.now() - room.gameStarted;
+            return Math.floor(elapsed / 1000);
         case "controls_if":
             let cond = run("IF0");
             if(cond) run("DO0");
