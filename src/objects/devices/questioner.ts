@@ -13,6 +13,7 @@ export default class QuestionerDevice extends BaseDevice {
     }
     questions: KitQuestion[] = [];
     playerQuestionQueue = new Map<string, string[]>();
+    playerStreak: Record<string, number> = {};
 
     customBlocks: Record<string, CustomBlock> = {
         "message_correct_answer": (run) => {
@@ -22,6 +23,13 @@ export default class QuestionerDevice extends BaseDevice {
         "message_incorrect_answer": (run) => {
             let text = run("set_message_shown_when_player_answers_incorrectly");
             this.updateGlobalState("incorrectText", text);
+        }
+    }
+    customGridBlocks: Record<string, Record<string, CustomBlock>> = {
+        "whenQuestionAnsweredCorrectly": {
+            "question_answering_streak": (_, __, ___, player) => {
+                return this.playerStreak[player.id] ?? 0;
+            }
         }
     }
 
@@ -70,10 +78,15 @@ export default class QuestionerDevice extends BaseDevice {
         this.updatePlayerState(player.id, "nextQuestionId", this.getQuestion(player.id));
         
         if(correct) {
+            if(!this.playerStreak[player.id]) this.playerStreak[player.id] = 0;
+            this.playerStreak[player.id]++;
+
             this.triggerBlock("whenQuestionAnsweredCorrectly", player);
             this.triggerWire("questionCorrect", player);
             this.deviceManager.triggerChannel(this.options.whenAnsweredCorrectlyTransmitOn, player);
         } else {
+            this.playerStreak[player.id] = 0;
+
             this.triggerBlock("whenQuestionAnsweredIncorrectly", player);
             this.triggerWire("questionIncorrect", player);
             this.deviceManager.triggerChannel(this.options.whenAnsweredIncorrectlyTransmitOn, player);

@@ -162,7 +162,11 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
         case "text_join":
             let text1 = run("ADD0");
             let text2 = run("ADD1");
-            return text1 + text2;
+
+            if(!text1 && !text2) return "";
+            if(!text1) return text2.toString();
+            if(!text2) return text1.toString();
+            return text1.toString() + text2.toString();
         case "text_length": {
             let text = run("VALUE");
             return text.length;
