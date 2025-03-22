@@ -16,7 +16,7 @@ export default class QuestionerDevice extends BaseDevice {
 
     customBlocks: Record<string, CustomBlock> = {
         "message_correct_answer": (block, room, player, run) => {
-            let text = run(block.inputs.set_message_shown_when_player_answers_correctly.block);
+            let text = run("set_message_shown_when_player_answers_correctly");
             this.updateGlobalState("correctText", text);
         }
     }

@@ -165,4 +165,4 @@ export interface Block {
     next?: { block: Block };
 }
 
-export type CustomBlock = (block: Block, room: GameRoom, player: Player, run: (block: Block) => any) => any;
+export type CustomBlock = (block: Block, room: GameRoom, player: Player, run: (name: string) => any) => any;

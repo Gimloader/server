@@ -15,6 +15,7 @@ export default class DeviceManager {
     devicesLoaded = new Promise<void>((res) => this.resDevicesLoaded = res);
     changes = new Map<string, Record<string, any>>();
     removedIds: string[] = [];
+    properties: Record<string, any> = {};
     initialized = false;
     
     constructor(map: MapInfo, room: GameRoom) {
@@ -48,6 +49,8 @@ export default class DeviceManager {
         for(let device of this.devices) {
             device.restore?.();
         }
+
+        this.properties = {};
     }
 
     createDevice(info: DeviceInfo) {
