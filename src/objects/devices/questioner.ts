@@ -15,7 +15,7 @@ export default class QuestionerDevice extends BaseDevice {
     playerQuestionQueue = new Map<string, string[]>();
 
     customBlocks: Record<string, CustomBlock> = {
-        "message_correct_answer": (block, room, player, run) => {
+        "message_correct_answer": (run) => {
             let text = run("set_message_shown_when_player_answers_correctly");
             this.updateGlobalState("correctText", text);
         }

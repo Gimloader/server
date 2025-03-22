@@ -29,6 +29,7 @@ export class GameRoom extends Room<GimkitState> {
     terrain: TileManager;
     updateTimeInterval: Timer;
     players = new Map<Client, Player>();
+    host: Player;
 
     onCreate(options: RoomOptions) {
         this.game = Matchmaker.getByHostIntent(options.intentId);
@@ -134,6 +135,7 @@ export class GameRoom extends Room<GimkitState> {
         await this.devices.devicesLoaded;
 
         let player = new Player(this, client, options.intentId, name);
+        if(options.intentId === this.game.intentId) this.host = player;
         this.players.set(client, player);
 
         this.devices.onJoin(player);

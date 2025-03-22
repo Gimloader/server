@@ -15,7 +15,7 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
     let customBlock = custom[block.type];
     if(customBlock) {
         // there's never a result if there's a next block
-        let result = customBlock(block, room, player, run);
+        let result = customBlock(run, block, room, player);
 
         if(block.next) runBlock(block.next.block, custom, room, player);
 
@@ -40,14 +40,21 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
         }
         case "current_character_name":
             return player.name;
-        case "add_activity_feed_item_for_everyone":
+        case "add_activity_feed_item_for_everyone": {
             let text = run("add_activity_feed_item_for_everyone")
-            console.log("Activity Feed:", text);
+            room.broadcast("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
-        case "add_activity_feed_item_for_triggering_player":
+        }
+        case "add_activity_feed_item_for_triggering_player": {
+            let text = run("add_activity_feed_item_for_triggering_player");
+            player.client.send("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
-        case "add_activity_feed_item_for_game_host":
+        }
+        case "add_activity_feed_item_for_game_host": {
+            let text = run("add_activity_feed_item_for_game_host");
+            room.host.client.send("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
+        }
         case "current_character_team_number":
             break;
         case "triggering_player_score":

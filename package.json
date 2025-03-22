@@ -27,6 +27,7 @@
     "express": "^4.21.2"
   },
   "devDependencies": {
+    "@types/bun": "^1.2.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0"
   }
