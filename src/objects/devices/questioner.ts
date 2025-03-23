@@ -16,20 +16,16 @@ export default class QuestionerDevice extends BaseDevice {
     playerStreak: Record<string, number> = {};
 
     customBlocks: Record<string, CustomBlock> = {
-        "message_correct_answer": (run) => {
+        "message_correct_answer": ({ run }) => {
             let text = run("set_message_shown_when_player_answers_correctly");
             this.updateGlobalState("correctText", text);
         },
-        "message_incorrect_answer": (run) => {
+        "message_incorrect_answer": ({ run }) => {
             let text = run("set_message_shown_when_player_answers_incorrectly");
             this.updateGlobalState("incorrectText", text);
-        }
-    }
-    customGridBlocks: Record<string, Record<string, CustomBlock>> = {
-        "whenQuestionAnsweredCorrectly": {
-            "question_answering_streak": (_, __, ___, player) => {
-                return this.playerStreak[player.id] ?? 0;
-            }
+        },
+        "question_answering_streak": ({ player }) => {
+            return this.playerStreak[player.id] ?? 0;
         }
     }
 

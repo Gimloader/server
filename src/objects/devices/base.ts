@@ -27,7 +27,6 @@ export default class BaseDevice {
     wires: Wire[] = [];
     codeGrids: CodeGrid[] = [];
     customBlocks: Record<string, CustomBlock> = {};
-    customGridBlocks: Record<string, Record<string, CustomBlock>> = {};
 
     constructor(deviceManager: DeviceManager, room: GameRoom, info: DeviceInfo) {
         this.deviceManager = deviceManager;

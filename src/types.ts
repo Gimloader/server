@@ -168,9 +168,15 @@ export interface ExperienceInfo {
 export interface Block {
     type: string;
     id: string;
+    extraState?: Record<string, any>;
     inputs?: Record<string, any>;
     fields?: Record<string, any>;
     next?: { block: Block };
 }
 
-export type CustomBlock = (run: (name: string) => any, block: Block, room: GameRoom, player: Player) => any;
+export type CustomBlock = (info: {
+    run: (name: string) => any;
+    block: Block;
+    room: GameRoom;
+    player: Player
+}) => any;

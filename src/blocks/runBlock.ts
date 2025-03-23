@@ -3,27 +3,27 @@ import Player from "../objects/player.js";
 import { Block, CustomBlock } from "../types.js";
 import { isPrime, random } from "../utils.js";
 
-export function runBlock(block: Block, custom: Record<string, CustomBlock>, room: GameRoom, player: Player) {
+export function runBlock(block: Block, variables: Record<string, any>, custom: Record<string, CustomBlock>, room: GameRoom, player: Player) {
     if(!block) return;
 
-    const run = (name: string) => {
-        let toRun = block.inputs?.[name]?.block;
+    const run = (name: string, blockName = "block") => {
+        let toRun = block.inputs?.[name]?.[blockName];
         if(!toRun) return;
-        return runBlock(toRun, custom, room, player)
+        return runBlock(toRun, variables, custom, room, player)
     }
 
     let customBlock = custom[block.type];
     if(customBlock) {
         // there's never a result if there's a next block
-        let result = customBlock(run, block, room, player);
+        let result = customBlock({ run, block, room, player });
 
-        if(block.next) runBlock(block.next.block, custom, room, player);
+        if(block.next) runBlock(block.next.block, variables, custom, room, player);
 
         return result;
     }
 
     // I sincerely apologize for what follows
-    switch(block.type) {
+    typeSwitch: switch(block.type) {
         case "message_broadcaster":
             let channel = run("input_value");
             if(channel) room.devices.triggerChannel(channel, player);
@@ -41,17 +41,20 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
         case "current_character_name":
             return player.name;
         case "add_activity_feed_item_for_everyone": {
-            let text = run("add_activity_feed_item_for_everyone")
+            let text = run("add_activity_feed_item_for_everyone");
+            if(typeof text !== "string") break;
             room.broadcast("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
         }
         case "add_activity_feed_item_for_triggering_player": {
             let text = run("add_activity_feed_item_for_triggering_player");
+            if(typeof text !== "string") break;
             player.client.send("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
         }
         case "add_activity_feed_item_for_game_host": {
             let text = run("add_activity_feed_item_for_game_host");
+            if(typeof text !== "string") break;
             room.host.client.send("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
         }
@@ -70,8 +73,20 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
             let elapsed = Date.now() - room.gameStarted;
             return Math.floor(elapsed / 1000);
         case "controls_if":
-            let cond = run("IF0");
-            if(cond) run("DO0");
+            let ifs = block.extraState?.elseIfCount ?? 0;
+            ifs++;
+            for(let i = 0; i < ifs; i++) {
+                let cond = run(`IF${i}`);
+                if(cond) {
+                    run(`DO${i}`);
+                    break typeSwitch;
+                }
+            }
+
+            if(block.extraState?.hasElse) {
+                run("ELSE");
+            }
+
             break;
         case "logic_compare": {
             let a = run("A");
@@ -162,13 +177,15 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
         case "text":
             return block.fields.TEXT;
         case "text_join":
-            let text1 = run("ADD0");
-            let text2 = run("ADD1");
+            let items = block.extraState?.itemCount ?? 2;
+            let str = "";
 
-            if(!text1 && !text2) return "";
-            if(!text1) return text2.toString();
-            if(!text2) return text1.toString();
-            return text1.toString() + text2.toString();
+            for(let i = 0; i < items; i++) {
+                let text = run(`ADD${i}`);
+                if(text !== undefined) str += text;
+            }
+
+            return str;
         case "text_length": {
             let text = run("VALUE");
             return text.length;
@@ -218,9 +235,25 @@ export function runBlock(block: Block, custom: Record<string, CustomBlock>, room
             if(op === "FIRST") return text.indexOf(find);
             else if(op === "LAST") return text.lastIndexOf(find);
         }
+        case "variables_set": {
+            let setVar = block.fields.VAR.id;
+            let value = run("VALUE");
+            variables[setVar] = value;
+            break;
+        }
+        case "variables_get": 
+            let getVar = block.fields.VAR.id;
+            return variables[getVar];
+        case "math_change": {
+            let changeVar = block.fields.VAR.id;
+            let delta = run("DELTA", "shadow");
+            if(typeof variables[changeVar] !== "number") changeVar = 0;
+            variables[changeVar] += delta;
+            break;
+        }
     }
 
     if(block.next) {
-        runBlock(block.next.block, custom, room, player);
+        runBlock(block.next.block, variables, custom, room, player);
     }
 }
