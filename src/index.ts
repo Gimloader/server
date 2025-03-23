@@ -1,18 +1,13 @@
 import express from './net/express.js';
-import { Server } from "colyseus";
-import { BunWebSockets } from "@colyseus/bun-websockets";
-import { GameRoom } from './colyseus/room.js';
 import Matchmaker from './net/matchmaker.js';
 import { colyseusPort } from './consts.js';
 import RAPIER from "@dimforge/rapier2d-compat";
 import MapData from './net/mapData.js';
+import { listen } from '@colyseus/tools';
+import app from './colyseus/app.config.js';
 
 RAPIER.init();
-
-const server = new Server({ transport: new BunWebSockets() });
-
-server.define("MapRoom", GameRoom);
-server.listen(colyseusPort);
+listen(app, colyseusPort);
 
 Matchmaker.init();
 MapData.init();

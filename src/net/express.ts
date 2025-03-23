@@ -8,6 +8,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use('/assets/map', express.static('public'));
 
-app.listen(expressPort, () => console.log("Server online!"));
+app.listen(expressPort);
 
 export default app;

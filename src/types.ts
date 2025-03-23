@@ -120,8 +120,8 @@ export type ColliderOptions = BoxCollider | CircleCollider | CapsuleCollider;
 export interface MCKitAnswer {
     correct: boolean;
     _id: string;
-    text: string;
-    image: string;
+    text?: string;
+    image?: string;
 }
 
 export interface TextKitAnswer {

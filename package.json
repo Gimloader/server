@@ -20,6 +20,7 @@
   "dependencies": {
     "@colyseus/bun-websockets": "0.15.3",
     "@colyseus/schema": "2.0.35",
+    "@colyseus/tools": "^0.16.3",
     "@dimforge/rapier2d-compat": "0.11.2",
     "body-parser": "^1.20.3",
     "colyseus": "0.15.17",
@@ -27,6 +28,7 @@
     "express": "^4.21.2"
   },
   "devDependencies": {
+    "@colyseus/testing": "0.15.4",
     "@types/bun": "^1.2.5",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0"
