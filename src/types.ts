@@ -167,9 +167,9 @@ export interface ExperienceInfo {
 
 export interface Block {
     type: string;
-    id: string;
+    id?: string;
     extraState?: Record<string, any>;
-    inputs?: Record<string, any>;
+    inputs?: Record<string, Record<string, Block>>;
     fields?: Record<string, any>;
     next?: { block: Block };
 }

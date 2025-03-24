@@ -146,8 +146,6 @@ export class GameRoom extends Room<GimkitState> {
         this.players.set(client, player);
 
         this.devices.onJoin(player);
-
-        console.log(name, "joined the game!");
     }
 
     onLeave(client: Client, consented: boolean) {

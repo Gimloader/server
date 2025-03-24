@@ -5,10 +5,14 @@ import Matchmaker from "../src/net/matchmaker";
 import MapData from "../src/net/mapData";
 import { generateGameCode } from "../src/utils";
 import RAPIER from "@dimforge/rapier2d-compat";
-import { Room } from "colyseus.js";
+import { Room as ClientRoom } from "colyseus.js";
+import { GameRoom } from "../src/colyseus/room";
+import Player from "../src/objects/player";
 
 export let colyseus: ColyseusTestServer;
-export let client: Room;
+export let client: ClientRoom;
+export let room: GameRoom;
+export let player: Player;
 await RAPIER.init();
 
 MapData.init();
@@ -29,4 +33,7 @@ beforeEach(async () => {
     client = await colyseus.sdk.joinOrCreate("MapRoom", {
         intentId
     });
+    client.onMessage("*", () => {});
+    room = colyseus.getRoomById(client.roomId) as GameRoom;
+    player = room.players.values().next().value;
 });

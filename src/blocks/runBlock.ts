@@ -42,19 +42,19 @@ export function runBlock(block: Block, variables: Record<string, any>, custom: R
             return player.name;
         case "add_activity_feed_item_for_everyone": {
             let text = run("add_activity_feed_item_for_everyone");
-            if(typeof text !== "string") break;
+            if(typeof text !== "string" || !text) break;
             room.broadcast("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
         }
         case "add_activity_feed_item_for_triggering_player": {
             let text = run("add_activity_feed_item_for_triggering_player");
-            if(typeof text !== "string") break;
+            if(typeof text !== "string" || !text) break;
             player.client.send("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
         }
         case "add_activity_feed_item_for_game_host": {
             let text = run("add_activity_feed_item_for_game_host");
-            if(typeof text !== "string") break;
+            if(typeof text !== "string" || !text) break;
             room.host.client.send("ACTIVITY_FEED_MESSAGE", { id: crypto.randomUUID(), message: text });
             break;
         }
@@ -181,8 +181,12 @@ export function runBlock(block: Block, variables: Record<string, any>, custom: R
             let str = "";
 
             for(let i = 0; i < items; i++) {
+                if(!block.inputs[`ADD${i}`]) continue;
                 let text = run(`ADD${i}`);
-                if(text !== undefined) str += text;
+                
+                // No idea why Gimkit only shows undefined with 2 or less items
+                if(items > 2 && typeof text === "undefined") continue;
+                str += text;
             }
 
             return str;
@@ -202,13 +206,16 @@ export function runBlock(block: Block, variables: Record<string, any>, custom: R
 
             if(op1 !== "START") {
                 let num = run("AT1");
-                if(op1 === "FROM_START") start = num + 1;
-                else if(op1 === "FROM_END") start = text.length - op1;
+                if(num === 0) return "";
+                if(op1 === "FROM_START") start = num - 1;
+                else if(op1 === "FROM_END") start = text.length - num;
+                if(start < 0) start = text.length + start;
             }
             if(op2 !== "LAST") {
                 let num = run("AT2");
-                if(op1 === "FROM_START") end = num + 1;
-                else if(op1 === "FROM_END") end = text.length - op1;
+                if(op2 === "FROM_START") end = num;
+                else if(op2 === "FROM_END") end = text.length - num + 1;
+                if(end < 0) end = text.length + end;
             }
 
             return text.slice(start, end);
@@ -247,7 +254,7 @@ export function runBlock(block: Block, variables: Record<string, any>, custom: R
         case "math_change": {
             let changeVar = block.fields.VAR.id;
             let delta = run("DELTA", "shadow");
-            if(typeof variables[changeVar] !== "number") changeVar = 0;
+            if(typeof variables[changeVar] !== "number") variables[changeVar] = 0;
             variables[changeVar] += delta;
             break;
         }
