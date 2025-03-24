@@ -226,12 +226,13 @@ export function runBlock(block: Block, variables: Record<string, any>, custom: R
             
             if(op === "FROM_START") {
                 let index = run("AT");
-                return text.charAt(index + 1);
+                return text.charAt(index - 1);
             } else if(op === "FROM_END") {
                 let index = run("AT");
-                return text.charAt(-index);
+                if(index <= 0) return text.charAt(-index);
+                return text.charAt(text.length - index);
             } else if(op === "FIRST") return text.charAt(0);
-            else if(op === "LAST") return text.charAt(-1);
+            else if(op === "LAST") return text.charAt(text.length - 1);
             else if(op === "RANDOM") return text.charAt(random(1, text.length) - 1);
         }
         case "text_indexOf": {

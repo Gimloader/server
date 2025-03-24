@@ -54,4 +54,23 @@ describe("Blocks", async () => {
         expect(runSubstring(1, -30, "FROM_START", "FROM_END")).toBe("abcdefghijklmnopqrstuvwxyz");
         expect(runSubstring(2, 2, "FROM_START", "FROM_END")).toBe("bcdefghijklmnopqrstuvwxy");
     });
+
+    const runCharAt = (index: number, where = "FROM_START") => {
+        let json = testJson.charAt;
+        let block = json.inputs.VALUE.block;
+        block.inputs.AT.block.fields.NUM = index;
+        block.fields.WHERE = where;
+        
+        return run(json).test;
+    }
+
+    test("charAt", () => {
+        expect(runCharAt(0)).toBe("");
+        expect(runCharAt(1)).toBe("a")
+        expect(runCharAt(-1)).toBe("")
+        expect(runCharAt(30)).toBe("")
+        expect(runCharAt(0, "FROM_END")).toBe("a")
+        expect(runCharAt(1, "FROM_END")).toBe("f")
+        expect(runCharAt(-1, "FROM_END")).toBe("b")
+    });
 });

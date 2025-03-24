@@ -297,5 +297,42 @@
                 }
             }
         }
+    },
+    "charAt": {
+        "type": "variables_set",
+        "fields": {
+            "VAR": {
+                "id": "test"
+            }
+        },
+        "inputs": {
+            "VALUE": {
+                "block": {
+                    "type": "text_charAt",
+                    "extraState": "<mutation at=\"true\"></mutation>",
+                    "fields": {
+                        "WHERE": "FROM_START"
+                    },
+                    "inputs": {
+                        "VALUE": {
+                            "block": {
+                                "type": "text",
+                                "fields": {
+                                    "TEXT": "abcdef"
+                                }
+                            }
+                        },
+                        "AT": {
+                            "block": {
+                                "type": "math_number",
+                                "fields": {
+                                    "NUM": 0
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }
