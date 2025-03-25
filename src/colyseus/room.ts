@@ -123,22 +123,19 @@ export class GameRoom extends Room<GimkitState> {
 
     async onJoin(client: Client, options: ClientOptions) {
         let name: string;
-
+        
         // if the intentId is that of the game they are the host
-        if(options?.intentId === this.game.intentId) {
-            // TODO: Actually get the host's name
-            name = "Host";
-        } else {
-            let intent = this.game.clientIntents.get(options?.intentId);
-            if(!intent) {
-                client.leave();
-                return;
-            }
-            
-            name = intent.name;
-            this.game.clientIntents.delete(options.intentId);
+        let intent = this.game.clientIntents.get(options?.intentId);
+        if(!intent) {
+            client.leave();
+            return;
         }
+        
+        name = intent.name;
+        this.game.clientIntents.delete(options.intentId);
         client.userData = { id: options.intentId };
+
+        // create the player object
         await this.devices.devicesLoaded;
 
         let player = new Player(this, client, options.intentId, name);

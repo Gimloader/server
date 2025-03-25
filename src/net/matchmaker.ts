@@ -52,6 +52,10 @@ export default class Matchmaker {
                 mapId: map.mapId,
                 code: generateGameCode()
             };
+
+            let name = req.body.name ?? "Host";
+            game.clientIntents.set(game.intentId, { name });
+
             this.games.push(game);
 
             console.log("Room created with code", game.code);

@@ -6,7 +6,8 @@ import { BunWebSockets } from "@colyseus/bun-websockets";
 let conf = config as unknown as typeof config.default;
 export default conf({
     options: {
-        transport: new BunWebSockets()
+        transport: new BunWebSockets(),
+        devMode: false
     },
     initializeGameServer(server) {
         server.define("MapRoom", GameRoom);
