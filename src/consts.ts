@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { PhysicsState } from './types.js';
+import { Cosmetics, PhysicsState } from './types.js';
 
 export const expressPort = 5823;
 export const colyseusPort = 5824;
@@ -14,6 +14,10 @@ export const defaultPhysicsState: PhysicsState = {
     grounded: false,
     groundedTicks: 1,
     lastGroundedAngle: 0
+}
+export const defaultCosmetics: Cosmetics = {
+    character: { id: "default_gray" },
+    trail: null
 }
 export const physicsScale = 100;
 export const tileSize = 64;

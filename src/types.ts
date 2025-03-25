@@ -54,6 +54,7 @@ export interface CharacterOptions {
     x: number;
     y: number;
     infiniteAmmo: boolean;
+    cosmetics: Cosmetics;
 }
 
 export interface SessionOptions {
@@ -180,3 +181,8 @@ export type CustomBlock = (info: {
     room: GameRoom;
     player: Player
 }) => any;
+
+export interface Cosmetics {
+    character: { id: string, editStyles?: Record<string, string> };
+    trail: string | null;
+}

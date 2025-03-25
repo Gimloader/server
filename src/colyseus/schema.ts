@@ -1,5 +1,5 @@
 import { Schema, ArraySchema, MapSchema, type } from "@colyseus/schema";
-import { CharacterOptions, CodeGrid, MapInfo, SessionOptions, StateOptions } from "../types.js";
+import { CharacterOptions, CodeGrid, Cosmetics, MapInfo, SessionOptions, StateOptions } from "../types.js";
 
 export class Hooks extends Schema {
     @type("string") hookJSON: string = '{"hooks":[]}';
@@ -92,6 +92,13 @@ export class Appearance extends Schema {
     @type("string") trailId: string = "";
     @type("string") transparencyModifierId: string = "";
     @type("string") tintModifierId: string = "";
+
+    constructor(options: { cosmetics: Cosmetics }) {
+        super();
+
+        this.skin = JSON.stringify(options.cosmetics.character);
+        this.trailId = options.cosmetics.trail ?? "";
+    }
 }
 
 export class ClassDesigner extends Schema {
@@ -118,7 +125,7 @@ export class CharactersItem extends Schema {
     @type("boolean") isRespawning: boolean = false;
     @type("number") score: number = 0;
     @type(ClassDesigner) classDesigner: ClassDesigner = new ClassDesigner();
-    @type(Appearance) appearance: Appearance = new Appearance();
+    @type(Appearance) appearance: Appearance;
     @type(Permissions) permissions: Permissions = new Permissions();
     @type(Inventory) inventory: Inventory;
     @type(Xp) xp: Xp = new Xp();
@@ -135,6 +142,7 @@ export class CharactersItem extends Schema {
         this.x = options.x;
         this.y = options.y;
         this.inventory = new Inventory({ infiniteAmmo: options.infiniteAmmo });
+        this.appearance = new Appearance({ cosmetics: options.cosmetics });
     }
 }
 

@@ -1,10 +1,12 @@
-import { colyseusPort } from '../consts.js';
+import { colyseusPort, defaultCosmetics } from '../consts.js';
 import express from './express.js';
 import { generateGameCode } from '../utils.js';
 import MapData from './mapData.js';
+import { Cosmetics } from '../types.js';
 
 interface ClientIntent {
     name: string;
+    cosmetics: Cosmetics;
 }
 
 export interface Game {
@@ -54,7 +56,8 @@ export default class Matchmaker {
             };
 
             let name = req.body.name ?? "Host";
-            game.clientIntents.set(game.intentId, { name });
+            let cosmetics = req.body.cosmetics ?? defaultCosmetics;
+            game.clientIntents.set(game.intentId, { name, cosmetics });
 
             this.games.push(game);
 
@@ -91,7 +94,10 @@ export default class Matchmaker {
             }
 
             let intentId = crypto.randomUUID();
-            room.clientIntents.set(intentId, { name: req.body.name });
+
+            if(!req.body.name) return;
+            let cosmetics = req.body.cosmetics ?? defaultCosmetics;
+            room.clientIntents.set(intentId, { name: req.body.name, cosmetics });
 
             res.json({
                 source: "map",

@@ -138,7 +138,7 @@ export class GameRoom extends Room<GimkitState> {
         // create the player object
         await this.devices.devicesLoaded;
 
-        let player = new Player(this, client, options.intentId, name);
+        let player = new Player(this, client, options.intentId, name, intent.cosmetics);
         if(options.intentId === this.game.intentId) this.host = player;
         this.players.set(client, player);
 

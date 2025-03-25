@@ -4,22 +4,24 @@ import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../
 import { CharactersItem } from "../colyseus/schema.js";
 import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../consts.js";
 import RAPIER from "@dimforge/rapier2d-compat";
-import { PhysicsObjects, PhysicsState } from "../types.js";
+import { Cosmetics, PhysicsObjects, PhysicsState } from "../types.js";
 
 export default class Player {
     room: GameRoom;
     client: Client;
     id: string;
     name: string;
+    cosmetics: Cosmetics;
     player: CharactersItem;
     physicsObjects: PhysicsObjects;
     physicsState: PhysicsState = defaultPhysicsState;
     
-    constructor(room: GameRoom, client: Client, id: string, name: string) {
+    constructor(room: GameRoom, client: Client, id: string, name: string, cosmetics: Cosmetics) {
         this.room = room;
         this.client = client;
         this.id = id;
         this.name = name;
+        this.cosmetics = cosmetics;
 
         this.init();
     }
@@ -31,7 +33,8 @@ export default class Player {
             id: this.id,
             x, y,
             name: this.name,
-            infiniteAmmo: this.room.mapSettings.infiniteAmmo
+            infiniteAmmo: this.room.mapSettings.infiniteAmmo,
+            cosmetics: this.cosmetics
         });
         this.room.state.characters.set(this.id, this.player);
 
