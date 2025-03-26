@@ -52,14 +52,14 @@ export class Xp extends Schema {
 }
 
 export class InteractiveSlotsItem extends Schema {
-    @type("string") itemId: string;
-    @type("boolean") waiting: boolean;
-    @type("number") waitingStartTime: number;
-    @type("number") waitingEndTime: number;
-    @type("number") currentClip: number;
-    @type("number") clipSize: number;
-    @type("number") durability: number;
-    @type("number") count: number;
+    @type("string") itemId: string = "";
+    @type("boolean") waiting: boolean = false;
+    @type("number") waitingStartTime: number = 0;
+    @type("number") waitingEndTime: number = 0;
+    @type("number") currentClip: number = 0;
+    @type("number") clipSize: number = 0;
+    @type("number") durability: number = -1;
+    @type("number") count: number = 0;
 }
 
 export class SlotsItem extends Schema {
@@ -75,12 +75,19 @@ export class Inventory extends Schema {
     @type({ map: SlotsItem }) slots = new MapSchema<SlotsItem>();
     @type("number") maxSlots: number = 999;
     @type("number") activeInteractiveSlot: number = 0;
-    @type({ map: InteractiveSlotsItem }) interactiveSlots = new MapSchema<InteractiveSlotsItem>();
+    @type({ map: InteractiveSlotsItem }) interactiveSlots: MapSchema<InteractiveSlotsItem>;
     @type([ "number" ]) interactiveSlotsOrder = new ArraySchema<number>(1, 2, 3, 4, 5);
     @type("boolean") infiniteAmmo: boolean;
 
     constructor(options: { infiniteAmmo: boolean }) {
         super();
+
+        let interactiveSlots: Record<string, InteractiveSlotsItem> = {};
+        for(let i = 1; i <= 5; i++) {
+            interactiveSlots[i.toString()] = new InteractiveSlotsItem();
+        }
+
+        this.interactiveSlots = new MapSchema<InteractiveSlotsItem>(interactiveSlots);
         this.infiniteAmmo = options.infiniteAmmo;
     }
 }

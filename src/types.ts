@@ -188,3 +188,9 @@ export interface Cosmetics {
     character: { id: string, editStyles?: Record<string, string> };
     trail: string | null;
 }
+
+export interface DropItemOptions {
+    amount: number;
+    itemId?: string;
+    interactiveSlotNumber: number;
+}

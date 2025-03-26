@@ -33,6 +33,9 @@ export default class Player {
         this.init();
 
         this.onMsg("INPUT", this.onInput.bind(this));
+        this.onMsg("AIMING", ({ angle }: { angle: number }) => {
+            this.player.projectiles.aimAngle = angle;
+        });
     }
 
     onMsg(type: string, callback: MsgCallback) {

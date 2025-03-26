@@ -7,7 +7,8 @@ let conf = config as unknown as typeof config.default;
 export default conf({
     options: {
         transport: new BunWebSockets(),
-        devMode: false
+        devMode: false,
+        greet: false
     },
     initializeGameServer(server) {
         server.define("MapRoom", GameRoom);

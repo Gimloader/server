@@ -1,5 +1,7 @@
 import { GameRoom } from "../../colyseus/room.js";
 import { Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema.js"
+import { worldOptions } from "../../consts.js";
+import { DropItemOptions } from "../../types.js";
 import Player from "./player.js";
 
 export default class Inventory {
@@ -14,9 +16,13 @@ export default class Inventory {
             infiniteAmmo: room.mapSettings.infiniteAmmo
         });
 
-        player.onMsg("DROP_ITEM", ({ amount, itemId }: { amount: number, itemId: string }) => {
-            if(!this.hasItem(itemId, amount)) return;
-            this.removeItem(itemId, amount);
+        player.onMsg("DROP_ITEM", ({ amount, itemId, interactiveSlotNumber }: DropItemOptions) => {
+            if(interactiveSlotNumber) {
+                itemId = this.inventory.interactiveSlots.get(interactiveSlotNumber.toString()).itemId;
+                if(!this.removeItemSlot(amount, interactiveSlotNumber)) return;
+            } else {
+                if(!this.removeItemAmount(itemId, amount)) return;
+            }
 
             room.devices.createDevice({
                 id: crypto.randomUUID(),
@@ -37,26 +43,65 @@ export default class Inventory {
                 }
             }, true);
         });
+
+        player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", ({ slotNum }: { slotNum: number })=> {
+            this.inventory.activeInteractiveSlot = slotNum;
+        });
     }
 
-    addItem(id: string, amount: number) {
+    getItemInfo(id: string) { return worldOptions.itemOptions.find((i: any) => i.id === id) }
+
+    addItem(id: string, amount: number) {        
+        let item = this.getItemInfo(id);
+        if(!item) return;
+
         if(this.inventory.slots.has(id)) {
             this.inventory.slots.get(id).amount += amount;
         } else {
             let slot = new SlotsItem({ amount });
             this.inventory.slots.set(id, slot);
         }
-    }
-    
-    hasItem(id: string, amount: number) {
-        if(!this.inventory.slots.has(id)) return false;
-        return this.inventory.slots.get(id).amount >= amount;
+
+        // if it's an interactive item put it in the interactive slots
+        if(!item.weapon && !item.consumeType) return;
+        for(let slot of this.inventory.interactiveSlots.values()) {
+            if(slot.itemId) continue;
+
+            slot.itemId = id;
+            slot.count = amount;
+            break;
+        }
     }
 
-    removeItem(id: string, amount: number) {
+    removeItemAmount(id: string, amount: number) {
+        if(!this.inventory.slots.has(id)) return;
+        if(this.inventory.slots.get(id).amount < amount) return;
+
         this.inventory.slots.get(id).amount -= amount;
         if(this.inventory.slots.get(id).amount <= 0) {
             this.inventory.slots.delete(id);
         }
+
+        return true;
+    }
+    
+    removeItemSlot(amount: number, slotNum: number) {
+        let slot = this.inventory.interactiveSlots.get(slotNum.toString());
+        if(slot.count < amount) return;
+
+        if(this.inventory.activeInteractiveSlot === slotNum) {
+            this.inventory.activeInteractiveSlot = 0;
+        }
+
+        slot.count -= amount;
+
+        if(slot.count <= 0) {
+            slot.itemId = "";
+            slot.count = 0;
+        }
+        
+        this.removeItemAmount(slot.itemId, amount);
+
+        return true;
     }
 }
