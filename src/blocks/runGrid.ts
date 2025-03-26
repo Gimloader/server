@@ -1,6 +1,6 @@
 import { GameRoom } from "../colyseus/room.js";
 import BaseDevice from "../objects/devices/base.js";
-import Player from "../objects/player.js";
+import Player from "../objects/player/player.js";
 import { CodeGrid } from "../types.js";
 import { runBlock } from "./runBlock.js";
 

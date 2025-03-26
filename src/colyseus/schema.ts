@@ -64,6 +64,11 @@ export class InteractiveSlotsItem extends Schema {
 
 export class SlotsItem extends Schema {
     @type("number") amount: number;
+
+    constructor(options: { amount: number }) {
+        super();
+        this.amount = options.amount;
+    }
 }
 
 export class Inventory extends Schema {
@@ -72,7 +77,7 @@ export class Inventory extends Schema {
     @type("number") activeInteractiveSlot: number = 0;
     @type({ map: InteractiveSlotsItem }) interactiveSlots = new MapSchema<InteractiveSlotsItem>();
     @type([ "number" ]) interactiveSlotsOrder = new ArraySchema<number>(1, 2, 3, 4, 5);
-    @type("boolean") infiniteAmmo: boolean = true;
+    @type("boolean") infiniteAmmo: boolean;
 
     constructor(options: { infiniteAmmo: boolean }) {
         super();
@@ -96,7 +101,7 @@ export class Appearance extends Schema {
     constructor(options: { cosmetics: Cosmetics }) {
         super();
 
-        this.skin = JSON.stringify(options.cosmetics.character);
+        if(options.cosmetics.character) this.skin = JSON.stringify(options.cosmetics.character);
         this.trailId = options.cosmetics.trail ?? "";
     }
 }
@@ -141,7 +146,7 @@ export class CharactersItem extends Schema {
         this.name = options.name;
         this.x = options.x;
         this.y = options.y;
-        this.inventory = new Inventory({ infiniteAmmo: options.infiniteAmmo });
+        this.inventory = options.inventory;
         this.appearance = new Appearance({ cosmetics: options.cosmetics });
     }
 }

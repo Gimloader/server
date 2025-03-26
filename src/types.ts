@@ -1,6 +1,7 @@
 import RAPIER from "@dimforge/rapier2d-compat";
 import { GameRoom } from "./colyseus/room.js";
-import Player from "./objects/player.js";
+import Player from "./objects/player/player.js";
+import { Inventory } from "./colyseus/schema.js";
 
 export interface DeviceInfo {
     id: string;
@@ -55,6 +56,7 @@ export interface CharacterOptions {
     y: number;
     infiniteAmmo: boolean;
     cosmetics: Cosmetics;
+    inventory: Inventory;
 }
 
 export interface SessionOptions {

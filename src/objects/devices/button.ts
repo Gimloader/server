@@ -1,4 +1,4 @@
-import Player from "../player.js";
+import Player from "../player/player.js";
 import BaseDevice from "./base.js";
 
 export default class ButtonDevice extends BaseDevice {

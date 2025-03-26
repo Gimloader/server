@@ -3,7 +3,7 @@ import { CodeGrid, ColliderInfo, ColliderOptions, CustomBlock, DeviceInfo, Wire 
 import { degToRad } from "../../utils.js";
 import { GameRoom } from "../../colyseus/room.js";
 import { physicsScale } from "../../consts.js";
-import Player from "../player.js";
+import Player from "../player/player.js";
 import DeviceManager from "../../colyseus/deviceManager.js";
 import { runGrid } from "../../blocks/runGrid.js";
 

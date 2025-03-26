@@ -1,5 +1,5 @@
 import { GameRoom } from "../colyseus/room.js";
-import Player from "../objects/player.js";
+import Player from "../objects/player/player.js";
 import { Block, CustomBlock } from "../types.js";
 import { isPrime, random } from "../utils.js";
 

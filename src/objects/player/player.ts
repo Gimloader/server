@@ -1,10 +1,14 @@
 import type { Client } from "colyseus";
-import type { GameRoom } from "../colyseus/room.js";
-import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../utils.js";
-import { CharactersItem } from "../colyseus/schema.js";
-import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../consts.js";
+import type { GameRoom } from "../../colyseus/room.js";
+import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../../utils.js";
+import { CharactersItem } from "../../colyseus/schema.js";
+import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../../consts.js";
 import RAPIER from "@dimforge/rapier2d-compat";
-import { Cosmetics, PhysicsObjects, PhysicsState } from "../types.js";
+import { Cosmetics, PhysicsObjects, PhysicsState } from "../../types.js";
+import Inventory from "./inventory.js";
+import { EventEmitter } from "node:stream";
+
+type MsgCallback = (message: any) => void;
 
 export default class Player {
     room: GameRoom;
@@ -15,6 +19,9 @@ export default class Player {
     player: CharactersItem;
     physicsObjects: PhysicsObjects;
     physicsState: PhysicsState = defaultPhysicsState;
+    inventory: Inventory;
+    messageEvents = new EventEmitter();
+    isHost = false;
     
     constructor(room: GameRoom, client: Client, id: string, name: string, cosmetics: Cosmetics) {
         this.room = room;
@@ -24,17 +31,30 @@ export default class Player {
         this.cosmetics = cosmetics;
 
         this.init();
+
+        this.onMsg("INPUT", this.onInput.bind(this));
+    }
+
+    onMsg(type: string, callback: MsgCallback) {
+        this.messageEvents.on(type, callback);
+    }
+
+    offMsg(type: string, callback: MsgCallback) {
+        this.messageEvents.off(type, callback);
     }
 
     init() {
         let { x, y } = this.getSpawnpoint();
+
+        this.inventory = new Inventory(this, this.room);
 
         this.player = new CharactersItem({
             id: this.id,
             x, y,
             name: this.name,
             infiniteAmmo: this.room.mapSettings.infiniteAmmo,
-            cosmetics: this.cosmetics
+            cosmetics: this.cosmetics,
+            inventory: this.inventory.inventory
         });
         this.room.state.characters.set(this.id, this.player);
 
@@ -96,7 +116,7 @@ export default class Player {
     getSpawnpoint() {
         let phase = this.room.state.session.phase;
         let spawnpadPhase = phase === "preGame" ? "Pre-Game" : "Game";
-        let spawnPads = this.room.devices.getDevices("characterSpawnPad");
+        let spawnPads = this.room.devices.getAllByDeviceId("characterSpawnPad");
         spawnPads = spawnPads.filter((s) => s.options.phase === spawnpadPhase || s.options.phase === "All");
         
         let x = 16000, y = 16000;

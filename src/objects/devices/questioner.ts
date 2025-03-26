@@ -1,7 +1,7 @@
 import { getKitQuestions } from "../../net/gimkitApi.js";
 import { CustomBlock, KitQuestion } from "../../types.js";
 import { shuffled } from "../../utils.js";
-import Player from "../player.js";
+import Player from "../player/player.js";
 import BaseDevice from "./base.js";
 
 export default class QuestionerDevice extends BaseDevice {
