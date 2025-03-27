@@ -1,15 +1,15 @@
 {
     "compilerOptions": {
         "target": "ES2022",
-        "outDir": "dist",
-        "declaration": true,
-        "moduleResolution": "NodeNext",
-        "module": "NodeNext",
+        "moduleResolution": "bundler",
         "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
-        "resolveJsonModule": true,
         "experimentalDecorators": true,
-        "useDefineForClassFields": false
+        "useDefineForClassFields": false,
+        "noEmit": true,
+        "paths": {
+            "$config": ["./server.config.ts"]
+        }
     },
-    "include": ["./src/**/*.ts"]
+    "include": ["./src/**/*.ts", "server.config.ts", "../server-plugins/**/*.ts"]
 }

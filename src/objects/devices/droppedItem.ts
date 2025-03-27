@@ -1,5 +1,5 @@
-import Player from "../player/player.js";
-import BaseDevice from "./base.js";
+import Player from "../player/player";
+import BaseDevice from "./base";
 
 export default class DroppedItemDevice extends BaseDevice {
     globalState = {

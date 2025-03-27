@@ -1,11 +1,11 @@
 import type { Client } from "colyseus";
-import type { GameRoom } from "../../colyseus/room.js";
-import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../../utils.js";
-import { CharactersItem } from "../../colyseus/schema.js";
-import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../../consts.js";
+import type { GameRoom } from "../../colyseus/room";
+import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../../utils";
+import { CharactersItem } from "../../colyseus/schema";
+import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
-import { Cosmetics, PhysicsObjects, PhysicsState } from "../../types.js";
-import Inventory from "./inventory.js";
+import { Cosmetics, PhysicsObjects, PhysicsState } from "../../types";
+import Inventory from "./inventory";
 import { EventEmitter } from "node:stream";
 
 type MsgCallback = (message: any) => void;

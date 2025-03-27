@@ -1,8 +1,8 @@
-import { GameRoom } from "../../colyseus/room.js";
-import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema.js"
-import { gadgetOptions, worldOptions } from "../../consts.js";
-import { DropItemOptions } from "../../types.js";
-import Player from "./player.js";
+import { GameRoom } from "../../colyseus/room";
+import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema"
+import { gadgetOptions, worldOptions } from "../../consts";
+import { DropItemOptions } from "../../types";
+import Player from "./player";
 
 export default class Inventory {
     player: Player;

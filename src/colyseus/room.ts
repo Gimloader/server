@@ -1,16 +1,17 @@
 import { Client, Room } from "colyseus";
-import Matchmaker, { Game } from "../net/matchmaker.js";
-import { GimkitState } from "./schema.js";
+import Matchmaker, { Game } from "../net/matchmaker";
+import { GimkitState } from "./schema";
 import fs from 'fs';
-import DeviceManager from "./deviceManager.js";
-import { MapInfo } from "../types.js";
-import TileManager from "./tileManager.js";
-import Player from "../objects/player/player.js";
-import PhysicsManager from "./physics.js";
-import MapData from "../net/mapData.js";
+import DeviceManager from "./deviceManager";
+import { MapInfo } from "../types";
+import TileManager from "./tileManager";
+import Player from "../objects/player/player";
+import PhysicsManager from "./physics";
+import MapData from "../net/mapData";
 import RAPIER from "@dimforge/rapier2d-compat";
-import TeamManager from "./teamManager.js";
+import TeamManager from "./teamManager";
 import EventEmitter from "node:events";
+import PluginManager from "../plugins";
 
 interface RoomOptions {
     intentId: string;
@@ -71,6 +72,8 @@ export class GameRoom extends Room<GimkitState> {
             this.disconnect();
             return;
         }
+
+        PluginManager.trigger("onRoom", this);
 
         this.onMsg("REQUEST_INITIAL_WORLD", (player) => {
             player.client.send("DEVICES_STATES_CHANGES", this.devices.getInitialChanges());

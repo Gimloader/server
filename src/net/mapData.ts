@@ -1,5 +1,5 @@
-import { ExperienceCategory } from '../types.js';
-import express from './express.js';
+import { ExperienceCategory } from '../types';
+import express from './express';
 import fs from 'fs';
 
 interface Map {

@@ -1,8 +1,5 @@
 import fs from 'fs';
-import { Cosmetics, PhysicsState } from './types.js';
-
-export const expressPort = 5823;
-export const colyseusPort = 5824;
+import { Cosmetics, PhysicsState } from './types';
 
 export const worldOptions = JSON.parse(fs.readFileSync("./data/worldOptions.json").toString());
 export const propOptions = JSON.parse(fs.readFileSync("./data/propOptions.json").toString());

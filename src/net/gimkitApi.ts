@@ -1,4 +1,4 @@
-import { KitQuestion } from "../types.js";
+import { KitQuestion } from "../types";
 
 export async function getKitQuestions(id: string): Promise<KitQuestion[]> {
     if(!id) {

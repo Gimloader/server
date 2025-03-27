@@ -1,5 +1,5 @@
 import { Schema, ArraySchema, MapSchema, type } from "@colyseus/schema";
-import { CharacterOptions, CodeGrid, Cosmetics, GadgetOptions, MapInfo, SessionOptions, StateOptions } from "../types.js";
+import { CharacterOptions, CodeGrid, Cosmetics, GadgetOptions, MapInfo, SessionOptions, StateOptions } from "../types";
 
 export class Hooks extends Schema {
     @type("string") hookJSON: string = '{"hooks":[]}';

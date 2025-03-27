@@ -1,13 +1,13 @@
-import express from './net/express.js';
-import Matchmaker from './net/matchmaker.js';
-import { colyseusPort } from './consts.js';
+import express from './net/express';
+import Matchmaker from './net/matchmaker';
+import config from '$config';
 import RAPIER from "@dimforge/rapier2d-compat";
-import MapData from './net/mapData.js';
+import MapData from './net/mapData';
 import { listen } from '@colyseus/tools';
-import app from './colyseus/app.config.js';
+import app from './colyseus/app.config';
 
 RAPIER.init();
-listen(app, colyseusPort);
+listen(app, config.gamePort);
 
 Matchmaker.init();
 MapData.init();

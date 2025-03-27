@@ -1,5 +1,5 @@
-import Player from "../objects/player/player.js";
-import { GameRoom } from "./room.js";
+import Player from "../objects/player/player";
+import { GameRoom } from "./room";
 
 export default class TeamManager {
     room: GameRoom;

@@ -1,8 +1,8 @@
-import { GameRoom } from "../colyseus/room.js";
-import BaseDevice from "../objects/devices/base.js";
-import Player from "../objects/player/player.js";
-import { CodeGrid } from "../types.js";
-import { runBlock } from "./runBlock.js";
+import { GameRoom } from "../colyseus/room";
+import BaseDevice from "../objects/devices/base";
+import Player from "../objects/player/player";
+import { CodeGrid } from "../types";
+import { runBlock } from "./runBlock";
 
 export function runGrid(grid: CodeGrid, device: BaseDevice, room: GameRoom, player: Player) {
     let variables = {};

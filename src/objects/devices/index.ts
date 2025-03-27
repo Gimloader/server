@@ -1,8 +1,8 @@
-import ButtonDevice from "./button.js";
-import DroppedItemDevice from "./droppedItem.js";
-import ItemGranterDevice from "./itemGranter.js";
-import PropDevice from "./prop.js";
-import QuestionerDevice from "./questioner.js";
+import ButtonDevice from "./button";
+import DroppedItemDevice from "./droppedItem";
+import ItemGranterDevice from "./itemGranter";
+import PropDevice from "./prop";
+import QuestionerDevice from "./questioner";
 
 export default {
     gimkitLiveQuestion: QuestionerDevice,

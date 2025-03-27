@@ -1,10 +1,10 @@
-import type { DeviceInfo, MapInfo } from "../types.js";
-import { propOptions } from "../consts.js";
-import { createValuesArray } from "../utils.js";
-import { GameRoom } from "./room.js";
-import BaseDevice from "../objects/devices/base.js";
-import Player from "../objects/player/player.js";
-import devices from "../objects/devices/index.js";
+import type { DeviceInfo, MapInfo } from "../types";
+import { propOptions } from "../consts";
+import { createValuesArray } from "../utils";
+import { GameRoom } from "./room";
+import BaseDevice from "../objects/devices/base";
+import Player from "../objects/player/player";
+import devices from "../objects/devices/index";
 import { Client } from "colyseus";
 
 export default class DeviceManager {

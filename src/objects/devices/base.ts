@@ -1,11 +1,11 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { CodeGrid, ColliderInfo, ColliderOptions, CustomBlock, DeviceInfo, Wire } from "../../types.js";
-import { degToRad } from "../../utils.js";
-import { GameRoom } from "../../colyseus/room.js";
-import { physicsScale } from "../../consts.js";
-import Player from "../player/player.js";
-import DeviceManager from "../../colyseus/deviceManager.js";
-import { runGrid } from "../../blocks/runGrid.js";
+import { CodeGrid, ColliderInfo, ColliderOptions, CustomBlock, DeviceInfo, Wire } from "../../types";
+import { degToRad } from "../../utils";
+import { GameRoom } from "../../colyseus/room";
+import { physicsScale } from "../../consts";
+import Player from "../player/player";
+import DeviceManager from "../../colyseus/deviceManager";
+import { runGrid } from "../../blocks/runGrid";
 
 export default class BaseDevice {
     deviceManager: DeviceManager;

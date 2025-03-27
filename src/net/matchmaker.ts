@@ -1,8 +1,9 @@
-import { colyseusPort, defaultCosmetics } from '../consts.js';
-import express from './express.js';
-import { generateGameCode } from '../utils.js';
-import MapData from './mapData.js';
-import { Cosmetics } from '../types.js';
+import { defaultCosmetics } from '../consts';
+import express from './express';
+import { generateGameCode } from '../utils';
+import MapData from './mapData';
+import { Cosmetics } from '../types';
+import config from "$config";
 
 interface ClientIntent {
     name: string;
@@ -20,7 +21,7 @@ export interface Game {
 
 export default class Matchmaker {
     static games: Game[] = [];
-    static serverUrl = `http://localhost:${colyseusPort}`;
+    static serverUrl = `http://localhost:${config.gamePort}`;
 
     static getByHostIntent(intentId: string) {
         let game = this.games.find(g => g.intentId === intentId);

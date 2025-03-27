@@ -1,6 +1,6 @@
-import { propOptions } from "../../consts.js";
-import { degToRad } from "../../utils.js";
-import BaseDevice from "./base.js";
+import { propOptions } from "../../consts";
+import { degToRad } from "../../utils";
+import BaseDevice from "./base";
 
 export default class PropDevice extends BaseDevice {
     globalState = { visible: true, healthPercent: 1 };

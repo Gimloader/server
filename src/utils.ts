@@ -1,3 +1,5 @@
+import { ServerConfig } from "./types";
+
 export function random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
@@ -82,4 +84,8 @@ export function isPrime(num: number) {
         if(num % i === 0) return false;
     }
     return num > 1;
+}
+
+export function config(config: ServerConfig) {
+    return config;
 }

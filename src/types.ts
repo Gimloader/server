@@ -1,7 +1,8 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { GameRoom } from "./colyseus/room.js";
-import Player from "./objects/player/player.js";
-import { Inventory } from "./colyseus/schema.js";
+import { GameRoom } from "./colyseus/room";
+import Player from "./objects/player/player";
+import { Inventory } from "./colyseus/schema";
+import type { Express } from "express";
 
 export interface DeviceInfo {
     id: string;
@@ -200,3 +201,17 @@ export interface GadgetOptions {
     reloadTime: number;
     damage: number;
 }
+
+export interface ServerConfig {
+    apiPort: number;
+    gamePort: number;
+    plugins: Plugin[];
+}
+
+export interface Plugin {
+    name: string;
+    onExpress?: (express: Express) => void;
+    onRoom?: (room: GameRoom) => void;
+}
+
+export type PluginFunctions = Omit<Plugin, "name">;

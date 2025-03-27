@@ -1,6 +1,6 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { physicsScale, tileSize } from "../consts.js";
-import { GameRoom } from "./room.js";
+import { physicsScale, tileSize } from "../consts";
+import { GameRoom } from "./room";
 
 export default class PhysicsManager {
     room: GameRoom;
