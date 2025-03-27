@@ -1,6 +1,6 @@
 import { GameRoom } from "../../colyseus/room.js";
-import { Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema.js"
-import { worldOptions } from "../../consts.js";
+import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema.js"
+import { gadgetOptions, worldOptions } from "../../consts.js";
 import { DropItemOptions } from "../../types.js";
 import Player from "./player.js";
 
@@ -63,12 +63,19 @@ export default class Inventory {
         }
 
         // if it's an interactive item put it in the interactive slots
-        if(!item.weapon && !item.consumeType) return;
-        for(let slot of this.inventory.interactiveSlots.values()) {
+        if(item.type === "resource") return;
+        for(let [slotId, slot] of this.inventory.interactiveSlots) {
             if(slot.itemId) continue;
 
-            slot.itemId = id;
-            slot.count = amount;
+            let newSlot: InteractiveSlotsItem;
+            if(item.type === "weapon") {
+                let gadget = gadgetOptions.gadgets[item.id];
+                newSlot = new InteractiveSlotsItem(id, gadget);
+            } else {
+                newSlot = new InteractiveSlotsItem(id);
+            }
+
+            this.inventory.interactiveSlots.set(slotId, newSlot);
             break;
         }
     }

@@ -194,3 +194,9 @@ export interface DropItemOptions {
     itemId?: string;
     interactiveSlotNumber: number;
 }
+
+export interface GadgetOptions {
+    clipSize: number;
+    reloadTime: number;
+    damage: number;
+}

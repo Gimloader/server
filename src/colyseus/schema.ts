@@ -1,5 +1,5 @@
 import { Schema, ArraySchema, MapSchema, type } from "@colyseus/schema";
-import { CharacterOptions, CodeGrid, Cosmetics, MapInfo, SessionOptions, StateOptions } from "../types.js";
+import { CharacterOptions, CodeGrid, Cosmetics, GadgetOptions, MapInfo, SessionOptions, StateOptions } from "../types.js";
 
 export class Hooks extends Schema {
     @type("string") hookJSON: string = '{"hooks":[]}';
@@ -60,6 +60,16 @@ export class InteractiveSlotsItem extends Schema {
     @type("number") clipSize: number = 0;
     @type("number") durability: number = -1;
     @type("number") count: number = 0;
+
+    constructor(id = "", options?: GadgetOptions) {
+        super();
+
+        this.itemId = id;
+        if(options) {
+            this.currentClip = options.clipSize;
+            this.clipSize = options.clipSize;
+        }
+    }
 }
 
 export class SlotsItem extends Schema {

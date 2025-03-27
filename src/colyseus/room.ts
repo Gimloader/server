@@ -46,14 +46,14 @@ export class GameRoom extends Room<GimkitState> {
         this.messageEvents.off(type, callback);
     }
     
-    onCreate(options: RoomOptions) {
+    async onCreate(options: RoomOptions) {
         this.game = Matchmaker.getByHostIntent(options.intentId);
 
         if(this.game) {
             this.game.colyseusRoomId = this.roomId;
             let map = MapData.getByMapId(this.game.mapId);
 
-            this.map = JSON.parse(fs.readFileSync(`./maps/${map.file}`).toString());
+            this.map = await Bun.file(`./maps/${map.file}`).json();
             this.physics = new PhysicsManager(this);
             this.world = this.physics.world;
             this.devices = new DeviceManager(this.map, this);

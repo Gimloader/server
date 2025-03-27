@@ -3,8 +3,11 @@ import { Cosmetics, PhysicsState } from './types.js';
 
 export const expressPort = 5823;
 export const colyseusPort = 5824;
+
 export const worldOptions = JSON.parse(fs.readFileSync("./data/worldOptions.json").toString());
 export const propOptions = JSON.parse(fs.readFileSync("./data/propOptions.json").toString());
+export const gadgetOptions = JSON.parse(fs.readFileSync("./data/gadgetOptions.json").toString());
+
 export const defaultPhysicsState: PhysicsState = {
     gravity: 0.001,
     velocity: { x: 0, y: 0, desiredX: 0, desiredY: 0.001 }, 
