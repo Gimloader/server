@@ -1,7 +1,7 @@
+import config from "$config";
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import config from "$config";
 import PluginManager from '../plugins';
 
 const app = express();

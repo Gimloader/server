@@ -2,6 +2,7 @@
     "compilerOptions": {
         "target": "ES2022",
         "moduleResolution": "bundler",
+        "module": "ESNext",
         "allowSyntheticDefaultImports": true,
         "skipLibCheck": true,
         "experimentalDecorators": true,
@@ -11,5 +12,5 @@
             "$config": ["./server.config.ts"]
         }
     },
-    "include": ["./src/**/*.ts", "server.config.ts", "../server-plugins/**/*.ts"]
+    "include": ["./src/**/*.ts", "./test/**/*.ts", "server.config.ts"]
 }

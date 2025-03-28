@@ -21,7 +21,7 @@ export interface Game {
 
 export default class Matchmaker {
     static games: Game[] = [];
-    static serverUrl = `http://localhost:${config.gamePort}`;
+    static serverUrl = `${config.address}:${config.gamePort}`;
 
     static getByHostIntent(intentId: string) {
         let game = this.games.find(g => g.intentId === intentId);

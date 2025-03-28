@@ -1,7 +1,6 @@
 import { Client, Room } from "colyseus";
 import Matchmaker, { Game } from "../net/matchmaker";
 import { GimkitState } from "./schema";
-import fs from 'fs';
 import DeviceManager from "./deviceManager";
 import { MapInfo } from "../types";
 import TileManager from "./tileManager";

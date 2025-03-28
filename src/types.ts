@@ -203,6 +203,7 @@ export interface GadgetOptions {
 }
 
 export interface ServerConfig {
+    address: string;
     apiPort: number;
     gamePort: number;
     plugins: Plugin[];
