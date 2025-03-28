@@ -4,11 +4,12 @@ export default config({
     // The address that the server uses
     address: "localhost",
 
-    // The port for the matchmaker to use 
+    // The internal ports to use 
     apiPort: 5823,
-
-    // The port for game servers to use 
     gamePort: 5824,
+
+    // The game server port to send to clients (if different)
+    // visibleGamePort: 5824,
 
     // Plugins for the server to use
     plugins: []

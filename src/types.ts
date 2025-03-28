@@ -206,6 +206,7 @@ export interface ServerConfig {
     address: string;
     apiPort: number;
     gamePort: number;
+    visibleGamePort?: number;
     plugins: Plugin[];
 }
 
