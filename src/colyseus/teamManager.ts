@@ -16,7 +16,6 @@ export default class TeamManager {
         if(teamType === "Free For All") {
             let i = 1;
             for(let player of this.room.players.values()) {
-                console.log(player.name, i);
                 player.player.teamId = i.toString();
                 this.teamSizes[i] = 1;
                 i++;

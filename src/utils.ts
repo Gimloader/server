@@ -87,7 +87,7 @@ export function isPrime(num: number) {
 }
 
 export function config(config: ServerConfig) {
-    if(!config.address.startsWith("http://") || !config.address.startsWith("https://")) {
+    if(!config.address.startsWith("http://") && !config.address.startsWith("https://")) {
         config.address = "http://" + config.address;
     }
     if(!config.visibleGamePort) config.visibleGamePort = config.gamePort;
