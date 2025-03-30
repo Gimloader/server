@@ -36,6 +36,7 @@ export class Health extends Schema {
     @type("number") shield: number = 100;
     @type("number") maxHealth: number = 100;
     @type("number") maxShield: number = 100;
+    @type("number") lives: number = -1;
     @type("boolean") spawnImmunityActive: boolean = false;
     @type("boolean") classImmunityActive: boolean = false;
     @type("boolean") showHealthBar: boolean = true;

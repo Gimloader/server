@@ -152,21 +152,12 @@ export interface ExperienceCategory {
     items: ExperienceInfo[];
 }
 
-export interface ExperienceInfo {
+export interface ExperienceInfo extends MapMeta {
     _id: string;
-    name: string;
-    tagline: string;
-    imageUrl: string;
     source: "map";
     pageId: string;
     mapId: string;
     isPremiumExperience: boolean;
-    tag: string;
-    labels: {
-        c: string; // complexity
-        d: string; // duration
-        s: string; // style
-    }
 }
 
 export interface Block {
@@ -217,3 +208,22 @@ export interface Plugin {
 }
 
 export type PluginFunctions = Omit<Plugin, "name">;
+
+export interface MapMeta {
+    name: string;
+    tagline: string;
+    imageUrl: string;
+    tag: string;
+    labels: {
+        c: string; // complexity
+        d: string; // duration
+        s: string; // style
+    }
+}
+
+export interface Map {
+    file: string;
+    id: string;
+    mapId: string;
+    meta: MapMeta;
+}

@@ -1,12 +1,6 @@
-import { ExperienceCategory } from '../types';
+import { ExperienceCategory, Map, MapMeta } from '../types';
 import express from './express';
-import fs from 'fs';
-
-interface Map {
-    file: string;
-    id: string;
-    mapId: string;
-}
+import fs from 'fs/promises';
 
 export default class MapData {
     static maps: Map[] = [];
@@ -14,17 +8,12 @@ export default class MapData {
     static getById(id: string) { return this.maps.find((m) => m.id === id) }
     static getByMapId(id: string) { return this.maps.find((m) => m.mapId === id) }
 
+    static warnNoMaps() {
+        console.log('💡 There are currently no maps in the maps folder')
+    }
+
     static init() {
-        let files = fs.readdirSync('./maps');
-        files = files.filter(name => name.endsWith(".json"));
-        
-        for(let file of files) {
-            this.maps.push({
-                file,
-                id: `gimloader-${crypto.randomUUID()}`,
-                mapId: crypto.randomUUID()
-            });
-        }
+        this.readMaps();
 
         express.get("/api/experiences", (req, res) => {
             let category: ExperienceCategory = {
@@ -36,19 +25,11 @@ export default class MapData {
             for(let map of this.maps) {
                 category.items.push({
                     _id: map.id,
-                    name: map.file.replace(".json", ""),
-                    tagline: "A custom map from a Gimloader server!",
-                    imageUrl: "/assets/map/gimloader/icon.svg",
                     source: "map",
                     pageId: crypto.randomUUID(),
                     mapId: map.mapId,
                     isPremiumExperience: false,
-                    tag: "",
-                    labels: {
-                        c: "Unknown",
-                        d: "Unknown",
-                        s: "Unknown"
-                    }
+                    ...map.meta
                 });
             }
 
@@ -58,5 +39,43 @@ export default class MapData {
         express.post("/api/experience/map/hooks", (req, res) => {
             res.json({ hooks: [] });
         });
+    }
+
+    static async readMaps() {
+        if(!fs.exists("./maps")) return this.warnNoMaps();
+
+        let files = await fs.readdir('./maps');
+        files = files.filter(name => name.endsWith(".json"));
+        if(files.length === 0) return this.warnNoMaps();
+        
+        for(let file of files) {
+            try {
+                let json = await Bun.file(`./maps/${file}`).json();
+                let mapMeta: MapMeta = json.meta ?? this.getMapMeta(file);
+    
+                this.maps.push({
+                    file,
+                    id: `gimloader-${crypto.randomUUID()}`,
+                    mapId: crypto.randomUUID(),
+                    meta: mapMeta
+                });
+            } catch {
+                console.log(`❌ Error reading map ${file}`);
+            }
+        }
+    }
+
+    static getMapMeta(file: string): MapMeta {
+        return {
+            name: file.replace(".json", ""),
+            tagline: "A custom map from a Gimloader server!",
+            imageUrl: "/assets/map/gimloader/icon.svg",
+            tag: "",
+            labels: {
+                c: "Unknown",
+                d: "Unknown",
+                s: "Unknown"
+            }
+        }
     }
 }
