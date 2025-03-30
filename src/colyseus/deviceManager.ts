@@ -1,11 +1,10 @@
 import type { DeviceInfo, MapInfo } from "../types";
-import { propOptions } from "../consts";
+import { topDownPropOptions, platformerPropOptions } from "../consts";
 import { createValuesArray } from "../utils";
 import { GameRoom } from "./room";
 import BaseDevice from "../objects/devices/base";
 import Player from "../objects/player/player";
 import devices from "../objects/devices/index";
-import { Client } from "colyseus";
 
 export default class DeviceManager {
     map: MapInfo;
@@ -134,11 +133,17 @@ export default class DeviceManager {
         this.room.broadcast("WORLD_CHANGES", message);
     }
 
+    getPropOptions() {
+        if(this.map.mapStyle === "platformer") return platformerPropOptions;
+        return topDownPropOptions;
+    }
+
     getInitialWorld() {
         let props: any[] = [];
         let propsSet: Set<string> = new Set();
 
         let addedDevices = this.devicesToAdded(this.devices);
+        let propOptions = this.getPropOptions();
 
         for(let device of this.devices) {
             if(device.deviceId === "prop" && !propsSet.has(device.options.propId)) {

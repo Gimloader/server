@@ -2,7 +2,8 @@ import fs from 'fs';
 import { Cosmetics, PhysicsState } from './types';
 
 export const worldOptions = JSON.parse(fs.readFileSync("./data/worldOptions.json").toString());
-export const propOptions = JSON.parse(fs.readFileSync("./data/propOptions.json").toString());
+export const topDownPropOptions = JSON.parse(fs.readFileSync("./data/topDownPropOptions.json").toString());
+export const platformerPropOptions = JSON.parse(fs.readFileSync("./data/platformerPropOptions.json").toString());
 export const gadgetOptions = JSON.parse(fs.readFileSync("./data/gadgetOptions.json").toString());
 
 export const defaultPhysicsState: PhysicsState = {

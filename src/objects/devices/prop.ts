@@ -1,4 +1,3 @@
-import { propOptions } from "../../consts";
 import { degToRad } from "../../utils";
 import BaseDevice from "./base";
 
@@ -23,6 +22,7 @@ export default class PropDevice extends BaseDevice {
     }
 
     createColliders() {
+        let propOptions = this.deviceManager.getPropOptions();
         let prop = propOptions.find((p: any) => p.id === this.options.propId);
         if(!prop) return;
         const scale = this.options.Scale;
