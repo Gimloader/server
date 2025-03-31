@@ -47,6 +47,38 @@ export default class Inventory {
         player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", ({ slotNum }: { slotNum: number })=> {
             this.inventory.activeInteractiveSlot = slotNum;
         });
+
+        room.onMsg("FIRE", (client, args) => {
+            // todo:
+            // remove item needed from player if needed to
+            // check id of item to fire correct thing
+            // check id and damage multiplyer to do te correct dmg
+            // get actual times from gk
+            // more probably
+            room.broadcast("PROJECTILE_CHANGES", {
+                "added": [
+                    {
+                        "id": new Date().valueOf() + "projectile",
+                        "startTime": new Date().valueOf(),
+                        "endTime": new Date().valueOf() + 9523.80957031,
+                        "start": {
+                            "x": args.x * 0.01 + Math.cos(args.angle) * 0.75,
+                            "y": args.y * 0.01 + Math.sin(args.angle) * 0.75
+                        },
+                        "end": {
+                            "x": args.x * 0.01 + Math.cos(args.angle) * 30.2,
+                            "y": args.y * 0.01 + Math.sin(args.angle) * 30.2
+                        },
+                        "radius": 0.23,
+                        "appearance": "quantumPortal",
+                        "ownerId": client.id.replace("-",""),
+                        "ownerTeamId": 1,
+                        "damage": 10
+                    }
+                ],
+                "hit": []
+            })
+        });
     }
 
     getItemInfo(id: string) { return worldOptions.itemOptions.find((i: any) => i.id === id) }
