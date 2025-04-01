@@ -48,8 +48,8 @@ export default class Inventory {
             this.inventory.activeInteractiveSlot = slotNum;
         });
 
-        room.onMsg("FIRE", (client, args) => {
-            let currentItemId = player.player.inventory.interactiveSlots.toJSON()[player.player.inventory.activeInteractiveSlot].itemId;
+        room.onMsg("FIRE", (player, args) => {
+            let currentItemId = this.inventory.interactiveSlots.get(this.inventory.activeInteractiveSlot.toFixed()).itemId
 
             let physicsScale = 100;
 
@@ -69,9 +69,9 @@ export default class Inventory {
                         },
                         radius: gadgetOptions.gadgets[currentItemId].size,
                         appearance: gadgetOptions.gadgets[currentItemId].appearance,
-                        ownerId: client.id,
-                        ownerTeamId: client.player.teamId,
-                        damage: gadgetOptions.gadgets[currentItemId].damage * client.player.projectiles.damageMultiplier
+                        ownerId: player.id,
+                        ownerTeamId: player.player.teamId,
+                        damage: gadgetOptions.gadgets[currentItemId].damage * player.player.projectiles.damageMultiplier
                     }
                 ],
                 hit: []
