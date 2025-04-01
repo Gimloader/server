@@ -51,10 +51,11 @@ export default class Inventory {
         room.onMsg("FIRE", (client, args) => {
             // todo:
             // remove item needed from player if needed to
-            // check id of item to fire correct thing
             // check id and damage multiplyer to do te correct dmg
             // get actual times from gk
             // more probably
+            let itemId = player.player.inventory.interactiveSlots.toJSON()[player.player.inventory.activeInteractiveSlot].itemId;
+
             room.broadcast("PROJECTILE_CHANGES", {
                 "added": [
                     {
@@ -70,7 +71,7 @@ export default class Inventory {
                             "y": args.y * 0.01 + Math.sin(args.angle) * 30.2
                         },
                         "radius": 0.23,
-                        "appearance": "quantumPortal",
+                        "appearance": itemId.split("_")[0],
                         "ownerId": client.id.replace("-",""),
                         "ownerTeamId": 1,
                         "damage": 10
