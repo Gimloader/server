@@ -47,6 +47,36 @@ export default class Inventory {
         player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", ({ slotNum }: { slotNum: number })=> {
             this.inventory.activeInteractiveSlot = slotNum;
         });
+
+        room.onMsg("FIRE", (player, args) => {
+            let currentItemId = this.inventory.interactiveSlots.get(this.inventory.activeInteractiveSlot.toFixed()).itemId
+
+            let physicsScale = 100;
+
+            room.broadcast("PROJECTILE_CHANGES", {
+                added: [
+                    {
+                        id: crypto.randomUUID(),
+                        startTime: Date.now(),
+                        endTime: Date.now() + gadgetOptions.gadgets[currentItemId].time,
+                        start: {
+                            x: (args.x / physicsScale) + Math.cos(args.angle),
+                            y: (args.y / physicsScale) + Math.sin(args.angle)
+                        },
+                        end: {
+                            x: (args.x / physicsScale) + Math.cos(args.angle) * gadgetOptions.gadgets[currentItemId].distance,
+                            y: (args.y / physicsScale) + Math.sin(args.angle) * gadgetOptions.gadgets[currentItemId].distance
+                        },
+                        radius: gadgetOptions.gadgets[currentItemId].size,
+                        appearance: gadgetOptions.gadgets[currentItemId].appearance,
+                        ownerId: player.id,
+                        ownerTeamId: player.player.teamId,
+                        damage: gadgetOptions.gadgets[currentItemId].damage * player.player.projectiles.damageMultiplier
+                    }
+                ],
+                hit: []
+            })
+        });
     }
 
     getItemInfo(id: string) { return worldOptions.itemOptions.find((i: any) => i.id === id) }
