@@ -49,32 +49,29 @@ export default class Inventory {
         });
 
         room.onMsg("FIRE", (client, args) => {
-            // todo:
-            // remove item needed from player if needed to
-            // check id and damage multiplyer to do te correct dmg
-            // get actual times from gk
-            // more probably
             let itemId = player.player.inventory.interactiveSlots.toJSON()[player.player.inventory.activeInteractiveSlot].itemId;
+
+            // remove items from player, if gamerule is set to do that, but this isnt in schema
 
             room.broadcast("PROJECTILE_CHANGES", {
                 "added": [
                     {
                         "id": new Date().valueOf() + "projectile",
                         "startTime": new Date().valueOf(),
-                        "endTime": new Date().valueOf() + 9523.80957031,
+                        "endTime": new Date().valueOf() + 9523.80957031, // times not in schema yet
                         "start": {
                             "x": args.x * 0.01 + Math.cos(args.angle) * 0.75,
                             "y": args.y * 0.01 + Math.sin(args.angle) * 0.75
                         },
                         "end": {
-                            "x": args.x * 0.01 + Math.cos(args.angle) * 30.2,
+                            "x": args.x * 0.01 + Math.cos(args.angle) * 30.2, // distance not in schema yet
                             "y": args.y * 0.01 + Math.sin(args.angle) * 30.2
                         },
-                        "radius": 0.23,
+                        "radius": 0.23, // not set in schema so idk
                         "appearance": itemId.split("_")[0],
-                        "ownerId": client.id.replace("-",""),
-                        "ownerTeamId": 1,
-                        "damage": 10
+                        "ownerId": client.id,
+                        "ownerTeamId": 1, // teams not implemented so :shrug:
+                        "damage": gadgetOptions.gadgets[itemId].damage // in the furture * this by players dmg multiplyer
                     }
                 ],
                 "hit": []
