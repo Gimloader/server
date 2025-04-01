@@ -51,8 +51,6 @@ export default class Inventory {
         room.onMsg("FIRE", (client, args) => {
             let itemId = player.player.inventory.interactiveSlots.toJSON()[player.player.inventory.activeInteractiveSlot].itemId;
 
-            // remove items from player, if gamerule is set to do that, but this isnt in schema
-
             room.broadcast("PROJECTILE_CHANGES", {
                 "added": [
                     {
@@ -68,10 +66,10 @@ export default class Inventory {
                             "y": args.y * 0.01 + Math.sin(args.angle) * gadgetOptions.gadgets[itemId].distance
                         },
                         "radius": gadgetOptions.gadgets[itemId].size,
-                        "appearance": itemId.split("_")[0],
+                        "appearance": gadgetOptions.gadgets[itemId].appearance,
                         "ownerId": client.id,
                         "ownerTeamId": client.player.teamId,
-                        "damage": gadgetOptions.gadgets[itemId].damage // in the furture * this by players dmg multiplyer
+                        "damage": gadgetOptions.gadgets[itemId].damage * 1 // make it use dmg multiplyer once added
                     }
                 ],
                 "hit": []
