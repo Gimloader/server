@@ -6,7 +6,8 @@
             "damage": 20,
             "distance": 10,
             "size": 0.2,
-            "time": 800
+            "time": 800,
+            "appearance": "blaster"
         },
         "blaster_uncommon": {
             "clipSize": 16,
@@ -14,7 +15,8 @@
             "damage": 23,
             "distance": 10,
             "size": 0.2,
-            "time": 800
+            "time": 800,
+            "appearance": "blaster"
         },
         "blaster_rare": {
             "clipSize": 20,
@@ -22,7 +24,8 @@
             "damage": 26,
             "distance": 10,
             "size": 0.2,
-            "time": 800
+            "time": 800,
+            "appearance": "blaster"
         },
         "blaster_epic": {
             "clipSize": 24,
@@ -30,7 +33,8 @@
             "damage": 29,
             "distance": 10,
             "size": 0.2,
-            "time": 800
+            "time": 800,
+            "appearance": "blaster"
         },
         "blaster_legendary": {
             "clipSize": 28,
@@ -38,7 +42,8 @@
             "damage": 32,
             "distance": 10,
             "size": 0.2,
-            "time": 800
+            "time": 800,
+            "appearance": "blaster"
         },
         "zapper_common": {
             "clipSize": 12,
@@ -46,7 +51,8 @@
             "damage": 14,
             "distance": 4.2,
             "size": 0.17,
-            "time": 875
+            "time": 875,
+            "appearance": "zapper"
         },
         "zapper_uncommon": {
             "clipSize": 14,
@@ -54,7 +60,8 @@
             "damage": 16,
             "distance": 4.2,
             "size": 0.17,
-            "time": 875
+            "time": 875,
+            "appearance": "zapper"
         },
         "zapper_rare": {
             "clipSize": 16,
@@ -62,7 +69,8 @@
             "damage": 18,
             "distance": 4.2,
             "size": 0.17,
-            "time": 875
+            "time": 875,
+            "appearance": "zapper"
         },
         "zapper_epic": {
             "clipSize": 18,
@@ -70,7 +78,8 @@
             "damage": 20,
             "distance": 4.2,
             "size": 0.17,
-            "time": 875
+            "time": 875,
+            "appearance": "zapper"
         },
         "zapper_legendary": {
             "clipSize": 20,
@@ -78,7 +87,8 @@
             "damage": 22,
             "distance": 4.2,
             "size": 0.17,
-            "time": 875
+            "time": 875,
+            "appearance": "zapper"
         },
         "slingshot_common": {
             "clipSize": 5,
@@ -86,7 +96,8 @@
             "damage": 60,
             "distance": 10,
             "size": 0.22,
-            "time": 1064
+            "time": 1064,
+            "appearance": "slingshot"
         },
         "slingshot_uncommon": {
             "clipSize": 6,
@@ -94,7 +105,8 @@
             "damage": 66,
             "distance": 10,
             "size": 0.22,
-            "time": 1064
+            "time": 1064,
+            "appearance": "slingshot"
         },
         "slingshot_rare": {
             "clipSize": 7,
@@ -102,7 +114,8 @@
             "damage": 72,
             "distance": 10,
             "size": 0.22,
-            "time": 1064
+            "time": 1064,
+            "appearance": "slingshot"
         },
         "slingshot_epic": {
             "clipSize": 8,
@@ -110,7 +123,8 @@
             "damage": 78,
             "distance": 10,
             "size": 0.22,
-            "time": 1064
+            "time": 1064,
+            "appearance": "slingshot"
         },
         "slingshot_legendary": {
             "clipSize": 10,
@@ -118,7 +132,8 @@
             "damage": 84,
             "distance": 10,
             "size": 0.22,
-            "time": 1064
+            "time": 1064,
+            "appearance": "slingshot"
         },
         "muffin_launcher_common": {
             "clipSize": 12,
@@ -126,7 +141,8 @@
             "damage": 44,
             "distance": 20,
             "size": 0.18,
-            "time": 3914
+            "time": 3914,
+            "appearance": "muffinLauncher"
         },
         "muffin_launcher_uncommon": {
             "clipSize": 12,
@@ -134,7 +150,8 @@
             "damage": 51,
             "distance": 20,
             "size": 0.18,
-            "time": 3914
+            "time": 3914,
+            "appearance": "muffinLauncher"
         },
         "muffin_launcher_rare": {
             "clipSize": 12,
@@ -142,7 +159,8 @@
             "damage": 58,
             "distance": 20,
             "size": 0.18,
-            "time": 3914
+            "time": 3914,
+            "appearance": "muffinLauncher"
         },
         "muffin_launcher_epic": {
             "clipSize": 12,
@@ -150,7 +168,8 @@
             "damage": 65,
             "distance": 20,
             "size": 0.18,
-            "time": 3914
+            "time": 3914,
+            "appearance": "muffinLauncher"
         },
         "muffin_launcher_legendary": {
             "clipSize": 120,
@@ -158,7 +177,8 @@
             "damage": 72,
             "distance": 20,
             "size": 0.18,
-            "time": 3914
+            "time": 3914,
+            "appearance": "muffinLauncher"
         },
         "evil_eye_common": {
             "clipSize": 4,
@@ -166,7 +186,8 @@
             "damage": 72,
             "distance": 16,
             "size": 0.27,
-            "time": 3047
+            "time": 3047,
+            "appearance": "evilEye"
         },
         "evil_eye_uncommon": {
             "clipSize": 4,
@@ -174,7 +195,8 @@
             "damage": 80,
             "distance": 16,
             "size": 0.27,
-            "time": 3047
+            "time": 3047,
+            "appearance": "evilEye"
         },
         "evil_eye_rare": {
             "clipSize": 4,
@@ -182,7 +204,8 @@
             "damage": 88,
             "distance": 16,
             "size": 0.27,
-            "time": 3047
+            "time": 3047,
+            "appearance": "evilEye"
         },
         "evil_eye_epic": {
             "clipSize": 4,
@@ -190,7 +213,8 @@
             "damage": 96,
             "distance": 16,
             "size": 0.27,
-            "time": 3047
+            "time": 3047,
+            "appearance": "evilEye"
         },
         "evil_eye_legendary": {
             "clipSize": 14,
@@ -198,7 +222,8 @@
             "damage": 104,
             "distance": 16,
             "size": 0.27,
-            "time": 3047
+            "time": 3047,
+            "appearance": "evilEye"
         },
         "quantum_portal_common": {
             "clipSize": 1,
@@ -206,7 +231,8 @@
             "damage": 184,
             "distance": 30,
             "size": 0.23,
-            "time": 9524
+            "time": 9524,
+            "appearance": "quantumPortal"
         },
         "quantum_portal_uncommon": {
             "clipSize": 1,
@@ -214,7 +240,8 @@
             "damage": 196,
             "distance": 30,
             "size": 0.23,
-            "time": 9524
+            "time": 9524,
+            "appearance": "quantumPortal"
         },
         "quantum_portal_rare": {
             "clipSize": 1,
@@ -222,7 +249,8 @@
             "damage": 208,
             "distance": 30,
             "size": 0.23,
-            "time": 9524
+            "time": 9524,
+            "appearance": "quantumPortal"
         },
         "quantum_portal_epic": {
             "clipSize": 1,
@@ -230,7 +258,8 @@
             "damage": 220,
             "distance": 30,
             "size": 0.23,
-            "time": 9524
+            "time": 9524,
+            "appearance": "quantumPortal"
         },
         "quantum_portal_legendary": {
             "clipSize": 14,
@@ -238,7 +267,8 @@
             "damage": 232,
             "distance": 30,
             "size": 0.23,
-            "time": 9524
+            "time": 9524,
+            "appearance": "quantumPortal"
         },
         "wooden_wand_common": {
             "clipSize": 20,
@@ -246,7 +276,8 @@
             "damage": 20,
             "distance": 7,
             "size": 0.22,
-            "time": 1186
+            "time": 1186,
+            "appearance": "woodenWand"
         },
         "wooden_wand_uncommon": {
             "clipSize": 22,
@@ -254,7 +285,8 @@
             "damage": 24,
             "distance": 7,
             "size": 0.22,
-            "time": 1186
+            "time": 1186,
+            "appearance": "woodenWand"
         },
         "wooden_wand_rare": {
             "clipSize": 24,
@@ -262,7 +294,8 @@
             "damage": 28,
             "distance": 7,
             "size": 0.22,
-            "time": 1186
+            "time": 1186,
+            "appearance": "woodenWand"
         },
         "wooden_wand_epic": {
             "clipSize": 26,
@@ -270,7 +303,8 @@
             "damage": 32,
             "distance": 7,
             "size": 0.22,
-            "time": 1186
+            "time": 1186,
+            "appearance": "woodenWand"
         },
         "wooden_wand_legendary": {
             "clipSize": 28,
@@ -278,7 +312,8 @@
             "damage": 36,
             "distance": 7,
             "size": 0.22,
-            "time": 1186
+            "time": 1186,
+            "appearance": "woodenWand"
         },
         "snowball_launcher_common": {
             "clipSize": 12,
@@ -286,7 +321,8 @@
             "damage": 28,
             "distance": 10,
             "size": 0.225,
-            "time": 1493
+            "time": 1493,
+            "appearance": "snowball"
         },
         "snowball_launcher_uncommon": {
             "clipSize": 14,
@@ -294,7 +330,8 @@
             "damage": 30,
             "distance": 10,
             "size": 0.225,
-            "time": 1493
+            "time": 1493,
+            "appearance": "snowball"
         },
         "snowball_launcher_rare": {
             "clipSize": 16,
@@ -302,7 +339,8 @@
             "damage": 32,
             "distance": 10,
             "size": 0.225,
-            "time": 1493
+            "time": 1493,
+            "appearance": "snowball"
         },
         "snowball_launcher_epic": {
             "clipSize": 18,
@@ -310,7 +348,8 @@
             "damage": 34,
             "distance": 10,
             "size": 0.225,
-            "time": 1493
+            "time": 1493,
+            "appearance": "snowball"
         },
         "snowball_launcher_legendary": {
             "clipSize": 20,
@@ -318,37 +357,43 @@
             "damage": 36,
             "distance": 10,
             "size": 0.225,
-            "time": 1493
+            "time": 1493,
+            "appearance": "snowball"
         },
         "pickaxe_common": {
             "damage": 1,
             "distance": 1,
             "size": 0.1,
-            "time": 1
+            "time": 1,
+            "appearance": "NONE"
         },
         "pickaxe_uncommon": {
             "damage": 5,
             "distance": 1,
             "size": 0.1,
-            "time": 1
+            "time": 1,
+            "appearance": "NONE"
         },
         "pickaxe_rare": {
             "damage": 25,
             "distance": 1,
             "size": 0.1,
-            "time": 1
+            "time": 1,
+            "appearance": "NONE"
         },
         "pickaxe_epic": {
             "damage": 100,
             "distance": 1,
             "size": 0.1,
-            "time": 1
+            "time": 1,
+            "appearance": "NONE"
         },
         "pickaxe_legendary": {
             "damage": 300,
             "distance": 1,
             "size": 0.1,
-            "time": 1
+            "time": 1,
+            "appearance": "NONE"
         },
         "pixel_common": {
             "clipSize": 30,
@@ -356,7 +401,8 @@
             "damage": 12,
             "distance": 15,
             "size": 0.2,
-            "time": 2027
+            "time": 2027,
+            "appearance": "pixel"
         },
         "pixel_uncommon": {
             "clipSize": 32,
@@ -364,7 +410,8 @@
             "damage": 16,
             "distance": 15,
             "size": 0.2,
-            "time": 2027
+            "time": 2027,
+            "appearance": "pixel"
         },
         "pixel_rare": {
             "clipSize": 34,
@@ -372,7 +419,8 @@
             "damage": 20,
             "distance": 15,
             "size": 0.2,
-            "time": 2027
+            "time": 2027,
+            "appearance": "pixel"
         },
         "pixel_epic": {
             "clipSize": 36,
@@ -380,7 +428,8 @@
             "damage": 24,
             "distance": 15,
             "size": 0.2,
-            "time": 2027
+            "time": 2027,
+            "appearance": "pixel"
         },
         "pixel_legendary": {
             "clipSize": 38,
@@ -388,7 +437,8 @@
             "damage": 28,
             "distance": 15,
             "size": 0.2,
-            "time": 2027
+            "time": 2027,
+            "appearance": "pixel"
         },
         "sand_common": {
             "clipSize": 20,
@@ -396,7 +446,8 @@
             "damage": 38,
             "distance": 7,
             "size": 0.1,
-            "time": 1186
+            "time": 1186,
+            "appearance": "sand"
         },
         "sand_uncommon": {
             "clipSize": 6,
@@ -404,7 +455,8 @@
             "damage": 39,
             "distance": 7,
             "size": 0.1,
-            "time": 1186
+            "time": 1186,
+            "appearance": "sand"
         },
         "sand_rare": {
             "clipSize": 8,
@@ -412,7 +464,8 @@
             "damage": 40,
             "distance": 7,
             "size": 0.1,
-            "time": 1186
+            "time": 1186,
+            "appearance": "sand"
         },
         "sand_epic": {
             "clipSize": 10,
@@ -420,7 +473,8 @@
             "damage": 41,
             "distance": 7,
             "size": 0.1,
-            "time": 1186
+            "time": 1186,
+            "appearance": "sand"
         },
         "sand_legendary": {
             "clipSize": 12,
@@ -428,7 +482,8 @@
             "damage": 42,
             "distance": 7,
             "size": 0.1,
-            "time": 1186
+            "time": 1186,
+            "appearance": "sand"
         },
         "cactus_common": {
             "clipSize": 16,
@@ -436,7 +491,8 @@
             "damage": 32,
             "distance": 8,
             "size": 0.1,
-            "time": 1127
+            "time": 1127,
+            "appearance": "cactus"
         },
         "cactus_uncommon": {
             "clipSize": 16,
@@ -444,7 +500,8 @@
             "damage": 36,
             "distance": 8,
             "size": 0.1,
-            "time": 1127
+            "time": 1127,
+            "appearance": "cactus"
         },
         "cactus_rare": {
             "clipSize": 16,
@@ -452,7 +509,8 @@
             "damage": 40,
             "distance": 8,
             "size": 0.1,
-            "time": 1127
+            "time": 1127,
+            "appearance": "cactus"
         },
         "cactus_epic": {
             "clipSize": 16,
@@ -460,7 +518,8 @@
             "damage": 44,
             "distance": 8,
             "size": 0.1,
-            "time": 1127
+            "time": 1127,
+            "appearance": "cactus"
         },
         "cactus_legendary": {
             "clipSize": 16,
@@ -468,7 +527,8 @@
             "damage": 48,
             "distance": 8,
             "size": 0.1,
-            "time": 1127
+            "time": 1127,
+            "appearance": "cactus"
         },
         "tornado_common": {
             "clipSize": 3,
@@ -476,7 +536,8 @@
             "damage": 124,
             "distance": 30,
             "size": 0.17,
-            "time": 4020
+            "time": 4020,
+            "appearance": "tornado"
         },
         "tornado_uncommon": {
             "clipSize": 3,
@@ -484,7 +545,8 @@
             "damage": 132,
             "distance": 30,
             "size": 0.17,
-            "time": 4020
+            "time": 4020,
+            "appearance": "tornado"
         },
         "tornado_rare": {
             "clipSize": 3,
@@ -492,7 +554,8 @@
             "damage": 140,
             "distance": 30,
             "size": 0.17,
-            "time": 4020
+            "time": 4020,
+            "appearance": "tornado"
         },
         "tornado_epic": {
             "clipSize": 3,
@@ -500,7 +563,8 @@
             "damage": 148,
             "distance": 30,
             "size": 0.17,
-            "time": 4020
+            "time": 4020,
+            "appearance": "tornado"
         },
         "tornado_legendary": {
             "clipSize": 3,
@@ -508,7 +572,8 @@
             "damage": 156,
             "distance": 30,
             "size": 0.17,
-            "time": 4020
+            "time": 4020,
+            "appearance": "tornado"
         },
         "rock_common": {
             "clipSize": 18,
@@ -516,7 +581,8 @@
             "damage": 12,
             "distance": 3.75,
             "size": 0.13,
-            "time": 682
+            "time": 682,
+            "appearance": "rock"
         },
         "rock_uncommon": {
             "clipSize": 20,
@@ -524,7 +590,8 @@
             "damage": 15,
             "distance": 3.75,
             "size": 0.13,
-            "time": 682
+            "time": 682,
+            "appearance": "rock"
         },
         "rock_rare": {
             "clipSize": 22,
@@ -532,7 +599,8 @@
             "damage": 18,
             "distance": 3.75,
             "size": 0.13,
-            "time": 682
+            "time": 682,
+            "appearance": "rock"
         },
         "rock_epic": {
             "clipSize": 24,
@@ -540,7 +608,8 @@
             "damage": 21,
             "distance": 3.75,
             "size": 0.13,
-            "time": 682
+            "time": 682,
+            "appearance": "rock"
         },
         "rock_legendary": {
             "clipSize": 26,
@@ -548,7 +617,8 @@
             "damage": 24,
             "distance": 3.75,
             "size": 0.13,
-            "time": 682
+            "time": 682,
+            "appearance": "rock"
         }
     }
 }
