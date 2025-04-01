@@ -49,30 +49,32 @@ export default class Inventory {
         });
 
         room.onMsg("FIRE", (client, args) => {
-            let itemId = player.player.inventory.interactiveSlots.toJSON()[player.player.inventory.activeInteractiveSlot].itemId;
+            let currentItemId = player.player.inventory.interactiveSlots.toJSON()[player.player.inventory.activeInteractiveSlot].itemId;
+
+            let physicsScale = 100;
 
             room.broadcast("PROJECTILE_CHANGES", {
-                "added": [
+                added: [
                     {
-                        "id": new Date().valueOf() + "projectile",
-                        "startTime": new Date().valueOf(),
-                        "endTime": new Date().valueOf() + gadgetOptions.gadgets[itemId].time,
-                        "start": {
-                            "x": args.x * 0.01 + Math.cos(args.angle),
-                            "y": args.y * 0.01 + Math.sin(args.angle)
+                        id: crypto.randomUUID(),
+                        startTime: Date.now(),
+                        endTime: Date.now() + gadgetOptions.gadgets[currentItemId].time,
+                        start: {
+                            x: (args.x / physicsScale) + Math.cos(args.angle),
+                            y: (args.y / physicsScale) + Math.sin(args.angle)
                         },
-                        "end": {
-                            "x": args.x * 0.01 + Math.cos(args.angle) * gadgetOptions.gadgets[itemId].distance,
-                            "y": args.y * 0.01 + Math.sin(args.angle) * gadgetOptions.gadgets[itemId].distance
+                        end: {
+                            x: (args.x / physicsScale) + Math.cos(args.angle) * gadgetOptions.gadgets[currentItemId].distance,
+                            y: (args.y / physicsScale) + Math.sin(args.angle) * gadgetOptions.gadgets[currentItemId].distance
                         },
-                        "radius": gadgetOptions.gadgets[itemId].size,
-                        "appearance": gadgetOptions.gadgets[itemId].appearance,
-                        "ownerId": client.id,
-                        "ownerTeamId": client.player.teamId,
-                        "damage": gadgetOptions.gadgets[itemId].damage * 1 // make it use dmg multiplyer once added
+                        radius: gadgetOptions.gadgets[currentItemId].size,
+                        appearance: gadgetOptions.gadgets[currentItemId].appearance,
+                        ownerId: client.id,
+                        ownerTeamId: client.player.teamId,
+                        damage: gadgetOptions.gadgets[currentItemId].damage * client.player.projectiles.damageMultiplier
                     }
                 ],
-                "hit": []
+                hit: []
             })
         });
     }
