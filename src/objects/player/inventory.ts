@@ -58,19 +58,19 @@ export default class Inventory {
                     {
                         "id": new Date().valueOf() + "projectile",
                         "startTime": new Date().valueOf(),
-                        "endTime": new Date().valueOf() + 9523.80957031, // times not in schema yet
+                        "endTime": new Date().valueOf() + gadgetOptions.gadgets[itemId].time,
                         "start": {
-                            "x": args.x * 0.01 + Math.cos(args.angle) * 0.75,
-                            "y": args.y * 0.01 + Math.sin(args.angle) * 0.75
+                            "x": args.x * 0.01 + Math.cos(args.angle),
+                            "y": args.y * 0.01 + Math.sin(args.angle)
                         },
                         "end": {
-                            "x": args.x * 0.01 + Math.cos(args.angle) * 30.2, // distance not in schema yet
-                            "y": args.y * 0.01 + Math.sin(args.angle) * 30.2
+                            "x": args.x * 0.01 + Math.cos(args.angle) * gadgetOptions.gadgets[itemId].distance,
+                            "y": args.y * 0.01 + Math.sin(args.angle) * gadgetOptions.gadgets[itemId].distance
                         },
-                        "radius": 0.23, // not set in schema so idk
+                        "radius": gadgetOptions.gadgets[itemId].size,
                         "appearance": itemId.split("_")[0],
                         "ownerId": client.id,
-                        "ownerTeamId": 1, // teams not implemented so :shrug:
+                        "ownerTeamId": client.player.teamId,
                         "damage": gadgetOptions.gadgets[itemId].damage // in the furture * this by players dmg multiplyer
                     }
                 ],
