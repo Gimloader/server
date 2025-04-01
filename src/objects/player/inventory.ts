@@ -1,6 +1,6 @@
 import { GameRoom } from "../../colyseus/room";
 import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema"
-import { gadgetOptions, worldOptions } from "../../consts";
+import { gadgetOptions, physicsScale, worldOptions } from "../../consts";
 import { DropItemOptions } from "../../types";
 import Player from "./player";
 
@@ -48,35 +48,44 @@ export default class Inventory {
             this.inventory.activeInteractiveSlot = slotNum;
         });
 
-        room.onMsg("FIRE", (player, args) => {
-            let currentItemId = this.inventory.interactiveSlots.get(this.inventory.activeInteractiveSlot.toFixed()).itemId
+        player.onMsg("FIRE", (args) => {
+            let currentItemId = this.getActiveSlot()?.itemId;
+            if(!currentItemId) return;
+            let gadget = gadgetOptions[currentItemId];
+            if(!gadget) return;
 
-            let physicsScale = 100;
+            // TODO: Collision
+            let distance = gadget.distance;
+            let time = gadget.distance / gadget.speed;
 
             room.broadcast("PROJECTILE_CHANGES", {
                 added: [
                     {
                         id: crypto.randomUUID(),
                         startTime: Date.now(),
-                        endTime: Date.now() + gadgetOptions.gadgets[currentItemId].time,
+                        endTime: Date.now() + time,
                         start: {
-                            x: (args.x / physicsScale) + Math.cos(args.angle),
-                            y: (args.y / physicsScale) + Math.sin(args.angle)
+                            x: args.x / physicsScale,
+                            y: args.y / physicsScale
                         },
                         end: {
-                            x: (args.x / physicsScale) + Math.cos(args.angle) * gadgetOptions.gadgets[currentItemId].distance,
-                            y: (args.y / physicsScale) + Math.sin(args.angle) * gadgetOptions.gadgets[currentItemId].distance
+                            x: args.x / physicsScale + Math.cos(args.angle) * distance,
+                            y: args.y / physicsScale + Math.sin(args.angle) * distance
                         },
-                        radius: gadgetOptions.gadgets[currentItemId].size,
-                        appearance: gadgetOptions.gadgets[currentItemId].appearance,
+                        radius: gadget.radius,
+                        appearance: gadget.appearance,
                         ownerId: player.id,
                         ownerTeamId: player.player.teamId,
-                        damage: gadgetOptions.gadgets[currentItemId].damage * player.player.projectiles.damageMultiplier
+                        damage: gadget.damage * player.player.projectiles.damageMultiplier
                     }
                 ],
                 hit: []
-            })
+            });
         });
+    }
+
+    getActiveSlot() {
+        return this.inventory.interactiveSlots.get(this.inventory.activeInteractiveSlot.toFixed());
     }
 
     getItemInfo(id: string) { return worldOptions.itemOptions.find((i: any) => i.id === id) }
@@ -98,8 +107,8 @@ export default class Inventory {
             if(slot.itemId) continue;
 
             let newSlot: InteractiveSlotsItem;
-            if(item.type === "weapon") {
-                let gadget = gadgetOptions.gadgets[item.id];
+            if(item.type === "weapon" && item.weapon.type !== "melee") {
+                let gadget = gadgetOptions[item.id];
                 newSlot = new InteractiveSlotsItem(id, gadget);
             } else {
                 newSlot = new InteractiveSlotsItem(id);
