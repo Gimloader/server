@@ -227,3 +227,9 @@ export interface Map {
     mapId: string;
     meta: MapMeta;
 }
+
+export interface FireOptions {
+    x: number;
+    y: number;
+    angle: number;
+}

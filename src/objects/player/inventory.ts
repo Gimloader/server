@@ -1,7 +1,7 @@
 import { GameRoom } from "../../colyseus/room";
 import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema"
 import { gadgetOptions, physicsScale, worldOptions } from "../../consts";
-import { DropItemOptions } from "../../types";
+import { DropItemOptions, FireOptions } from "../../types";
 import Player from "./player";
 
 export default class Inventory {
@@ -16,72 +16,10 @@ export default class Inventory {
             infiniteAmmo: room.mapSettings.infiniteAmmo
         });
 
-        player.onMsg("DROP_ITEM", ({ amount, itemId, interactiveSlotNumber }: DropItemOptions) => {
-            if(interactiveSlotNumber) {
-                itemId = this.inventory.interactiveSlots.get(interactiveSlotNumber.toString()).itemId;
-                if(!this.removeItemSlot(amount, interactiveSlotNumber)) return;
-            } else {
-                if(!this.removeItemAmount(itemId, amount)) return;
-            }
-
-            room.devices.createDevice({
-                id: crypto.randomUUID(),
-                x: player.player.x,
-                y: player.player.y + 30,
-                depth: player.player.y + 30,
-                layer: "DepthSortedCharactersAndDevices",
-                deviceId: "droppedItem",
-                options: {
-                    amount,
-                    itemId,
-                    placedByCharacterId: player.id,
-                    useCurrentClipCount: false,
-                    currentClip: 0,
-                    useCurrentDurability: false,
-                    currentDurability: 0,
-                    decay: 0
-                }
-            }, true);
-        });
-
-        player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", ({ slotNum }: { slotNum: number })=> {
-            this.inventory.activeInteractiveSlot = slotNum;
-        });
-
-        player.onMsg("FIRE", (args) => {
-            let currentItemId = this.getActiveSlot()?.itemId;
-            if(!currentItemId) return;
-            let gadget = gadgetOptions[currentItemId];
-            if(!gadget) return;
-
-            // TODO: Collision
-            let distance = gadget.distance;
-            let time = gadget.distance / gadget.speed;
-
-            room.broadcast("PROJECTILE_CHANGES", {
-                added: [
-                    {
-                        id: crypto.randomUUID(),
-                        startTime: Date.now(),
-                        endTime: Date.now() + time,
-                        start: {
-                            x: args.x / physicsScale,
-                            y: args.y / physicsScale
-                        },
-                        end: {
-                            x: args.x / physicsScale + Math.cos(args.angle) * distance,
-                            y: args.y / physicsScale + Math.sin(args.angle) * distance
-                        },
-                        radius: gadget.radius,
-                        appearance: gadget.appearance,
-                        ownerId: player.id,
-                        ownerTeamId: player.player.teamId,
-                        damage: gadget.damage * player.player.projectiles.damageMultiplier
-                    }
-                ],
-                hit: []
-            });
-        });
+        player.onMsg("DROP_ITEM", this.onDrop.bind(this));
+        player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", this.onSetInteractive.bind(this));
+        player.onMsg("FIRE", this.onFire.bind(this));
+        player.onMsg("RELOAD", this.onReload.bind(this));
     }
 
     getActiveSlot() {
@@ -149,5 +87,97 @@ export default class Inventory {
         this.removeItemAmount(slot.itemId, amount);
 
         return true;
+    }
+
+    onDrop({ amount, itemId, interactiveSlotNumber }: DropItemOptions) {
+        if(interactiveSlotNumber) {
+            itemId = this.inventory.interactiveSlots.get(interactiveSlotNumber.toString()).itemId;
+            if(!this.removeItemSlot(amount, interactiveSlotNumber)) return;
+        } else {
+            if(!this.removeItemAmount(itemId, amount)) return;
+        }
+
+        this.room.devices.createDevice({
+            id: crypto.randomUUID(),
+            x: this.player.player.x,
+            y: this.player.player.y + 30,
+            depth: this.player.player.y + 30,
+            layer: "DepthSortedCharactersAndDevices",
+            deviceId: "droppedItem",
+            options: {
+                amount,
+                itemId,
+                placedByCharacterId: this.player.id,
+                useCurrentClipCount: false,
+                currentClip: 0,
+                useCurrentDurability: false,
+                currentDurability: 0,
+                decay: 0
+            }
+        }, true);
+    }
+
+    onSetInteractive({ slotNum }: { slotNum: number }) {
+        if(slotNum < 0 || slotNum > this.room.mapSettings.interactiveItemsSlots) return;
+        this.inventory.activeInteractiveSlot = slotNum;
+    }
+
+    onFire(options: FireOptions) {
+        let activeItem = this.getActiveSlot();
+        if(!activeItem) return;
+        let gadget = gadgetOptions[activeItem.itemId];
+        if(!gadget) return;
+
+        if(gadget.clipSize) {
+            if(activeItem.currentClip <= 0 || activeItem.waiting) return;
+
+            // consume one shot
+            activeItem.currentClip -= 1;
+        }
+
+        // TODO: Collision
+        let distance = gadget.distance;
+        let time = distance / gadget.speed;
+
+        this.room.broadcast("PROJECTILE_CHANGES", {
+            added: [
+                {
+                    id: crypto.randomUUID(),
+                    startTime: Date.now(),
+                    endTime: Date.now() + time,
+                    start: {
+                        x: options.x / physicsScale,
+                        y: options.y / physicsScale
+                    },
+                    end: {
+                        x: options.x / physicsScale + Math.cos(options.angle) * distance,
+                        y: options.y / physicsScale + Math.sin(options.angle) * distance
+                    },
+                    radius: gadget.radius,
+                    appearance: gadget.appearance,
+                    ownerId: this.player.id,
+                    ownerTeamId: this.player.player.teamId,
+                    damage: gadget.damage * this.player.player.projectiles.damageMultiplier
+                }
+            ],
+            hit: []
+        });
+    }
+
+    onReload() {
+        let activeItem = this.getActiveSlot();
+        if(!activeItem || activeItem.currentClip === activeItem.clipSize || activeItem.waiting) return;
+        let gadget = gadgetOptions[activeItem.itemId];
+        if(!gadget || !gadget.clipSize) return;
+
+        // temporarily disable the item
+        activeItem.waiting = true;
+        activeItem.waitingStartTime = Date.now();
+        activeItem.waitingEndTime = Date.now() + gadget.reloadTime;
+
+        setTimeout(() => {
+            activeItem.waiting = false;
+            activeItem.currentClip = activeItem.clipSize;
+        }, gadget.reloadTime);
     }
 }
