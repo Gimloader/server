@@ -7,6 +7,7 @@ export default class MapData {
 
     static getById(id: string) { return this.maps.find((m) => m.id === id) }
     static getByMapId(id: string) { return this.maps.find((m) => m.mapId === id) }
+    static getByPageId(id: string) { return this.maps.find((m) => m.pageId === id) }
 
     static warnNoMaps() {
         console.log('💡 There are currently no maps in the maps folder')
@@ -26,7 +27,7 @@ export default class MapData {
                 category.items.push({
                     _id: map.id,
                     source: "map",
-                    pageId: crypto.randomUUID(),
+                    pageId: `gimloader/${map.pageId}`,
                     mapId: map.mapId,
                     isPremiumExperience: false,
                     ...map.meta
@@ -38,6 +39,31 @@ export default class MapData {
 
         express.post("/api/experience/map/hooks", (req, res) => {
             res.json({ hooks: [] });
+        });
+
+        express.get("/api/content/:id", (req, res) => {
+            let map = this.getByPageId(req.params.id);
+            let id = crypto.randomUUID();
+
+            res.json({
+                [id]: {
+                    value: {
+                        id,
+                        version: 5,
+                        type: "text",
+                        properties: {
+                            title: [
+                                [
+                                    map.meta.pageText
+                                ]
+                            ]
+                        },
+                        parent_table: "block",
+                        alive: true
+                    }
+                },
+                role: "reader"
+            });
         });
     }
 
@@ -57,6 +83,7 @@ export default class MapData {
                     file,
                     id: `gimloader-${crypto.randomUUID()}`,
                     mapId: crypto.randomUUID(),
+                    pageId: crypto.randomUUID(),
                     meta: mapMeta
                 });
             } catch {
@@ -71,6 +98,7 @@ export default class MapData {
             tagline: "A custom map from a Gimloader server!",
             imageUrl: "/assets/map/gimloader/icon.svg",
             tag: "",
+            pageText: "This is a custom map!",
             labels: {
                 c: "Unknown",
                 d: "Unknown",

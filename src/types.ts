@@ -155,7 +155,7 @@ export interface ExperienceCategory {
 export interface ExperienceInfo extends MapMeta {
     _id: string;
     source: "map";
-    pageId: string;
+    pageId?: string;
     mapId: string;
     isPremiumExperience: boolean;
 }
@@ -214,6 +214,7 @@ export interface MapMeta {
     tagline: string;
     imageUrl: string;
     tag: string;
+    pageText: string;
     labels: {
         c: string; // complexity
         d: string; // duration
@@ -226,6 +227,7 @@ export interface Map {
     id: string;
     mapId: string;
     meta: MapMeta;
+    pageId: string;
 }
 
 export interface FireOptions {
