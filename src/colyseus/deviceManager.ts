@@ -5,6 +5,7 @@ import BaseDevice from "../objects/devices/base";
 import Player from "../objects/player/player";
 import devices from "../objects/devices/index";
 import type { DeviceInfo, MapInfo } from "$types/map";
+import { DeviceOptions } from "$types/devices";
 
 export default class DeviceManager {
     map: MapInfo;
@@ -66,8 +67,8 @@ export default class DeviceManager {
 
     broadcastingDevices = false;
 
-    createDevice(info: DeviceInfo<any>, init = false) {
-        let Device: typeof BaseDevice = devices[info.deviceId] ?? BaseDevice;
+    createDevice<T extends keyof DeviceOptions = any>(info: DeviceInfo<T>, init = false) {
+        let Device: typeof BaseDevice = devices[info.deviceId as any] ?? BaseDevice;
         let device = new Device(this, this.room, info);
         this.devices.push(device);
 

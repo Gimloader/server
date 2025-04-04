@@ -97,11 +97,14 @@ export default class Inventory {
             if(!this.removeItemAmount(itemId, amount)) return;
         }
 
+        let x = this.player.player.x;
+        let y = this.player.player.y + 30;
+
         this.room.devices.createDevice({
             id: crypto.randomUUID(),
-            x: this.player.player.x,
-            y: this.player.player.y + 30,
-            depth: this.player.player.y + 30,
+            x,
+            y,
+            depth: y,
             layer: "DepthSortedCharactersAndDevices",
             deviceId: "droppedItem",
             options: {
@@ -112,7 +115,9 @@ export default class Inventory {
                 currentClip: 0,
                 useCurrentDurability: false,
                 currentDurability: 0,
-                decay: 0
+                decay: 0,
+                originX: x,
+                originY: y
             }
         }, true);
     }

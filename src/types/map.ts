@@ -2,12 +2,12 @@ import type RAPIER from "@dimforge/rapier2d-compat";
 import { DeviceOptions } from "./devices";
 
 export interface DeviceInfo<T extends keyof DeviceOptions> {
-    id: T;
+    id: string;
     x: number;
     y: number;
     depth: number;
     layer: string;
-    deviceId: string;
+    deviceId: T;
     options: DeviceOptions[T];
 }
 
