@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { runBlock } from "../../src/blocks/runBlock";
 import { player, room } from "..";
 import { join } from "path";
-import { Block } from "../../src/types";
+import type { Block } from "$types/blocks";
 
 describe("Blocks", async () => {
     let testJson = await Bun.file(join(__dirname, "testJson.json")).json();

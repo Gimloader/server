@@ -4,9 +4,10 @@ import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../
 import { CharactersItem } from "../../colyseus/schema";
 import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
-import { Cosmetics, PhysicsObjects, PhysicsState } from "../../types";
 import Inventory from "./inventory";
 import { EventEmitter } from "node:stream";
+import type { Cosmetics } from "$types/schema";
+import type { PhysicsObjects, PhysicsState } from "$types/physics";
 
 type MsgCallback = (message: any) => void;
 

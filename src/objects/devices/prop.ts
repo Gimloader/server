@@ -1,7 +1,7 @@
 import { degToRad } from "../../utils";
 import BaseDevice from "./base";
 
-export default class PropDevice extends BaseDevice {
+export default class PropDevice extends BaseDevice<"prop"> {
     globalState = { visible: true, healthPercent: 1 };
 
     init() {

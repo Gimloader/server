@@ -1,4 +1,4 @@
-import { KitQuestion } from "../types";
+import type { KitQuestion } from "$types/net";
 
 export async function getKitQuestions(id: string): Promise<KitQuestion[]> {
     if(!id) {

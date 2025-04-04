@@ -1,4 +1,4 @@
-import { ExperienceCategory, Map, MapMeta } from '../types';
+import type { ExperienceCategory, Map, MapMeta } from '$types/map';
 import express from './express';
 import fs from 'fs/promises';
 

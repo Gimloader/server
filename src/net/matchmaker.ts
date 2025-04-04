@@ -2,8 +2,8 @@ import { defaultCosmetics } from '../consts';
 import express from './express';
 import { generateGameCode } from '../utils';
 import MapData from './mapData';
-import { Cosmetics } from '../types';
 import config from "$config";
+import type { Cosmetics } from '$types/schema';
 
 interface ClientIntent {
     name: string;

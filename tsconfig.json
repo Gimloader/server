@@ -9,7 +9,8 @@
         "useDefineForClassFields": false,
         "noEmit": true,
         "paths": {
-            "$config": ["./server.config.ts"]
+            "$config": ["./server.config.ts"],
+            "$types/*": ["./src/types/*"]
         }
     },
     "include": ["./src/**/*.ts", "./test/**/*.ts", "server.config.ts"]

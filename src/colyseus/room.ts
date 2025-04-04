@@ -2,7 +2,6 @@ import { Client, Room } from "colyseus";
 import Matchmaker, { Game } from "../net/matchmaker";
 import { GimkitState } from "./schema";
 import DeviceManager from "./deviceManager";
-import { MapInfo } from "../types";
 import TileManager from "./tileManager";
 import Player from "../objects/player/player";
 import PhysicsManager from "./physics";
@@ -11,6 +10,7 @@ import RAPIER from "@dimforge/rapier2d-compat";
 import TeamManager from "./teamManager";
 import EventEmitter from "node:events";
 import PluginManager from "../plugins";
+import type { MapInfo } from "$types/map";
 
 interface RoomOptions {
     intentId: string;

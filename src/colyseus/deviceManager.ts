@@ -1,10 +1,10 @@
-import type { DeviceInfo, MapInfo } from "../types";
 import { topDownPropOptions, platformerPropOptions } from "../consts";
 import { createValuesArray } from "../utils";
 import { GameRoom } from "./room";
 import BaseDevice from "../objects/devices/base";
 import Player from "../objects/player/player";
 import devices from "../objects/devices/index";
+import type { DeviceInfo, MapInfo } from "$types/map";
 
 export default class DeviceManager {
     map: MapInfo;
@@ -66,7 +66,7 @@ export default class DeviceManager {
 
     broadcastingDevices = false;
 
-    createDevice(info: DeviceInfo, init = false) {
+    createDevice(info: DeviceInfo<any>, init = false) {
         let Device: typeof BaseDevice = devices[info.deviceId] ?? BaseDevice;
         let device = new Device(this, this.room, info);
         this.devices.push(device);
@@ -106,7 +106,7 @@ export default class DeviceManager {
         let added: any[] = [];
 
         for(let device of devices) {
-            let options = Object.entries(device.options).map(([key, val]) => [addValue(key), addValue(val)]);
+            let options = Object.entries(device.options).map(([key, val]: any[]) => [addValue(key), addValue(val)]);
 
             added.push([
                 device.id, device.x, device.y, device.depth,

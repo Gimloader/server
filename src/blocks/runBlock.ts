@@ -1,7 +1,7 @@
 import { GameRoom } from "../colyseus/room";
 import Player from "../objects/player/player";
-import { Block, CustomBlock } from "../types";
 import { isPrime, random } from "../utils";
+import type { Block, CustomBlock } from "$types/blocks";
 
 export function runBlock(block: Block, variables: Record<string, any>, custom: Record<string, CustomBlock>, room: GameRoom, player: Player) {
     if(!block) return;

@@ -1,7 +1,7 @@
-import type { MapInfo, TileInfo } from "../types";
 import { physicsScale, tileSize } from "../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
 import { GameRoom } from "./room";
+import type { MapInfo, TileInfo } from "$types/map";
 
 export default class TileManager {
     map: MapInfo;

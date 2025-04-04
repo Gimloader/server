@@ -1,5 +1,6 @@
 import fs from 'fs';
-import { Cosmetics, PhysicsState } from './types';
+import type { PhysicsState } from '$types/physics';
+import type { Cosmetics } from '$types/schema';
 
 export const worldOptions = JSON.parse(fs.readFileSync("./data/worldOptions.json").toString());
 export const topDownPropOptions = JSON.parse(fs.readFileSync("./data/topDownPropOptions.json").toString());

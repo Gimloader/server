@@ -1,23 +1,26 @@
 import RAPIER from "@dimforge/rapier2d-compat";
-import { CodeGrid, ColliderInfo, ColliderOptions, CustomBlock, DeviceInfo, Wire } from "../../types";
 import { degToRad } from "../../utils";
 import { GameRoom } from "../../colyseus/room";
 import { physicsScale } from "../../consts";
 import Player from "../player/player";
 import DeviceManager from "../../colyseus/deviceManager";
 import { runGrid } from "../../blocks/runGrid";
+import type { ColliderInfo, ColliderOptions } from "$types/physics";
+import type { CodeGrid, DeviceInfo, Wire } from "$types/map";
+import type { CustomBlock } from "$types/blocks";
+import type { DeviceOptions } from "$types/devices";
 
-export default class BaseDevice {
+export default class BaseDevice<T extends keyof DeviceOptions = any> {
     deviceManager: DeviceManager;
     room: GameRoom;
 
-    id: string;
+    id: T;
     x: number;
     y: number;
     depth: number;
     layer: string;
     deviceId: string;
-    options: Record<string, any>;
+    options: DeviceOptions[T];
     
     globalState: Record<string, any> = {};
     teamStates: Record<string, Record<string, any>> = {};
@@ -28,7 +31,7 @@ export default class BaseDevice {
     codeGrids: CodeGrid[] = [];
     customBlocks: Record<string, CustomBlock> = {};
 
-    constructor(deviceManager: DeviceManager, room: GameRoom, info: DeviceInfo) {
+    constructor(deviceManager: DeviceManager, room: GameRoom, info: DeviceInfo<T>) {
         this.deviceManager = deviceManager;
         this.room = room;
 

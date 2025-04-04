@@ -1,7 +1,7 @@
 import Player from "../player/player";
 import BaseDevice from "./base";
 
-export default class DroppedItemDevice extends BaseDevice {
+export default class DroppedItemDevice extends BaseDevice<"droppedItem"> {
     globalState = {
         amount: 0,
         fallY: 16000,

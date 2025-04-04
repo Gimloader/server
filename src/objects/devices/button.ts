@@ -1,7 +1,7 @@
 import Player from "../player/player";
 import BaseDevice from "./base";
 
-export default class ButtonDevice extends BaseDevice {
+export default class ButtonDevice extends BaseDevice<"button"> {
     restore() {
         this.updateForAll(this.options.scope, "active", this.options.activeOnStart);
     }

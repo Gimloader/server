@@ -1,10 +1,14 @@
 import { getKitQuestions } from "../../net/gimkitApi";
-import { CustomBlock, KitQuestion } from "../../types";
 import { shuffled } from "../../utils";
 import Player from "../player/player";
 import BaseDevice from "./base";
+import type { CustomBlock } from "$types/blocks";
+import type { KitQuestion } from "$types/net";
+import type { QuestionerOptions } from "$types/devices";
 
 export default class QuestionerDevice extends BaseDevice {
+    options: QuestionerOptions;
+
     globalState = {
         enabled: true,
         correctText: "",

@@ -1,5 +1,5 @@
 import config from "$config";
-import { PluginFunctions } from "./types";
+import { PluginFunctions } from "$types/config";
 
 export default class PluginManager {
     static trigger<T extends keyof PluginFunctions>(method: T, ...args: Parameters<PluginFunctions[T]>) {

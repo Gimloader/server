@@ -1,8 +1,8 @@
 import { GameRoom } from "../../colyseus/room";
 import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema"
 import { gadgetOptions, physicsScale, worldOptions } from "../../consts";
-import { DropItemOptions, FireOptions } from "../../types";
 import Player from "./player";
+import type { DropItemOptions, FireOptions } from "$types/net";
 
 export default class Inventory {
     player: Player;
