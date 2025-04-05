@@ -1,11 +1,12 @@
 import fs from 'fs';
 import type { PhysicsState } from '$types/physics';
 import type { Cosmetics } from '$types/schema';
+import { GadgetOptions } from '$types/map';
 
 export const worldOptions = JSON.parse(fs.readFileSync("./data/worldOptions.json").toString());
 export const topDownPropOptions = JSON.parse(fs.readFileSync("./data/topDownPropOptions.json").toString());
 export const platformerPropOptions = JSON.parse(fs.readFileSync("./data/platformerPropOptions.json").toString());
-export const gadgetOptions = JSON.parse(fs.readFileSync("./data/gadgetOptions.json").toString());
+export const gadgetOptions: GadgetOptions[] = JSON.parse(fs.readFileSync("./data/gadgetOptions.json").toString());
 
 export const defaultPhysicsState: PhysicsState = {
     gravity: 0.001,

@@ -28,7 +28,7 @@ export default class Inventory {
 
     getItemInfo(id: string) { return worldOptions.itemOptions.find((i: any) => i.id === id) }
 
-    addItem(id: string, amount: number) {        
+    addItem(id: string, amount: number, currentClip?: number) {        
         let item = this.getItemInfo(id);
         if(!item) return;
 
@@ -47,7 +47,9 @@ export default class Inventory {
             let newSlot: InteractiveSlotsItem;
             if(item.type === "weapon" && item.weapon.type !== "melee") {
                 let gadget = gadgetOptions[item.id];
-                newSlot = new InteractiveSlotsItem(id, gadget);
+                if(currentClip === undefined) currentClip = gadget.clipSize;
+                
+                newSlot = new InteractiveSlotsItem(id, { clipSize: gadget.clipSize, currentClip });
             } else {
                 newSlot = new InteractiveSlotsItem(id);
             }
@@ -90,8 +92,20 @@ export default class Inventory {
     }
 
     onDrop({ amount, itemId, interactiveSlotNumber }: DropItemOptions) {
+        let useCurrentClipCount = false;
+        let currentClip = 0;
+
         if(interactiveSlotNumber) {
-            itemId = this.inventory.interactiveSlots.get(interactiveSlotNumber.toString()).itemId;
+            let item = this.getActiveSlot();
+            if(!item) return;
+            
+            itemId = item.itemId;
+
+            if(item.clipSize > 0) {
+                useCurrentClipCount = true;
+                currentClip = item.currentClip;
+            }
+
             if(!this.removeItemSlot(amount, interactiveSlotNumber)) return;
         } else {
             if(!this.removeItemAmount(itemId, amount)) return;
@@ -111,8 +125,8 @@ export default class Inventory {
                 amount,
                 itemId,
                 placedByCharacterId: this.player.id,
-                useCurrentClipCount: false,
-                currentClip: 0,
+                useCurrentClipCount,
+                currentClip,
                 useCurrentDurability: false,
                 currentDurability: 0,
                 decay: 0,

@@ -28,8 +28,7 @@ export interface Cosmetics {
     trail: string | null;
 }
 
-export interface GadgetOptions {
+export interface InteractiveSlotOptions {
+    currentClip: number;
     clipSize: number;
-    reloadTime: number;
-    damage: number;
 }

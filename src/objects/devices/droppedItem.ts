@@ -19,7 +19,7 @@ export default class DroppedItemDevice extends BaseDevice<"droppedItem"> {
         if(key !== "interacted") return;
         if(!this.globalState.canBeCollected) return;
 
-        player.inventory.addItem(this.options.itemId, this.globalState.amount);
+        player.inventory.addItem(this.options.itemId, this.globalState.amount, this.options.currentClip);
         this.updateGlobalState("canBeCollected", false);
         this.updateGlobalState("alreadyCollected", true);
 

@@ -65,8 +65,6 @@ export default class TileManager {
             tiles.push([x, y, terrainIndex, tile.collides ? 1 : 0, tile.depth, lengthX, lengthY]);
         }
 
-        console.log(tiles.length, Object.keys(this.tiles).length);
-
         return {
             added: { terrains, tiles },
             initial: true,

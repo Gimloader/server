@@ -80,3 +80,13 @@ export interface ExperienceInfo extends MapMeta {
     mapId: string;
     isPremiumExperience: boolean;
 }
+
+export interface GadgetOptions {
+    clipSize: number;
+    reloadTime: number;
+    damage: number;
+    appearance: string;
+    radius: number;
+    distance: number;
+    speed: number;
+}
