@@ -1,7 +1,10 @@
 // This script needs to be run in the console before joining a creative map with Gimloader installed to work.
+// It will partially work in published maps, but wires will not be exported.
 
 (function() {
     let exported = {};
+    window.exported = exported;
+
     let completed = 0;
     let tasks = 3;
     const advanceCompleted = () => {
@@ -35,7 +38,7 @@
 
     // terrain
     GL.net.once("TERRAIN_CHANGES", ({ added: { terrains, tiles } }) => {
-        exported.tiles = [];
+        exported.tiles = {};
 
         for(let tile of tiles) {
             // lengthX and lengthY aren't height and width, it's two lines rather than a rectangle
@@ -43,20 +46,25 @@
             terrain = terrains[terrain];
             collides = collides === 1;
 
-            let tileInfo = { x, y, terrain, collides, depth };
-            exported.tiles.push(tileInfo);
+            let tileInfo = { terrain, collides, depth };
+
+            const setTile = (x, y) => {
+                exported.tiles[`${x}_${y}`] = tileInfo;
+            }
 
             if(lengthX) {
-                for(let x = 1; x <= lengthX; x++) {
-                    exported.tiles.push({ ...tileInfo, x: tileInfo.x + x });
+                for(let ox = 1; ox <= lengthX; ox++) {
+                    setTile(x + ox, y);
                 }
             }
             
             if(lengthY) {
-                for(let y = 1; y <= lengthY; y++) {
-                    exported.tiles.push({ ...tileInfo, y: tileInfo.y + y });
+                for(let oy = 1; oy <= lengthY; oy++) {
+                    setTile(x, y + oy);
                 }
             }
+
+            setTile(x, y);
         }
 
         advanceCompleted();
@@ -88,5 +96,5 @@
         advanceCompleted();
     });
 
-    window.exported = exported;
+    console.log("Waiting for map to load...");
 })();

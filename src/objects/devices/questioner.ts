@@ -4,11 +4,8 @@ import Player from "../player/player";
 import BaseDevice from "./base";
 import type { CustomBlock } from "$types/blocks";
 import type { KitQuestion } from "$types/net";
-import type { QuestionerOptions } from "$types/devices";
 
-export default class QuestionerDevice extends BaseDevice {
-    options: QuestionerOptions;
-
+export default class QuestionerDevice extends BaseDevice<"gimkitLiveQuestion"> {
     globalState = {
         enabled: true,
         correctText: "",

@@ -12,8 +12,6 @@ export interface DeviceInfo<T extends keyof DeviceOptions> {
 }
 
 export interface TileInfo {
-    x: number;
-    y: number;
     terrain: string;
     depth: number;
     collides: boolean;
@@ -56,7 +54,7 @@ export interface MapInfo {
     mapStyle: MapStyle;
     codeGrids: Record<string, Record<string, CodeGrid>>;
     devices: DeviceInfo<any>[];
-    tiles: TileInfo[];
+    tiles: Record<string, TileInfo>;
     wires: Wire[];
     meta?: MapMeta;
 }
