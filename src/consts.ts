@@ -13,7 +13,7 @@ const readData = (name: string) => {
 export const worldOptions: WorldOptions = readData("worldOptions");
 export const topDownPropOptions: PropOption[] = readData("topDownPropOptions");
 export const platformerPropOptions: PropOption[] = readData("platformerPropOptions");
-export const gadgetOptions: GadgetOption[] = readData("gadgetOptionsb");
+export const gadgetOptions: Record<string, GadgetOption> = readData("gadgetOptions");
 
 export const defaultPhysicsState: PhysicsState = {
     gravity: 0.001,

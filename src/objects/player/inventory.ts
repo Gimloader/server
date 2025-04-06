@@ -144,8 +144,10 @@ export default class Inventory {
     onFire(options: FireOptions) {
         let activeItem = this.getActiveSlot();
         if(!activeItem) return;
+
         let gadget = gadgetOptions[activeItem.itemId];
-        if(!gadget) return;
+        let item = this.getItemInfo(activeItem.itemId);
+        if(!gadget || item.type !== "weapon") return;
 
         if(gadget.clipSize) {
             if(activeItem.currentClip <= 0 || activeItem.waiting) return;
@@ -154,6 +156,7 @@ export default class Inventory {
             activeItem.currentClip -= 1;
         }
 
+        let startDistance = item.weapon.shared.startingProjectileDistanceFromCharacter;
         // TODO: Collision
         let distance = gadget.distance;
         let time = distance / gadget.speed;
@@ -165,15 +168,15 @@ export default class Inventory {
                     startTime: Date.now(),
                     endTime: Date.now() + time,
                     start: {
-                        x: options.x / physicsScale,
-                        y: options.y / physicsScale
+                        x: options.x / physicsScale + Math.cos(options.angle) * startDistance,
+                        y: options.y / physicsScale + Math.sin(options.angle) * startDistance
                     },
                     end: {
-                        x: options.x / physicsScale + Math.cos(options.angle) * distance,
-                        y: options.y / physicsScale + Math.sin(options.angle) * distance
+                        x: options.x / physicsScale + Math.cos(options.angle) * (distance + startDistance),
+                        y: options.y / physicsScale + Math.sin(options.angle) * (distance + startDistance)
                     },
                     radius: gadget.radius,
-                    appearance: gadget.appearance,
+                    appearance: item.weapon.appearance,
                     ownerId: this.player.id,
                     ownerTeamId: this.player.player.teamId,
                     damage: gadget.damage * this.player.player.projectiles.damageMultiplier

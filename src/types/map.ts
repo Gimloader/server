@@ -202,7 +202,6 @@ export interface GadgetOption {
     clipSize: number;
     reloadTime: number;
     damage: number;
-    appearance: string;
     radius: number;
     distance: number;
     speed: number;

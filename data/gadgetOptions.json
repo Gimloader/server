@@ -3,7 +3,6 @@
         "clipSize": 12,
         "reloadTime": 1900,
         "damage": 20,
-        "appearance": "blaster",
         "radius": 0.2,
         "distance": 10,
         "speed": 0.0125
@@ -12,7 +11,6 @@
         "clipSize": 16,
         "reloadTime": 1900,
         "damage": 23,
-        "appearance": "blaster",
         "radius": 0.2,
         "distance": 10,
         "speed": 0.0125
@@ -21,7 +19,6 @@
         "clipSize": 20,
         "reloadTime": 1900,
         "damage": 26,
-        "appearance": "blaster",
         "radius": 0.2,
         "distance": 10,
         "speed": 0.0125
@@ -30,7 +27,6 @@
         "clipSize": 24,
         "reloadTime": 1900,
         "damage": 29,
-        "appearance": "blaster",
         "radius": 0.2,
         "distance": 10,
         "speed": 0.0125
@@ -39,7 +35,6 @@
         "clipSize": 28,
         "reloadTime": 1900,
         "damage": 32,
-        "appearance": "blaster",
         "radius": 0.2,
         "distance": 10,
         "speed": 0.0125
@@ -48,7 +43,6 @@
         "clipSize": 12,
         "reloadTime": 1800,
         "damage": 14,
-        "appearance": "zapper",
         "radius": 0.17,
         "distance": 4.2,
         "speed": 0.0048
@@ -57,7 +51,6 @@
         "clipSize": 14,
         "reloadTime": 1800,
         "damage": 16,
-        "appearance": "zapper",
         "radius": 0.17,
         "distance": 4.95,
         "speed": 0.0049
@@ -66,7 +59,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 18,
-        "appearance": "zapper",
         "radius": 0.17,
         "distance": 5.7,
         "speed": 0.005
@@ -75,7 +67,6 @@
         "clipSize": 18,
         "reloadTime": 1800,
         "damage": 20,
-        "appearance": "zapper",
         "radius": 0.17,
         "distance": 6.45,
         "speed": 0.0051
@@ -84,7 +75,6 @@
         "clipSize": 20,
         "reloadTime": 1800,
         "damage": 22,
-        "appearance": "zapper",
         "radius": 0.17,
         "distance": 7.2,
         "speed": 0.0052
@@ -93,7 +83,6 @@
         "clipSize": 5,
         "reloadTime": 4300,
         "damage": 60,
-        "appearance": "slingshot",
         "radius": 0.22,
         "distance": 10,
         "speed": 0.0094
@@ -102,7 +91,6 @@
         "clipSize": 6,
         "reloadTime": 4300,
         "damage": 66,
-        "appearance": "slingshot",
         "radius": 0.22,
         "distance": 10,
         "speed": 0.0094
@@ -111,7 +99,6 @@
         "clipSize": 7,
         "reloadTime": 4300,
         "damage": 72,
-        "appearance": "slingshot",
         "radius": 0.22,
         "distance": 10,
         "speed": 0.0094
@@ -120,7 +107,6 @@
         "clipSize": 8,
         "reloadTime": 4300,
         "damage": 78,
-        "appearance": "slingshot",
         "radius": 0.22,
         "distance": 10,
         "speed": 0.0094
@@ -129,7 +115,6 @@
         "clipSize": 10,
         "reloadTime": 4300,
         "damage": 84,
-        "appearance": "slingshot",
         "radius": 0.22,
         "distance": 10,
         "speed": 0.0094
@@ -138,7 +123,6 @@
         "clipSize": 12,
         "reloadTime": 4300,
         "damage": 44,
-        "appearance": "muffinLauncher",
         "radius": 0.18,
         "distance": 20,
         "speed": 0.00511
@@ -147,7 +131,6 @@
         "clipSize": 12,
         "reloadTime": 4300,
         "damage": 51,
-        "appearance": "muffinLauncher",
         "radius": 0.18,
         "distance": 20,
         "speed": 0.00511
@@ -156,7 +139,6 @@
         "clipSize": 12,
         "reloadTime": 4300,
         "damage": 58,
-        "appearance": "muffinLauncher",
         "radius": 0.18,
         "distance": 20,
         "speed": 0.00511
@@ -165,7 +147,6 @@
         "clipSize": 12,
         "reloadTime": 4300,
         "damage": 65,
-        "appearance": "muffinLauncher",
         "radius": 0.18,
         "distance": 20,
         "speed": 0.00511
@@ -174,7 +155,6 @@
         "clipSize": 120,
         "reloadTime": 4300,
         "damage": 72,
-        "appearance": "muffinLauncher",
         "radius": 0.18,
         "distance": 20,
         "speed": 0.00511
@@ -183,7 +163,6 @@
         "clipSize": 4,
         "reloadTime": 4300,
         "damage": 72,
-        "appearance": "evilEye",
         "radius": 0.27,
         "distance": 16,
         "speed": 0.00525
@@ -192,7 +171,6 @@
         "clipSize": 4,
         "reloadTime": 4300,
         "damage": 80,
-        "appearance": "evilEye",
         "radius": 0.27,
         "distance": 16,
         "speed": 0.00535
@@ -201,7 +179,6 @@
         "clipSize": 4,
         "reloadTime": 4300,
         "damage": 88,
-        "appearance": "evilEye",
         "radius": 0.27,
         "distance": 16,
         "speed": 0.00545
@@ -210,7 +187,6 @@
         "clipSize": 4,
         "reloadTime": 4300,
         "damage": 96,
-        "appearance": "evilEye",
         "radius": 0.27,
         "distance": 16,
         "speed": 0.00555
@@ -219,7 +195,6 @@
         "clipSize": 14,
         "reloadTime": 4300,
         "damage": 104,
-        "appearance": "evilEye",
         "radius": 0.27,
         "distance": 16,
         "speed": 0.00565
@@ -228,7 +203,6 @@
         "clipSize": 1,
         "reloadTime": 2250,
         "damage": 184,
-        "appearance": "quantumPortal",
         "radius": 0.23,
         "distance": 30,
         "speed": 0.00315
@@ -237,7 +211,6 @@
         "clipSize": 1,
         "reloadTime": 2250,
         "damage": 196,
-        "appearance": "quantumPortal",
         "radius": 0.23,
         "distance": 30,
         "speed": 0.00315
@@ -246,7 +219,6 @@
         "clipSize": 1,
         "reloadTime": 2250,
         "damage": 208,
-        "appearance": "quantumPortal",
         "radius": 0.23,
         "distance": 30,
         "speed": 0.00315
@@ -255,7 +227,6 @@
         "clipSize": 1,
         "reloadTime": 2250,
         "damage": 220,
-        "appearance": "quantumPortal",
         "radius": 0.23,
         "distance": 30,
         "speed": 0.00315
@@ -264,7 +235,6 @@
         "clipSize": 14,
         "reloadTime": 2250,
         "damage": 232,
-        "appearance": "quantumPortal",
         "radius": 0.23,
         "distance": 30,
         "speed": 0.00315
@@ -273,7 +243,6 @@
         "clipSize": 20,
         "reloadTime": 3250,
         "damage": 20,
-        "appearance": "woodenWand",
         "radius": 0.22,
         "distance": 7,
         "speed": 0.0059
@@ -282,7 +251,6 @@
         "clipSize": 22,
         "reloadTime": 3250,
         "damage": 24,
-        "appearance": "woodenWand",
         "radius": 0.22,
         "distance": 7,
         "speed": 0.00625
@@ -291,7 +259,6 @@
         "clipSize": 24,
         "reloadTime": 3250,
         "damage": 28,
-        "appearance": "woodenWand",
         "radius": 0.22,
         "distance": 7,
         "speed": 0.0066
@@ -300,7 +267,6 @@
         "clipSize": 26,
         "reloadTime": 3250,
         "damage": 32,
-        "appearance": "woodenWand",
         "radius": 0.22,
         "distance": 7,
         "speed": 0.00695
@@ -309,7 +275,6 @@
         "clipSize": 28,
         "reloadTime": 3250,
         "damage": 36,
-        "appearance": "woodenWand",
         "radius": 0.22,
         "distance": 7,
         "speed": 0.0073
@@ -318,7 +283,6 @@
         "clipSize": 12,
         "reloadTime": 1800,
         "damage": 28,
-        "appearance": "snowball",
         "radius": 0.225,
         "distance": 10,
         "speed": 0.0067
@@ -327,7 +291,6 @@
         "clipSize": 14,
         "reloadTime": 1800,
         "damage": 30,
-        "appearance": "snowball",
         "radius": 0.225,
         "distance": 10,
         "speed": 0.0067
@@ -336,7 +299,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 32,
-        "appearance": "snowball",
         "radius": 0.225,
         "distance": 10,
         "speed": 0.0067
@@ -345,7 +307,6 @@
         "clipSize": 18,
         "reloadTime": 1800,
         "damage": 34,
-        "appearance": "snowball",
         "radius": 0.225,
         "distance": 10,
         "speed": 0.0067
@@ -354,42 +315,36 @@
         "clipSize": 20,
         "reloadTime": 1800,
         "damage": 36,
-        "appearance": "snowball",
         "radius": 0.225,
         "distance": 10,
         "speed": 0.0067
     },
     "pickaxe_common": {
         "damage": 1,
-        "appearance": "pickaxe",
         "radius": 0.1,
         "distance": 0.25,
         "speed": 1
     },
     "pickaxe_uncommon": {
         "damage": 5,
-        "appearance": "pickaxe",
         "radius": 0.1,
         "distance": 0.25,
         "speed": 1
     },
     "pickaxe_rare": {
         "damage": 25,
-        "appearance": "pickaxe",
         "radius": 0.1,
         "distance": 0.25,
         "speed": 1
     },
     "pickaxe_epic": {
         "damage": 100,
-        "appearance": "pickaxe",
         "radius": 0.1,
         "distance": 0.25,
         "speed": 1
     },
     "pickaxe_legendary": {
         "damage": 300,
-        "appearance": "pickaxe",
         "radius": 0.1,
         "distance": 0.25,
         "speed": 1
@@ -398,7 +353,6 @@
         "clipSize": 30,
         "reloadTime": 1550,
         "damage": 12,
-        "appearance": "pixel",
         "radius": 0.2,
         "distance": 15,
         "speed": 0.0074
@@ -407,7 +361,6 @@
         "clipSize": 32,
         "reloadTime": 1550,
         "damage": 16,
-        "appearance": "pixel",
         "radius": 0.2,
         "distance": 15,
         "speed": 0.0074
@@ -416,7 +369,6 @@
         "clipSize": 34,
         "reloadTime": 1550,
         "damage": 20,
-        "appearance": "pixel",
         "radius": 0.2,
         "distance": 15,
         "speed": 0.0074
@@ -425,7 +377,6 @@
         "clipSize": 36,
         "reloadTime": 1550,
         "damage": 24,
-        "appearance": "pixel",
         "radius": 0.2,
         "distance": 15,
         "speed": 0.0074
@@ -434,7 +385,6 @@
         "clipSize": 38,
         "reloadTime": 1550,
         "damage": 28,
-        "appearance": "pixel",
         "radius": 0.2,
         "distance": 15,
         "speed": 0.0074
@@ -443,7 +393,6 @@
         "clipSize": 20,
         "reloadTime": 3000,
         "damage": 38,
-        "appearance": "sand",
         "radius": 0.1,
         "distance": 7,
         "speed": 0.0059
@@ -452,7 +401,6 @@
         "clipSize": 6,
         "reloadTime": 3000,
         "damage": 39,
-        "appearance": "sand",
         "radius": 0.1,
         "distance": 7,
         "speed": 0.00625
@@ -461,7 +409,6 @@
         "clipSize": 8,
         "reloadTime": 3000,
         "damage": 40,
-        "appearance": "sand",
         "radius": 0.1,
         "distance": 7,
         "speed": 0.0066
@@ -470,7 +417,6 @@
         "clipSize": 10,
         "reloadTime": 3000,
         "damage": 41,
-        "appearance": "sand",
         "radius": 0.1,
         "distance": 7,
         "speed": 0.00695
@@ -479,7 +425,6 @@
         "clipSize": 12,
         "reloadTime": 3000,
         "damage": 42,
-        "appearance": "sand",
         "radius": 0.1,
         "distance": 7,
         "speed": 0.0073
@@ -488,7 +433,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 32,
-        "appearance": "cactus",
         "radius": 0.1,
         "distance": 8,
         "speed": 0.0071
@@ -497,7 +441,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 36,
-        "appearance": "cactus",
         "radius": 0.1,
         "distance": 9,
         "speed": 0.0071
@@ -506,7 +449,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 40,
-        "appearance": "cactus",
         "radius": 0.1,
         "distance": 10,
         "speed": 0.0071
@@ -515,7 +457,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 44,
-        "appearance": "cactus",
         "radius": 0.1,
         "distance": 11,
         "speed": 0.0071
@@ -524,7 +465,6 @@
         "clipSize": 16,
         "reloadTime": 1800,
         "damage": 48,
-        "appearance": "cactus",
         "radius": 0.1,
         "distance": 12,
         "speed": 0.0071
@@ -533,7 +473,6 @@
         "clipSize": 3,
         "reloadTime": 2500,
         "damage": 124,
-        "appearance": "tornado",
         "radius": 0.17,
         "distance": 30,
         "speed": 0.0073
@@ -542,7 +481,6 @@
         "clipSize": 3,
         "reloadTime": 2500,
         "damage": 132,
-        "appearance": "tornado",
         "radius": 0.17,
         "distance": 30,
         "speed": 0.0073
@@ -551,7 +489,6 @@
         "clipSize": 3,
         "reloadTime": 2500,
         "damage": 140,
-        "appearance": "tornado",
         "radius": 0.17,
         "distance": 30,
         "speed": 0.0073
@@ -560,7 +497,6 @@
         "clipSize": 3,
         "reloadTime": 2500,
         "damage": 148,
-        "appearance": "tornado",
         "radius": 0.17,
         "distance": 30,
         "speed": 0.0073
@@ -569,7 +505,6 @@
         "clipSize": 3,
         "reloadTime": 2500,
         "damage": 156,
-        "appearance": "tornado",
         "radius": 0.17,
         "distance": 30,
         "speed": 0.0073
@@ -578,7 +513,6 @@
         "clipSize": 18,
         "reloadTime": 1200,
         "damage": 12,
-        "appearance": "rock",
         "radius": 0.13,
         "distance": 3.75,
         "speed": 0.0055
@@ -587,7 +521,6 @@
         "clipSize": 20,
         "reloadTime": 1200,
         "damage": 15,
-        "appearance": "rock",
         "radius": 0.13,
         "distance": 4.25,
         "speed": 0.055
@@ -596,7 +529,6 @@
         "clipSize": 22,
         "reloadTime": 1200,
         "damage": 18,
-        "appearance": "rock",
         "radius": 0.13,
         "distance": 4.75,
         "speed": 0.0055
@@ -605,7 +537,6 @@
         "clipSize": 24,
         "reloadTime": 1200,
         "damage": 21,
-        "appearance": "rock",
         "radius": 0.13,
         "distance": 5.25,
         "speed": 0.0055
@@ -614,7 +545,6 @@
         "clipSize": 26,
         "reloadTime": 1200,
         "damage": 24,
-        "appearance": "rock",
         "radius": 0.13,
         "distance": 5.75,
         "speed": 0.0055
