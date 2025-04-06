@@ -35,7 +35,7 @@ export default class BaseDevice<T extends keyof DeviceOptions = any> {
         this.deviceManager = deviceManager;
         this.room = room;
 
-        this.id = info.id;
+        this.id = info.id as T;
         this.x = info.x;
         this.y = info.y;
         this.depth = info.depth;

@@ -1,12 +1,19 @@
 import fs from 'fs';
+import { join } from "path";
+import { GadgetOption, PropOption, WorldOptions } from '$types/map';
 import type { PhysicsState } from '$types/physics';
 import type { Cosmetics } from '$types/schema';
-import { GadgetOptions } from '$types/map';
 
-export const worldOptions = JSON.parse(fs.readFileSync("./data/worldOptions.json").toString());
-export const topDownPropOptions = JSON.parse(fs.readFileSync("./data/topDownPropOptions.json").toString());
-export const platformerPropOptions = JSON.parse(fs.readFileSync("./data/platformerPropOptions.json").toString());
-export const gadgetOptions: GadgetOptions[] = JSON.parse(fs.readFileSync("./data/gadgetOptions.json").toString());
+const dataPath = join(__dirname, "../data");
+const readData = (name: string) => {
+    let path = join(dataPath, `${name}.json`);
+    return JSON.parse(fs.readFileSync(path).toString());
+}
+
+export const worldOptions: WorldOptions = readData("worldOptions");
+export const topDownPropOptions: PropOption[] = readData("topDownPropOptions");
+export const platformerPropOptions: PropOption[] = readData("platformerPropOptions");
+export const gadgetOptions: GadgetOption[] = readData("gadgetOptionsb");
 
 export const defaultPhysicsState: PhysicsState = {
     gravity: 0.001,
