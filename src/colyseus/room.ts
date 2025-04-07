@@ -10,6 +10,8 @@ import RAPIER from "@dimforge/rapier2d-compat";
 import TeamManager from "./teamManager";
 import EventEmitter from "node:events";
 import PluginManager from "../plugins";
+import { join } from "node:path";
+import { mapsPath } from "../consts";
 import type { MapInfo } from "$types/map";
 
 interface RoomOptions {
@@ -53,7 +55,7 @@ export class GameRoom extends Room<GimkitState> {
             this.game.colyseusRoomId = this.roomId;
             let map = MapData.getByMapId(this.game.mapId);
 
-            this.map = await Bun.file(`./maps/${map.file}`).json();
+            this.map = await Bun.file(join(mapsPath, map.file)).json();
             this.physics = new PhysicsManager(this);
             this.world = this.physics.world;
             this.devices = new DeviceManager(this.map, this);

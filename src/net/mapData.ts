@@ -3,6 +3,8 @@ import PluginManager from '../plugins';
 import { formatList } from '../utils';
 import express from './express';
 import fs from 'fs/promises';
+import { join } from 'node:path';
+import { mapsPath } from '../consts';
 
 export default class MapData {
     static maps: Map[] = [];
@@ -74,15 +76,15 @@ export default class MapData {
     }
 
     static async readMaps() {
-        if(!fs.exists("./maps")) return this.warnNoMaps();
+        if(!fs.exists(mapsPath)) return this.warnNoMaps();
 
-        let files = await fs.readdir('./maps');
+        let files = await fs.readdir(mapsPath);
         files = files.filter(name => name.endsWith(".json"));
         if(files.length === 0) return this.warnNoMaps();
         
         for(let file of files) {
             try {
-                let json: MapInfo = await Bun.file(`./maps/${file}`).json();
+                let json: MapInfo = await Bun.file(join(mapsPath, file)).json();
                 let mapMeta = json.meta ?? this.getMapMeta(file);
 
                 // confirm that we have all the needed map plugins

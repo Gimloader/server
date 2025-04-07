@@ -4,7 +4,11 @@ import { GadgetOption, PropOption, WorldOptions } from '$types/map';
 import type { PhysicsState } from '$types/physics';
 import type { Cosmetics } from '$types/schema';
 
-const dataPath = join(__dirname, "../data");
+export const basePath = join(__dirname, "..");
+export const dataPath = join(basePath, "data");
+export const mapsPath = join(basePath, "maps");
+export const publicPath = join(basePath, "public");
+
 const readData = (name: string) => {
     let path = join(dataPath, `${name}.json`);
     return JSON.parse(fs.readFileSync(path).toString());
