@@ -1,4 +1,6 @@
-import type { ExperienceCategory, Map, MapMeta } from '$types/map';
+import type { ExperienceCategory, Map, MapInfo, MapMeta } from '$types/map';
+import PluginManager from '../plugins';
+import { formatList } from '../utils';
 import express from './express';
 import fs from 'fs/promises';
 
@@ -10,7 +12,7 @@ export default class MapData {
     static getByPageId(id: string) { return this.maps.find((m) => m.pageId === id) }
 
     static warnNoMaps() {
-        console.log('💡 There are currently no maps in the maps folder')
+        console.log('💡 There are currently no maps in the maps folder');
     }
 
     static init() {
@@ -30,7 +32,11 @@ export default class MapData {
                     pageId: `gimloader/${map.pageId}`,
                     mapId: map.mapId,
                     isPremiumExperience: false,
-                    ...map.meta
+                    name: map.meta.name,
+                    tagline: map.meta.tagline,
+                    imageUrl: map.meta.imageUrl,
+                    tag: map.meta.tag,
+                    labels: map.meta.labels
                 });
             }
 
@@ -76,8 +82,25 @@ export default class MapData {
         
         for(let file of files) {
             try {
-                let json = await Bun.file(`./maps/${file}`).json();
-                let mapMeta: MapMeta = json.meta ?? this.getMapMeta(file);
+                let json: MapInfo = await Bun.file(`./maps/${file}`).json();
+                let mapMeta = json.meta ?? this.getMapMeta(file);
+
+                // confirm that we have all the needed map plugins
+                if(json.requiredPlugins) {
+                    let missing: string[] = [];
+                    let id = file.replace(".json", "");
+
+                    for(let plugin of json.requiredPlugins) {
+                        if(!PluginManager.pluginLoaded(plugin, id)) {
+                            missing.push(plugin);
+                        }
+                    }
+                
+                    if(missing.length > 0) {
+                        console.log(`❌ The map "${id}" is missing the plugin${missing.length > 1 ? 's' : ''} ${formatList(missing)}`);
+                        continue;
+                    }
+                }
     
                 this.maps.push({
                     file,

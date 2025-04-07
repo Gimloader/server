@@ -11,6 +11,6 @@ app.use('/assets/map', express.static('public'));
 
 app.listen(config.apiPort);
 
-PluginManager.trigger("onExpress", app);
+PluginManager.trigger("onExpress", null, app);
 
 export default app;

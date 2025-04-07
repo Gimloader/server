@@ -67,12 +67,12 @@ export class GameRoom extends Room<GimkitState> {
                 map: this.map,
                 mapSettings: this.mapSettings
             }));
+
+            PluginManager.trigger("onRoom", map.file.replace(".json", ""), this);
         } else {
             this.disconnect();
             return;
         }
-
-        PluginManager.trigger("onRoom", this);
 
         this.onMsg("REQUEST_INITIAL_WORLD", (player) => {
             player.client.send("DEVICES_STATES_CHANGES", this.devices.getInitialChanges());

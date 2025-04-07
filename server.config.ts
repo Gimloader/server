@@ -12,5 +12,8 @@ export default config({
     // visibleGamePort: 5824,
 
     // Plugins for the server to use
-    plugins: []
+    plugins: [],
+
+    // Plugins to apply per-map
+    // mapPlugins: {}
 });

@@ -1,4 +1,24 @@
-import type { ServerConfig } from "$types/config";
+import type { ServerConfig, UserConfig } from "$types/config";
+
+export function config(config: UserConfig): ServerConfig {
+    if(!config.address.startsWith("http://") && !config.address.startsWith("https://")) {
+        config.address = "http://" + config.address;
+    }
+    if(!config.visibleGamePort) config.visibleGamePort = config.gamePort;
+
+    if(!config.mapPlugins) {
+        config.mapPlugins = {};
+    } else {
+        for(let id in config.mapPlugins) {
+            let plugins = config.mapPlugins[id];
+            if(Array.isArray(plugins)) continue;
+            
+            config.mapPlugins[id] = [plugins];
+        }
+    }
+
+    return config as ServerConfig;
+}
 
 export function random(min: number, max: number) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -86,10 +106,8 @@ export function isPrime(num: number) {
     return num > 1;
 }
 
-export function config(config: ServerConfig) {
-    if(!config.address.startsWith("http://") && !config.address.startsWith("https://")) {
-        config.address = "http://" + config.address;
-    }
-    if(!config.visibleGamePort) config.visibleGamePort = config.gamePort;
-    return config;
+export function formatList(strs: string[]) {
+    if(strs.length === 1) return strs[0];
+    if(strs.length === 2) return `${strs[0]} and ${strs[1]}`;
+    return `${strs.slice(0, -1).join(", ")}, and ${strs.at(-1)}`;
 }

@@ -57,6 +57,7 @@ export interface MapInfo {
     tiles: Record<string, TileInfo>;
     wires: Wire[];
     meta?: MapMeta;
+    requiredPlugins?: string[];
 }
 
 export interface Map {
@@ -73,12 +74,21 @@ export interface ExperienceCategory {
     items: ExperienceInfo[];
 }
 
-export interface ExperienceInfo extends MapMeta {
+export interface ExperienceInfo {
     _id: string;
     source: "map";
     pageId?: string;
     mapId: string;
     isPremiumExperience: boolean;
+    name: string;
+    tagline: string;
+    imageUrl: string;
+    tag: string;
+    labels: {
+        c: string; // complexity
+        d: string; // duration
+        s: string; // style
+    }
 }
 
 export interface TerrainOption {

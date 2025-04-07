@@ -1,13 +1,20 @@
 import type { Express } from 'express';
 import type { GameRoom } from '../colyseus/room';
 
-export interface ServerConfig {
+export interface UserConfig {
     address: string;
     apiPort: number;
     gamePort: number;
     visibleGamePort?: number;
     plugins: Plugin[];
+    mapPlugins?: Record<string, Plugin | Plugin[]>;
 }
+
+type Modify<T, R> = Omit<T, keyof R> & R;
+
+export type ServerConfig = Modify<Required<UserConfig>, {
+    mapPlugins: Record<string, Plugin[]>;
+}>;
 
 export interface Plugin {
     name: string;
