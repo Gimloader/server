@@ -5,13 +5,16 @@
   "keywords": [
     "Gimloader"
   ],
-  "homepage": "https://github.com/TheLazySquid/Gimloader#readme",
+  "homepage": "https://github.com/Gimloader/server",
   "bugs": {
-    "url": "https://github.com/TheLazySquid/Gimloader/issues"
+    "url": "https://github.com/Gimloader/server/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TheLazySquid/Gimloader.git"
+    "url": "git+https://github.com/Gimloader/server.git"
+  },
+  "scripts": {
+    "start": "bun run src/index.ts"
   },
   "license": "MIT",
   "author": "TheLazySquid",

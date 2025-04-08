@@ -13,6 +13,7 @@ import PluginManager from "../plugins";
 import { join } from "node:path";
 import { mapsPath } from "../consts";
 import type { MapInfo } from "$types/map";
+import { MapOptionsOptions } from "$types/devices";
 
 interface RoomOptions {
     intentId: string;
@@ -31,7 +32,7 @@ export class GameRoom extends Room<GimkitState> {
     physics: PhysicsManager;
     world: RAPIER.World;
     devices: DeviceManager;
-    mapSettings: Record<string, any>;
+    mapSettings: MapOptionsOptions;
     terrain: TileManager;
     updateTimeInterval: Timer;
     teams: TeamManager;

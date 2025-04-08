@@ -86,8 +86,8 @@ export default class Inventory {
     }
 
     removeItemAmount(id: string, amount: number) {
-        if(!this.inventory.slots.has(id)) return;
-        if(this.inventory.slots.get(id).amount < amount) return;
+        if(!this.inventory.slots.has(id)) return false;
+        if(this.inventory.slots.get(id).amount < amount) return false;
 
         this.inventory.slots.get(id).amount -= amount;
         if(this.inventory.slots.get(id).amount <= 0) {
@@ -214,8 +214,26 @@ export default class Inventory {
     onReload() {
         let activeItem = this.getActiveSlot();
         if(!activeItem || activeItem.currentClip === activeItem.clipSize || activeItem.waiting) return;
+
         let gadget = gadgetOptions[activeItem.itemId];
         if(!gadget || !gadget.clipSize) return;
+
+        let newClip = activeItem.clipSize;
+
+        // confirm that the player has the needed items if infinite ammo is disabled
+        if(!this.room.mapSettings.infiniteAmmo) {
+            let item = this.getItemInfo(activeItem.itemId);
+            if(item.type !== "weapon" || item.weapon.type !== "bullet") return;
+
+            let ammoId = item.weapon.bullet.ammoItemId;
+            let amount = this.inventory.slots.get(ammoId)?.amount ?? 0;
+
+            if(amount === 0) return;
+            let consume = Math.min(activeItem.clipSize - activeItem.currentClip, amount);
+            newClip = activeItem.currentClip + consume;
+
+            this.removeItemAmount(ammoId, consume);
+        }
 
         // temporarily disable the item
         activeItem.waiting = true;
@@ -224,7 +242,7 @@ export default class Inventory {
 
         setTimeout(() => {
             activeItem.waiting = false;
-            activeItem.currentClip = activeItem.clipSize;
+            activeItem.currentClip = newClip;
         }, gadget.reloadTime);
     }
 }
