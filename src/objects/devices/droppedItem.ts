@@ -19,11 +19,16 @@ export default class DroppedItemDevice extends BaseDevice<"droppedItem"> {
         if(key !== "interacted") return;
         if(!this.globalState.canBeCollected) return;
 
-        player.inventory.addItem(this.options.itemId, this.globalState.amount, this.options.currentClip);
-        this.updateGlobalState("canBeCollected", false);
-        this.updateGlobalState("alreadyCollected", true);
+        let overflow = player.inventory.addItem(this.options.itemId, this.globalState.amount, this.options.currentClip);
 
-        // remove the device from the map
-        setTimeout(() => this.deviceManager.removeDevice(this), 600);
+        if(overflow > 0) {
+            this.updateGlobalState("amount", this.globalState.amount - overflow);
+        } else {
+            this.updateGlobalState("canBeCollected", false);
+            this.updateGlobalState("alreadyCollected", true);
+    
+            // remove the device from the map
+            setTimeout(() => this.deviceManager.removeDevice(this), 600);
+        }
     }
 }

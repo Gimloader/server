@@ -40,23 +40,49 @@ export default class Inventory {
         }
 
         // if it's an interactive item put it in the interactive slots
-        if(item.type === "resource") return;
-        for(let [slotId, slot] of this.inventory.interactiveSlots) {
+        let slots = this.room.mapSettings.interactiveItemsSlots;
+
+        if(item.type === "resource" || slots === 0) return 0;
+        let maxStack = 1;
+        if(item.type === "item") maxStack = item.maxStackSize;
+
+        let remaining = amount;
+
+        // attempt to stack the item first
+        for(let i = 1; i <= slots && remaining > 0; i++) {
+            let slot = this.inventory.interactiveSlots.get(i.toString());
+            if(slot.itemId !== id) continue;
+            
+            if(slot.count < maxStack) {
+                let transfer = Math.min(remaining, maxStack - slot.count);
+                remaining -= transfer;
+                slot.count += transfer;
+            }
+        }
+        
+        // put it in empty slots
+        for(let i = 1; i <= slots && remaining > 0; i++) {
+            let slot = this.inventory.interactiveSlots.get(i.toString());
             if(slot.itemId) continue;
 
-            let newSlot: InteractiveSlotsItem;
+            slot.itemId = id;
             if(item.type === "weapon" && item.weapon.type !== "melee") {
                 let gadget = gadgetOptions[item.id];
-                if(currentClip === undefined) currentClip = gadget.clipSize;
-                
-                newSlot = new InteractiveSlotsItem(id, { clipSize: gadget.clipSize, currentClip });
-            } else {
-                newSlot = new InteractiveSlotsItem(id);
+                slot.currentClip = currentClip ?? gadget.clipSize;
+                slot.clipSize = gadget.clipSize;
             }
 
-            this.inventory.interactiveSlots.set(slotId, newSlot);
-            break;
+            let transfer = Math.min(remaining, maxStack);
+            remaining -= transfer;
+            slot.count = transfer;
         }
+
+        // if there are any items that can't be added remove them from the count
+        if(remaining > 0) {
+            this.inventory.slots.get(id).amount -= remaining;
+        }
+
+        return remaining;
     }
 
     removeItemAmount(id: string, amount: number) {
@@ -73,20 +99,19 @@ export default class Inventory {
     
     removeItemSlot(amount: number, slotNum: number) {
         let slot = this.inventory.interactiveSlots.get(slotNum.toString());
-        if(slot.count < amount) return;
+        if(slot.count < amount) return false;
 
         if(this.inventory.activeInteractiveSlot === slotNum) {
             this.inventory.activeInteractiveSlot = 0;
         }
 
         slot.count -= amount;
+        this.removeItemAmount(slot.itemId, amount);
 
         if(slot.count <= 0) {
             slot.itemId = "";
             slot.count = 0;
         }
-        
-        this.removeItemAmount(slot.itemId, amount);
 
         return true;
     }
@@ -96,7 +121,7 @@ export default class Inventory {
         let currentClip = 0;
 
         if(interactiveSlotNumber) {
-            let item = this.getActiveSlot();
+            let item = this.inventory.interactiveSlots.get(interactiveSlotNumber.toString());
             if(!item) return;
             
             itemId = item.itemId;
