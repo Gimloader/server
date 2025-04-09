@@ -8,6 +8,9 @@ export default class TeamManager {
 
     constructor(room: GameRoom) {
         this.room = room;
+
+        this.room.onStart(this.start.bind(this));
+        this.room.onRestore(this.restore.bind(this));
     }
 
     start() {
@@ -27,7 +30,7 @@ export default class TeamManager {
         } else {
             let teams: number;
             if(teamType === "Split Into Size") {
-                teams = Math.ceil(this.room.players.size / this.room.mapSettings.teamSize);
+                teams = Math.ceil(this.room.players.length / this.room.mapSettings.teamSize);
             } else {
                 teams = this.room.mapSettings.teamsNumber;
             }

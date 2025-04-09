@@ -37,6 +37,9 @@ export default class Player {
         this.onMsg("AIMING", ({ angle }: { angle: number }) => {
             this.player.projectiles.aimAngle = angle;
         });
+
+        this.room.onStart(this.moveToSpawnpointBound);
+        this.room.onRestore(this.moveToSpawnpointBound);
     }
 
     onMsg(type: string, callback: MsgCallback) {
@@ -133,6 +136,7 @@ export default class Player {
         return { x, y }
     }
 
+    moveToSpawnpointBound = this.moveToSpawnpoint.bind(this);
     moveToSpawnpoint() {
         let { x, y } = this.getSpawnpoint();
 
@@ -143,7 +147,9 @@ export default class Player {
     }
 
     leaveGame() {
-        this.room.state.characters.delete(this.id);        
+        this.room.state.characters.delete(this.id);
+        this.room.offStart(this.moveToSpawnpointBound);
+        this.room.offRestore(this.moveToSpawnpointBound);
     }
 
     onInput(message: number[]) {

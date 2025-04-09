@@ -36,18 +36,19 @@ export class GameRoom extends Room<GimkitState> {
     terrain: TileManager;
     updateTimeInterval: Timer;
     teams: TeamManager;
-    players = new Map<Client, Player>();
+    players: Player[] = [];
     host: Player;
     gameStarted: number = 0;
     messageEvents = new EventEmitter();
+    startCallbacks = new Set<() => void>();
+    restoreCallbacks = new Set<() => void>();
 
-    onMsg(type: string, callback: MsgCallback) {
-        this.messageEvents.on(type, callback);
-    }
-
-    offMsg(type: string, callback: MsgCallback) {
-        this.messageEvents.off(type, callback);
-    }
+    onMsg(type: string, callback: MsgCallback) { this.messageEvents.on(type, callback); }
+    offMsg(type: string, callback: MsgCallback) { this.messageEvents.off(type, callback); }
+    onStart(callback: () => void) { this.startCallbacks.add(callback); }
+    offStart(callback: () => void) { this.startCallbacks.delete(callback); }
+    onRestore(callback: () => void) { this.restoreCallbacks.add(callback); }
+    offRestore(callback: () => void) { this.restoreCallbacks.delete(callback); }
     
     async onCreate(options: RoomOptions) {
         this.game = Matchmaker.getByHostIntent(options.intentId);
@@ -92,8 +93,7 @@ export class GameRoom extends Room<GimkitState> {
             this.state.session.gameSession.phase = "game";
             this.gameStarted = Date.now() + 1200;
             this.showLoading(1200, () => {
-                this.teams.start();
-                for(let p of this.players.values()) p.moveToSpawnpoint();
+                for(let cb of this.startCallbacks) cb();
             });
         });
 
@@ -111,14 +111,12 @@ export class GameRoom extends Room<GimkitState> {
             this.state.session.phase = "preGame";
             this.showLoading(1200, () => {
                 this.broadcast("RESET");
-                this.devices.restore();
-                this.teams.restore();
-                for(let p of this.players.values()) p.moveToSpawnpoint();
+                for(let cb of this.restoreCallbacks) cb();
             });
         });
         
         this.onMessage("*", (client, type: string, message) => {
-            let player = this.players.get(client);
+            let player = this.players.find((p) => p.client === client);
             if(!player) return;
             
             this.messageEvents.emit(type, player, message);
@@ -156,19 +154,20 @@ export class GameRoom extends Room<GimkitState> {
             this.host = player;
             player.isHost = true;
         }
-        this.players.set(client, player);
+        this.players.push(player);
 
         this.devices.onJoin(player);
     }
 
     onLeave(client: Client, consented: boolean) {
         const kickPlayer = () => {
-            let player = this.players.get(client);
-            if(!player) return;
+            let index = this.players.findIndex((p) => p.client === client);
+            if(index === -1) return;
+            let player = this.players[index];
 
             player.leaveGame();
             this.teams.onLeave(player);
-            this.players.delete(client);
+            this.players.splice(index, 1);
         }
 
         if(consented) {

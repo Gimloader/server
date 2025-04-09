@@ -35,6 +35,8 @@ export default class DeviceManager {
         this.room.onMsg("MESSAGE_FOR_DEVICE", this.onMessage.bind(this));
         this.room.onMsg("UPDATE_DEVICE_UI_PRESENCE", this.updateUI.bind(this));
 
+        this.room.onRestore(this.restore.bind(this));
+
         // setTimeout to avoid some jank with this.room being undefined
         let inits = this.devices.map((d) => Promise.resolve(d.init?.()));
         Promise.all(inits).then(() => {

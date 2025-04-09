@@ -20,6 +20,19 @@ export default class Inventory {
         player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", this.onSetInteractive.bind(this));
         player.onMsg("FIRE", this.onFire.bind(this));
         player.onMsg("RELOAD", this.onReload.bind(this));
+        player.onMsg("SET_INTERACTIVE_SLOTS_ORDER", this.setInteractiveSlotOrder.bind(this));
+
+        this.room.onRestore(this.restore.bind(this));
+    }
+
+    restore() {
+        this.inventory.slots.clear();
+        this.inventory.interactiveSlotsOrder.clear();
+        this.inventory.interactiveSlotsOrder.push(1, 2, 3, 4, 5);
+        this.inventory.activeInteractiveSlot = 0;
+        for(let key of this.inventory.interactiveSlots.keys()) {
+            this.inventory.interactiveSlots.set(key, new InteractiveSlotsItem());
+        }
     }
 
     getActiveSlot() {
@@ -244,5 +257,16 @@ export default class Inventory {
             activeItem.waiting = false;
             activeItem.currentClip = newClip;
         }, gadget.reloadTime);
+    }
+
+    setInteractiveSlotOrder(message: { order: number[] }) {
+        if(!message?.order || !Array.isArray(message.order)) return;
+        if(message.order.length !== 5) return;
+        for(let i = 1; i <= 5; i++) {
+            if(!message.order.includes(i)) return;
+        }
+
+        this.inventory.interactiveSlotsOrder.clear();
+        this.inventory.interactiveSlotsOrder.push(...message.order);
     }
 }
