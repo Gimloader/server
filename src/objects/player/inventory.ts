@@ -21,6 +21,7 @@ export default class Inventory {
         player.onMsg("FIRE", this.onFire.bind(this));
         player.onMsg("RELOAD", this.onReload.bind(this));
         player.onMsg("SET_INTERACTIVE_SLOTS_ORDER", this.setInteractiveSlotOrder.bind(this));
+        player.onMsg("CONSUME", this.onConsume.bind(this));
 
         this.room.onRestore(this.restore.bind(this));
     }
@@ -268,5 +269,19 @@ export default class Inventory {
 
         this.inventory.interactiveSlotsOrder.clear();
         this.inventory.interactiveSlotsOrder.push(...message.order);
+    }
+
+    onConsume(message: { x: number, y: number }) {
+        if(typeof message?.x !== "number" || typeof message?.y !== "number") return;
+        
+        let slot = this.getActiveSlot();
+        let item = this.getItemInfo(slot.itemId);
+        if(slot.count <= 0 || !item || item.type !== "item" || !item.terrainId) return;
+        
+        // currently onConsume is only used by Gimkit to place terrain, but it appears as if
+        // there is room to add other functionality to it
+        this.removeItemSlot(this.inventory.activeInteractiveSlot, 1);
+
+        this.room.terrain.placeTile(message.x, message.y, item.terrainId, true, 6);
     }
 }

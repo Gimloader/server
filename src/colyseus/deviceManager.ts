@@ -1,5 +1,5 @@
 import { topDownPropOptions, platformerPropOptions } from "../consts";
-import { createValuesArray } from "../utils";
+import { createValuesArray, staggered } from "../utils";
 import { GameRoom } from "./room";
 import BaseDevice from "../objects/devices/base";
 import Player from "../objects/player/player";
@@ -67,8 +67,6 @@ export default class DeviceManager {
         this.properties = {};
     }
 
-    broadcastingDevices = false;
-
     createDevice<T extends keyof DeviceOptions = any>(info: DeviceInfo<T>, init = false) {
         let Device: typeof BaseDevice = devices[info.deviceId as any] ?? BaseDevice;
         let device = new Device(this, this.room, info);
@@ -94,15 +92,7 @@ export default class DeviceManager {
         // TODO: Clean up colliders, etc
     }
 
-    startDeviceBroadcast() {
-        if(!this.broadcastingDevices) {
-            this.broadcastingDevices = true;
-            setTimeout(() => {
-                this.broadcastingDevices = false;
-                this.broadcastDeviceChanges();
-            }, 0);
-        }
-    }
+    startDeviceBroadcast = staggered(this.broadcastDeviceChanges.bind(this));
 
     devicesToAdded(devices: BaseDevice[]) {
         let [values, addValue] = createValuesArray<string>();
@@ -225,8 +215,6 @@ export default class DeviceManager {
         }
     }
 
-    broadcastingState = false;
-
     addChange(deviceId: string, key: string, value: string) {
         if(!this.changes.has(deviceId)) this.changes.set(deviceId, {});
 
@@ -234,14 +222,10 @@ export default class DeviceManager {
         if(!this.initialized) return;
 
         // automatically broadcast changes after one goaround of the event loop
-        if(!this.broadcastingState) {
-            this.broadcastingState = true;
-            setTimeout(() => {
-                this.broadcastingState = false;
-                this.broadcastChanges();
-            }, 0);
-        }
+        this.startChangesBroadcast();
     }
+
+    startChangesBroadcast = staggered(this.broadcastChanges.bind(this));
 
     broadcastChanges() {
         let [values, addValue] = createValuesArray<string>();

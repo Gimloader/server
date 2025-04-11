@@ -111,3 +111,17 @@ export function formatList(strs: string[]) {
     if(strs.length === 2) return `${strs[0]} and ${strs[1]}`;
     return `${strs.slice(0, -1).join(", ")}, and ${strs.at(-1)}`;
 }
+
+export function staggered(callback: () => void, delay = 0) {
+    let triggered = false;
+
+    return () => {
+        if(triggered) return;
+        triggered = true;
+
+        setTimeout(() => {
+            callback();
+            triggered = false;
+        }, delay);
+    }
+}

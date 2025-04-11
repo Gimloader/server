@@ -15,8 +15,8 @@ export interface TileInfo {
     terrain: string;
     depth: number;
     collides: boolean;
-    rb: RAPIER.RigidBody;
-    collider: RAPIER.Collider;
+    rb?: RAPIER.RigidBody;
+    collider?: RAPIER.Collider;
 }
 
 export interface CodeGrid {
