@@ -9,7 +9,10 @@
     let tasks = 3;
     const advanceCompleted = () => {
         completed++;
-        if(completed === tasks) console.log(exported);
+        if(completed === tasks) {
+            console.log("Map export completed!");
+            console.log(exported);
+        }
     }
 
     GL.net.onLoad("ExportMap", () => {
