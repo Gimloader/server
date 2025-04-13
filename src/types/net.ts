@@ -34,3 +34,21 @@ export interface FireOptions {
     y: number;
     angle: number;
 }
+
+export interface Point {
+    x: number;
+    y: number;
+}
+
+export interface ProjectileAdded {
+    id: string;
+    startTime: number;
+    endTime: number;
+    start: Point;
+    end: Point;
+    radius: number;
+    appearance: string;
+    ownerId: string;
+    ownerTeamId: string;
+    damage: number;
+}

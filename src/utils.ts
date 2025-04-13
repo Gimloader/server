@@ -125,3 +125,10 @@ export function staggered(callback: () => void, delay = 0) {
         }, delay);
     }
 }
+
+export function angleToVector(angle: number) {
+    return {
+        x: Math.cos(angle),
+        y: Math.sin(angle)
+    }
+}

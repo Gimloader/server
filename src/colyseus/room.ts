@@ -14,6 +14,7 @@ import { join } from "node:path";
 import { mapsPath } from "../consts";
 import type { MapInfo } from "$types/map";
 import { MapOptionsOptions } from "$types/devices";
+import ProjectileManager from "./projectiles";
 
 interface RoomOptions {
     intentId: string;
@@ -36,6 +37,7 @@ export class GameRoom extends Room<GimkitState> {
     terrain: TileManager;
     updateTimeInterval: Timer;
     teams: TeamManager;
+    projectiles: ProjectileManager;
     players: Player[] = [];
     host: Player;
     gameStarted: number = 0;
@@ -64,6 +66,7 @@ export class GameRoom extends Room<GimkitState> {
             this.mapSettings = this.devices.getMapSettings();
             this.terrain = new TileManager(this.map, this);
             this.teams = new TeamManager(this);
+            this.projectiles = new ProjectileManager(this);
 
             this.setState(new GimkitState({
                 gameCode: this.game.code,

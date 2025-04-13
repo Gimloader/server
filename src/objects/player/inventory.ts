@@ -195,33 +195,18 @@ export default class Inventory {
             activeItem.currentClip -= 1;
         }
 
-        let startDistance = item.weapon.shared.startingProjectileDistanceFromCharacter;
-        // TODO: Collision
-        let distance = gadget.distance;
-        let time = distance / gadget.speed;
-
-        this.room.broadcast("PROJECTILE_CHANGES", {
-            added: [
-                {
-                    id: crypto.randomUUID(),
-                    startTime: Date.now(),
-                    endTime: Date.now() + time,
-                    start: {
-                        x: options.x / physicsScale + Math.cos(options.angle) * startDistance,
-                        y: options.y / physicsScale + Math.sin(options.angle) * startDistance
-                    },
-                    end: {
-                        x: options.x / physicsScale + Math.cos(options.angle) * (distance + startDistance),
-                        y: options.y / physicsScale + Math.sin(options.angle) * (distance + startDistance)
-                    },
-                    radius: gadget.radius,
-                    appearance: item.weapon.appearance,
-                    ownerId: this.player.id,
-                    ownerTeamId: this.player.player.teamId,
-                    damage: gadget.damage * this.player.player.projectiles.damageMultiplier
-                }
-            ],
-            hit: []
+        this.room.projectiles.fire({
+            x: options.x,
+            y: options.y,
+            angle: options.angle,
+            maxDistance: gadget.distance,
+            startDistance: item.weapon.shared.startingProjectileDistanceFromCharacter,
+            speed: gadget.speed,
+            radius: gadget.radius,
+            appearance: item.weapon.appearance,
+            ownerId: this.player.id,
+            ownerTeamId: this.player.player.teamId,
+            damage: gadget.damage * this.player.player.projectiles.damageMultiplier
         });
     }
 
