@@ -8,15 +8,18 @@ export default class TileManager {
     map: MapInfo;
     tiles: Record<string, TileInfo>;
     room: GameRoom;
-    added: Record<string, TileInfo> = {};
     updateId = 1;
+    added: Record<string, TileInfo> = {};
+    removedTiles: string[] = [];
     
     constructor(map: MapInfo, room: GameRoom) {
         this.map = map;
-        this.tiles = this.map.tiles;
+        this.tiles = Object.assign({}, this.map.tiles);
         this.room = room;
 
         this.createInitialHitboxes();
+        
+        this.room.onRestore(this.restore.bind(this));
     }
 
     tileCoords(coords: string) {
@@ -36,18 +39,60 @@ export default class TileManager {
         this.startBroadcast();
     }
 
+    removeTile(x: number, y: number, depth: number) {
+        let tile = this.tiles[`${x}_${y}`];
+        if(tile.collider) this.room.world.removeCollider(tile.collider, false);
+        if(tile.rb) this.room.world.removeRigidBody(tile.rb);
+
+        delete this.tiles[`${x}_${y}`];
+
+        // it is unclear why depth is needed
+        this.removedTiles.push(`${depth}_${x}_${y}`);
+
+        this.startBroadcast();
+    }
+
+    restore() {
+        // add/replace any missing/incorrect tiles
+        for(let coords in this.map.tiles) {
+            let [x,y] = this.tileCoords(coords);
+            
+            let mapTile = this.map.tiles[coords];
+            let tile = this.tiles[coords];
+
+            if(tile) {
+                // remove the existing tile
+                if(mapTile.depth !== tile.depth || mapTile.collides !== tile.collides || mapTile.terrain !== tile.terrain) {
+                    this.removeTile(tile.depth, x, y);
+                    this.placeTile(x, y, mapTile.terrain, mapTile.collides, mapTile.depth);
+                }
+            } else {
+                this.placeTile(x, y, mapTile.terrain, mapTile.collides, mapTile.depth);
+            }
+        }
+
+        for(let coords in this.tiles) {
+            if(this.map.tiles[coords]) continue;
+            let [x,y] = this.tileCoords(coords);
+
+            this.removeTile(x, y, this.tiles[coords].depth);
+        }
+    }
+
     startBroadcast = staggered(this.broadcastChanges.bind(this));
 
     broadcastChanges() {
         let added = this.tilesToAdded(this.added);
-        this.added = {};
 
         this.room.broadcast("TERRAIN_CHANGES", {
             added,
             initial: false,
-            removedTiles: [],
+            removedTiles: this.removedTiles,
             updateId: this.updateId++
         });
+
+        this.added = {};
+        this.removedTiles = [];
     }
 
     tilesToAdded(tileInfo: Record<string, TileInfo>) {
