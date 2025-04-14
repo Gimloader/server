@@ -115,16 +115,16 @@ export default class Inventory {
         let slot = this.inventory.interactiveSlots.get(slotNum.toString());
         if(slot.count < amount) return false;
 
-        if(this.inventory.activeInteractiveSlot === slotNum) {
-            this.inventory.activeInteractiveSlot = 0;
-        }
-
         slot.count -= amount;
         this.removeItemAmount(slot.itemId, amount);
 
         if(slot.count <= 0) {
             slot.itemId = "";
             slot.count = 0;
+
+            if(this.inventory.activeInteractiveSlot === slotNum) {
+                this.inventory.activeInteractiveSlot = 0;
+            }
         }
 
         return true;
