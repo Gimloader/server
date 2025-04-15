@@ -18,12 +18,31 @@ interface ProjectileInfo {
     damage: number;
 }
 
+interface Projectile {
+    id: string;
+    x: number;
+    y: number;
+    velocity: RAPIER.Vector2;
+    distance: number;
+    startTime: number;
+    endTime: number;
+    shape: RAPIER.Shape;
+}
+
 export default class ProjectileManager {
     room: GameRoom;
     added: ProjectileAdded[] = [];
+    projectiles: Projectile[] = [];
+    stepInterval: Timer;
 
     constructor(room: GameRoom) {
         this.room = room;
+
+        this.stepInterval = setInterval(this.step.bind(this), 1000 / 30);
+    }
+
+    dispose() {
+        clearImmediate(this.stepInterval);
     }
 
     fire(info: ProjectileInfo) {
@@ -33,20 +52,28 @@ export default class ProjectileManager {
         }
 
         // calculate if we hit any static objects
-        let ray = new RAPIER.Ray(start, angleToVector(info.angle));
-        let hit = this.room.world.castRay(ray, info.maxDistance, true);
+        let shape = new RAPIER.Ball(info.radius);
+        let velocity = angleToVector(info.angle);
+        let hit = this.room.world.castShape(start, 0, velocity, shape, info.maxDistance, true);
 
         let distance: number;
         if(hit) distance = hit.toi;
         else distance = info.maxDistance;
 
-        let end = ray.pointAt(distance);
+        let end = {
+            x: start.x + velocity.x * distance,
+            y: start.y + velocity.y * distance
+        };
         let time = distance / info.speed;
+
+        let id = crypto.randomUUID();
+        let startTime = Date.now();
+        let endTime = startTime + time;
 
         this.added.push({
             id: crypto.randomUUID(),
-            startTime: Date.now(),
-            endTime: Date.now() + time,
+            startTime,
+            endTime,
             start,
             end,
             radius: info.radius,
@@ -56,7 +83,48 @@ export default class ProjectileManager {
             damage: info.damage
         });
 
+        let projectile: Projectile = {
+            id,
+            ...start,
+            velocity,
+            distance,
+            startTime,
+            endTime,
+            shape
+        }
+
+        this.projectiles.push(projectile);
+
         this.startBroadcast();
+    }
+
+    step() {
+        let now = Date.now(); 
+        
+        for(let i = 0; i < this.projectiles.length; i++) {
+            let projectile = this.projectiles[i];
+
+            const elapsed = now - projectile.startTime;
+            const factor = elapsed / (projectile.endTime - projectile.startTime);
+            const distance = factor * projectile.distance;
+
+            let hit = this.room.world.castShape({
+                x: projectile.x,
+                y: projectile.y
+            }, 0, projectile.velocity, projectile.shape, distance, true);
+
+            projectile.x += projectile.velocity.x * factor;
+            projectile.y += projectile.velocity.y * factor;
+
+            if(factor > 1) {
+                this.projectiles.splice(i, 1);
+                i--;
+            }
+
+            if(!hit) continue;
+
+            // TODO: Handle collision
+        }
     }
 
     startBroadcast = staggered(this.broadcastChanges.bind(this));

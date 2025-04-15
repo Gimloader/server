@@ -134,6 +134,7 @@ export class GameRoom extends Room<GimkitState> {
     onDispose() {
         clearInterval(this.updateTimeInterval);
         this.physics.dispose();
+        this.projectiles.dispose();
     }
 
     async onJoin(client: Client, options: ClientOptions) {
