@@ -100,6 +100,7 @@ export interface TerrainOption {
     previewUrl: string;
     blockedMapStyles?: string[];
     minimumRoleLevel?: number;
+    health?: number;
 }
 
 export interface BaseItemOption {

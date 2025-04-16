@@ -24,9 +24,10 @@ interface Projectile {
     y: number;
     velocity: RAPIER.Vector2;
     distance: number;
-    startTime: number;
+    duration: number;
     endTime: number;
     shape: RAPIER.Shape;
+    damage: number;
 }
 
 export default class ProjectileManager {
@@ -34,6 +35,7 @@ export default class ProjectileManager {
     added: ProjectileAdded[] = [];
     projectiles: Projectile[] = [];
     stepInterval: Timer;
+    lastUpdate = Date.now();
 
     constructor(room: GameRoom) {
         this.room = room;
@@ -88,9 +90,10 @@ export default class ProjectileManager {
             ...start,
             velocity,
             distance,
-            startTime,
+            duration: time,
             endTime,
-            shape
+            shape,
+            damage: info.damage
         }
 
         this.projectiles.push(projectile);
@@ -99,13 +102,14 @@ export default class ProjectileManager {
     }
 
     step() {
-        let now = Date.now(); 
+        const now = Date.now();
+        const elapsed = now - this.lastUpdate;
+        this.lastUpdate = now;
         
         for(let i = 0; i < this.projectiles.length; i++) {
             let projectile = this.projectiles[i];
 
-            const elapsed = now - projectile.startTime;
-            const factor = elapsed / (projectile.endTime - projectile.startTime);
+            const factor = elapsed / projectile.duration;
             const distance = factor * projectile.distance;
 
             let hit = this.room.world.castShape({
@@ -113,17 +117,20 @@ export default class ProjectileManager {
                 y: projectile.y
             }, 0, projectile.velocity, projectile.shape, distance, true);
 
-            projectile.x += projectile.velocity.x * factor;
-            projectile.y += projectile.velocity.y * factor;
+            projectile.x += projectile.velocity.x * distance;
+            projectile.y += projectile.velocity.y * distance;
 
-            if(factor > 1) {
+            if(hit || now > projectile.endTime) {
                 this.projectiles.splice(i, 1);
                 i--;
             }
 
             if(!hit) continue;
 
-            // TODO: Handle collision
+            // The hit happens a bit early, not sure why
+            setTimeout(() => {
+                this.room.terrain.onColliderHit(hit.collider.handle, projectile.damage);
+            }, 250);
         }
     }
 

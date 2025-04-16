@@ -1,4 +1,4 @@
-import { physicsScale, tileSize } from "../consts";
+import { physicsScale, tileSize, worldOptions } from "../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
 import { GameRoom } from "./room";
 import type { MapInfo, TileInfo } from "$types/map";
@@ -6,15 +6,18 @@ import { staggered } from "../utils";
 
 export default class TileManager {
     map: MapInfo;
-    tiles: Record<string, TileInfo>;
+    tiles: Map<string, TileInfo>;
+    health = new Map<string, number>();
     room: GameRoom;
     updateId = 1;
-    added: Record<string, TileInfo> = {};
+    added = new Map<string, TileInfo>();
     removedTiles: string[] = [];
+    modifiedHealth: number[][] = [];
+    colliders = new Map<number, string>();
     
     constructor(map: MapInfo, room: GameRoom) {
         this.map = map;
-        this.tiles = Object.assign({}, this.map.tiles);
+        this.tiles = new Map(Object.entries(this.map.tiles));
         this.room = room;
 
         this.createInitialHitboxes();
@@ -27,11 +30,12 @@ export default class TileManager {
     }
 
     placeTile(x: number, y: number, terrain: string, collides: boolean, depth: number) {
-        if(this.tiles[`${x}_${y}`]) return false;
+        const coords = `${x}_${y}`;
+        if(this.tiles.has(coords)) return false;
 
         let info: TileInfo = { terrain, depth, collides };
-        this.tiles[`${x}_${y}`] = info;
-        this.added[`${x}_${y}`] = info;
+        this.tiles.set(coords, info);
+        this.added.set(coords, info);
 
         // create a collider for the new tile
         if(collides) this.createHitbox(x, y, info);
@@ -40,25 +44,34 @@ export default class TileManager {
     }
 
     removeTile(x: number, y: number, depth: number) {
-        let tile = this.tiles[`${x}_${y}`];
-        if(tile.collider) this.room.world.removeCollider(tile.collider, false);
-        if(tile.rb) this.room.world.removeRigidBody(tile.rb);
+        const coords = `${x}_${y}`;
+        let tile = this.tiles.get(coords);
+        this.tiles.delete(coords);
 
-        delete this.tiles[`${x}_${y}`];
+        if(tile.collider) {
+            this.colliders.delete(tile.collider.handle);
+            this.room.world.removeCollider(tile.collider, false);
+            this.room.world.removeRigidBody(tile.rb);
+        }
 
         // it is unclear why depth is needed
-        this.removedTiles.push(`${depth}_${x}_${y}`);
+        this.removedTiles.push(`${depth}_${coords}`);
 
         this.startBroadcast();
     }
 
     restore() {
+        this.added.clear();
+        this.removedTiles = []
+        this.modifiedHealth = [];
+        this.health.clear();
+
         // add/replace any missing/incorrect tiles
         for(let coords in this.map.tiles) {
             let [x,y] = this.tileCoords(coords);
             
             let mapTile = this.map.tiles[coords];
-            let tile = this.tiles[coords];
+            let tile = this.tiles.get(coords);
 
             if(tile) {
                 // remove the existing tile
@@ -73,9 +86,9 @@ export default class TileManager {
 
         for(let coords in this.tiles) {
             if(this.map.tiles[coords]) continue;
-            let [x,y] = this.tileCoords(coords);
+            let [x, y] = this.tileCoords(coords);
 
-            this.removeTile(x, y, this.tiles[coords].depth);
+            this.removeTile(x, y, this.tiles.get(coords).depth);
         }
     }
 
@@ -88,23 +101,23 @@ export default class TileManager {
             added,
             initial: false,
             removedTiles: this.removedTiles,
+            modifiedHealth: this.modifiedHealth,
             updateId: this.updateId++
         });
 
-        this.added = {};
+        this.added.clear();
         this.removedTiles = [];
+        this.modifiedHealth = [];
     }
 
-    tilesToAdded(tileInfo: Record<string, TileInfo>) {
+    tilesToAdded(tileInfo: Map<string, TileInfo>) {
         let terrains: string[] = [];
         let tiles: number[][] = [];
 
         let added = new Set<string>();
-        for(let coords in tileInfo) {
+        for(let [coords, tile] of tileInfo) {
             if(added.has(coords)) continue;
             added.add(coords);
-
-            let tile = this.tiles[coords];
 
             let terrainIndex = terrains.indexOf(tile.terrain);
             if(terrainIndex === -1) {
@@ -118,7 +131,7 @@ export default class TileManager {
 
             let [x, y] = this.tileCoords(coords);
             const tileMatches = (x: number, y: number) => {
-                let otherTile = this.tiles[`${x}_${y}`];
+                let otherTile = this.tiles.get(`${x}_${y}`);
                 if(!otherTile) return;
                 return (
                     otherTile.collides === tile.collides &&
@@ -159,8 +172,7 @@ export default class TileManager {
     }
 
     createInitialHitboxes() {
-        for(let coords in this.tiles) {
-            let info = this.tiles[coords];
+        for(let [coords, info] of this.tiles) {
             if(!info.collides) continue;
 
             let [tX, tY] = this.tileCoords(coords);
@@ -186,5 +198,34 @@ export default class TileManager {
 
         info.rb = rb;
         info.collider = collider;
+
+        this.colliders.set(collider.handle, `${tX}_${tY}`);
+    }
+
+    onColliderHit(handle: number, damage: number) {
+        let coords = this.colliders.get(handle);
+        if(!coords) return;
+
+        let tile = this.tiles.get(coords);
+
+        let terrain = worldOptions.terrainOptions.find(t => t.id === tile.terrain);
+        if(!terrain.health) return;
+        
+        let currentHealth = this.health.get(coords) ?? terrain.health;
+        let health = Math.max(0, currentHealth - damage);
+
+        let [x, y] = this.tileCoords(coords);
+
+        if(health > 0) {
+            this.health.set(coords, health);
+        } else {
+            this.removeTile(x, y, tile.depth);
+            this.health.delete(coords);
+        }
+
+        // [x, y, depth, healthPercent, damage]
+        this.modifiedHealth.push([ x, y, tile.depth, health / terrain.health * 100, damage ]);
+
+        this.startBroadcast();
     }
 }
