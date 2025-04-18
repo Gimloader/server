@@ -49,10 +49,10 @@
             terrain = terrains[terrain];
             collides = collides === 1;
 
-            let tileInfo = { terrain, collides, depth };
+            let tileInfo = { terrain, collides };
 
             const setTile = (x, y) => {
-                exported.tiles[`${x}_${y}`] = tileInfo;
+                exported.tiles[`${depth}_${x}_${y}`] = tileInfo;
             }
 
             if(lengthX) {
