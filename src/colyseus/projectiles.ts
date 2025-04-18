@@ -1,8 +1,8 @@
-import { Point, ProjectileAdded } from "$types/net";
+import { CharacterHit, Point, ProjectileAdded, ProjectileHit } from "$types/net";
 import RAPIER from "@dimforge/rapier2d-compat";
 import { physicsScale } from "../consts";
 import type { GameRoom } from "./room";
-import { angleToVector, staggered } from "../utils";
+import { angleToVector, CollisionGroups, createCollisionGroup, staggered } from "../utils";
 
 interface ProjectileInfo {
     x: number;
@@ -28,14 +28,22 @@ interface Projectile {
     endTime: number;
     shape: RAPIER.Shape;
     damage: number;
+    ownerTeamId: string;
 }
+
+type OnHitCallback = (info: {
+    damage: number;
+    ownerTeamId: string;
+}) => CharacterHit | void;
 
 export default class ProjectileManager {
     room: GameRoom;
     added: ProjectileAdded[] = [];
+    hits: ProjectileHit[] = [];
     projectiles: Projectile[] = [];
     stepInterval: Timer;
     lastUpdate = Date.now();
+    onHitCallbacks = new Map<number, OnHitCallback>();
 
     constructor(room: GameRoom) {
         this.room = room;
@@ -56,11 +64,16 @@ export default class ProjectileManager {
         // calculate if we hit any static objects
         let shape = new RAPIER.Ball(info.radius);
         let velocity = angleToVector(info.angle);
-        let hit = this.room.world.castShape(start, 0, velocity, shape, info.maxDistance, true);
+        let hit = this.room.world.castShape(
+            start, 0, velocity, shape, info.maxDistance,
+            true, null,
+            createCollisionGroup({
+                belongs: [CollisionGroups.everything],
+                collidesWith: [CollisionGroups.staticWorldCollider]
+            })
+        );
 
-        let distance: number;
-        if(hit) distance = hit.toi;
-        else distance = info.maxDistance;
+        let distance = hit ? hit.toi : info.maxDistance;
 
         let end = {
             x: start.x + velocity.x * distance,
@@ -73,7 +86,7 @@ export default class ProjectileManager {
         let endTime = startTime + time;
 
         this.added.push({
-            id: crypto.randomUUID(),
+            id,
             startTime,
             endTime,
             start,
@@ -93,12 +106,21 @@ export default class ProjectileManager {
             duration: time,
             endTime,
             shape,
-            damage: info.damage
+            damage: info.damage,
+            ownerTeamId: info.ownerTeamId
         }
 
         this.projectiles.push(projectile);
 
         this.startBroadcast();
+    }
+
+    onHit(collider: RAPIER.Collider, callback: OnHitCallback) {
+        this.onHitCallbacks.set(collider.handle, callback);
+    }
+
+    offHit(collider: RAPIER.Collider) {
+        this.onHitCallbacks.delete(collider.handle);
     }
 
     step() {
@@ -117,8 +139,9 @@ export default class ProjectileManager {
                 y: projectile.y
             }, 0, projectile.velocity, projectile.shape, distance, true);
 
-            projectile.x += projectile.velocity.x * distance;
-            projectile.y += projectile.velocity.y * distance;
+            let moveDistance = hit ? hit.toi : distance;
+            projectile.x += projectile.velocity.x * moveDistance;
+            projectile.y += projectile.velocity.y * moveDistance;
 
             if(hit || now > projectile.endTime) {
                 this.projectiles.splice(i, 1);
@@ -129,7 +152,24 @@ export default class ProjectileManager {
 
             // The hit happens a bit early, not sure why
             setTimeout(() => {
-                this.room.terrain.onColliderHit(hit.collider.handle, projectile.damage);
+                let handle = hit.collider.handle;
+                let callback = this.onHitCallbacks.get(handle)
+                if(!callback) return;
+
+                let hitInfo = callback({
+                    damage: projectile.damage,
+                    ownerTeamId: projectile.ownerTeamId
+                });
+
+                if(!hitInfo) return;
+                this.hits.push({
+                    id: projectile.id,
+                    x: projectile.x,
+                    y: projectile.y,
+                    hits: [hitInfo]
+                });
+
+                this.broadcastChanges();
             }, 250);
         }
     }
@@ -139,9 +179,10 @@ export default class ProjectileManager {
     broadcastChanges() {
         this.room.broadcast("PROJECTILE_CHANGES", {
             added: this.added,
-            hit: []
+            hit: this.hits
         });
 
+        this.hits = [];
         this.added = [];
     }
 }

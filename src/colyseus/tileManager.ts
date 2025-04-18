@@ -2,7 +2,7 @@ import { physicsScale, tileSize, worldOptions } from "../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
 import { GameRoom } from "./room";
 import type { MapInfo, TileInfo } from "$types/map";
-import { staggered } from "../utils";
+import { CollisionGroups, createCollisionGroup, staggered } from "../utils";
 
 export default class TileManager {
     map: MapInfo;
@@ -13,7 +13,6 @@ export default class TileManager {
     added = new Map<string, TileInfo>();
     removedTiles: string[] = [];
     modifiedHealth: number[][] = [];
-    colliders = new Map<number, string>();
     
     constructor(map: MapInfo, room: GameRoom) {
         this.map = map;
@@ -49,7 +48,7 @@ export default class TileManager {
         this.tiles.delete(coords);
 
         if(tile.collider) {
-            this.colliders.delete(tile.collider.handle);
+            this.room.projectiles.offHit(tile.collider);
             this.room.world.removeCollider(tile.collider, false);
             this.room.world.removeRigidBody(tile.rb);
         }
@@ -187,11 +186,15 @@ export default class TileManager {
         let height = tileSize / 2 / physicsScale;
 
         let rbDesc = RAPIER.RigidBodyDesc.fixed().setTranslation(x, y);
-        let colliderDesc = RAPIER.ColliderDesc.cuboid(width, height);
-        colliderDesc.setRestitution(0);
-        colliderDesc.setFriction(0);
-        colliderDesc.setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Min);
-        colliderDesc.setFriction(RAPIER.CoefficientCombineRule.Min);
+        let colliderDesc = RAPIER.ColliderDesc.cuboid(width, height)
+            .setRestitution(0)
+            .setFriction(0)
+            .setRestitutionCombineRule(RAPIER.CoefficientCombineRule.Min)
+            .setFriction(RAPIER.CoefficientCombineRule.Min)
+            .setCollisionGroups(createCollisionGroup({
+                belongs: [CollisionGroups.staticWorldCollider],
+                collidesWith: [CollisionGroups.everything]
+            }));
 
         let rb = this.room.world.createRigidBody(rbDesc);
         let collider = this.room.world.createCollider(colliderDesc, rb);
@@ -199,33 +202,29 @@ export default class TileManager {
         info.rb = rb;
         info.collider = collider;
 
-        this.colliders.set(collider.handle, `${tX}_${tY}`);
-    }
+        this.room.projectiles.onHit(collider, ({ damage }) => {
+            const coords = `${tX}_${tY}`;
+            let tile = this.tiles.get(coords);
 
-    onColliderHit(handle: number, damage: number) {
-        let coords = this.colliders.get(handle);
-        if(!coords) return;
-
-        let tile = this.tiles.get(coords);
-
-        let terrain = worldOptions.terrainOptions.find(t => t.id === tile.terrain);
-        if(!terrain.health) return;
-        
-        let currentHealth = this.health.get(coords) ?? terrain.health;
-        let health = Math.max(0, currentHealth - damage);
-
-        let [x, y] = this.tileCoords(coords);
-
-        if(health > 0) {
-            this.health.set(coords, health);
-        } else {
-            this.removeTile(x, y, tile.depth);
-            this.health.delete(coords);
-        }
-
-        // [x, y, depth, healthPercent, damage]
-        this.modifiedHealth.push([ x, y, tile.depth, health / terrain.health * 100, damage ]);
-
-        this.startBroadcast();
+            let terrain = worldOptions.terrainOptions.find(t => t.id === tile.terrain);
+            if(!terrain.health) return;
+            
+            let currentHealth = this.health.get(coords) ?? terrain.health;
+            let health = Math.max(0, currentHealth - damage);
+    
+            let [x, y] = this.tileCoords(coords);
+    
+            if(health > 0) {
+                this.health.set(coords, health);
+            } else {
+                this.removeTile(x, y, tile.depth);
+                this.health.delete(coords);
+            }
+    
+            // [x, y, depth, healthPercent, damage]
+            this.modifiedHealth.push([ x, y, tile.depth, health / terrain.health * 100, damage ]);
+    
+            this.startBroadcast();
+        });
     }
 }

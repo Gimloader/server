@@ -8,6 +8,7 @@ import Inventory from "./inventory";
 import { EventEmitter } from "node:stream";
 import type { Cosmetics } from "$types/schema";
 import type { PhysicsObjects, PhysicsState } from "$types/physics";
+import { DamageType } from "$types/net";
 
 type MsgCallback = (message: any) => void;
 
@@ -55,11 +56,11 @@ export default class Player {
 
         this.inventory = new Inventory(this, this.room);
 
-        this.player = new CharactersItem({
+        this.player = new CharactersItem(this.room.mapOptions, {
             id: this.id,
             x, y,
             name: this.name,
-            infiniteAmmo: this.room.mapSettings.infiniteAmmo,
+            infiniteAmmo: this.room.mapOptions.infiniteAmmo,
             cosmetics: this.cosmetics,
             inventory: this.inventory.inventory
         });
@@ -109,6 +110,34 @@ export default class Player {
         this.physicsObjects = { controller, rb, collider };
 
         this.player.completedInitialPlacement = true;
+
+        this.room.projectiles.onHit(collider, ({ damage, ownerTeamId }) => {
+            if(ownerTeamId === this.player.teamId) return;
+
+            // TODO: Fragility
+            let remaining = damage;
+            let type: DamageType;
+
+            if(this.player.health.shield > 0) {
+                let shieldDamage = Math.min(this.player.health.shield, remaining);
+                this.player.health.shield -= shieldDamage;
+                remaining -= shieldDamage;
+
+                if(remaining > 0) type = DamageType.brokenShield;
+                else type = DamageType.shield;
+            } else {
+                type = DamageType.health;
+            }
+            
+            let healthDamage = Math.min(this.player.health.health, remaining);
+            this.player.health.health -= healthDamage;
+
+            return {
+                characterId: this.id,
+                damage,
+                type
+            }
+        });
     }
 
     syncPhysics(teleport: boolean) {
@@ -166,5 +195,9 @@ export default class Player {
         this.player.physics.isGrounded = grounded;
         this.player.x = x * physicsScale;
         this.player.y = y * physicsScale;
+    }
+
+    takeDamage() {
+        
     }
 }

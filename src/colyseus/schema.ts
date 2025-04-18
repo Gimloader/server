@@ -1,6 +1,7 @@
 import { Schema, ArraySchema, MapSchema, type } from "@colyseus/schema";
 import type { CodeGrid, MapInfo } from "$types/map";
 import type { CharacterOptions, Cosmetics, InteractiveSlotOptions, SessionOptions, StateOptions } from "$types/schema";
+import { MapOptionsOptions } from "$types/devices";
 
 export class Hooks extends Schema {
     @type("string") hookJSON: string = '{"hooks":[]}';
@@ -41,6 +42,16 @@ export class Health extends Schema {
     @type("boolean") spawnImmunityActive: boolean = false;
     @type("boolean") classImmunityActive: boolean = false;
     @type("boolean") showHealthBar: boolean = true;
+
+    constructor(mapOptions: MapOptionsOptions) {
+        super();
+
+        this.fragility = mapOptions.startingFragility;
+        this.health = mapOptions.startingHealth;
+        this.shield = mapOptions.startingShield;
+        this.maxHealth = mapOptions.maxHealth;
+        this.maxShield = mapOptions.maxShield;
+    }
 }
 
 export class Assignment extends Schema {
@@ -91,7 +102,7 @@ export class Inventory extends Schema {
     @type([ "number" ]) interactiveSlotsOrder = new ArraySchema<number>(1, 2, 3, 4, 5);
     @type("boolean") infiniteAmmo: boolean;
 
-    constructor(options: { infiniteAmmo: boolean }) {
+    constructor(mapOptions: MapOptionsOptions) {
         super();
 
         let interactiveSlots: Record<string, InteractiveSlotsItem> = {};
@@ -100,7 +111,7 @@ export class Inventory extends Schema {
         }
 
         this.interactiveSlots = new MapSchema<InteractiveSlotsItem>(interactiveSlots);
-        this.infiniteAmmo = options.infiniteAmmo;
+        this.infiniteAmmo = mapOptions.infiniteAmmo;
     }
 }
 
@@ -154,13 +165,15 @@ export class CharactersItem extends Schema {
     @type(Inventory) inventory: Inventory;
     @type(Xp) xp: Xp = new Xp();
     @type(Assignment) assignment: Assignment = new Assignment();
-    @type(Health) health: Health = new Health();
+    @type(Health) health: Health;
     @type(Projectiles) projectiles: Projectiles = new Projectiles();
     @type(ZoneAbilitiesOverrides) zoneAbilitiesOverrides: ZoneAbilitiesOverrides = new ZoneAbilitiesOverrides();
     @type(Physics) physics: Physics = new Physics();
 
-    constructor(options: CharacterOptions) {
+    constructor(mapInfo: MapOptionsOptions, options: CharacterOptions) {
         super();
+
+        this.health = new Health(mapInfo);
         this.id = options.id;
         this.name = options.name;
         this.x = options.x;

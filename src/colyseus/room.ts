@@ -33,7 +33,7 @@ export class GameRoom extends Room<GimkitState> {
     physics: PhysicsManager;
     world: RAPIER.World;
     devices: DeviceManager;
-    mapSettings: MapOptionsOptions;
+    mapOptions: MapOptionsOptions;
     terrain: TileManager;
     updateTimeInterval: Timer;
     teams: TeamManager;
@@ -61,18 +61,18 @@ export class GameRoom extends Room<GimkitState> {
 
             this.map = await Bun.file(join(mapsPath, map.file)).json();
             this.physics = new PhysicsManager(this);
+            this.projectiles = new ProjectileManager(this);
             this.world = this.physics.world;
             this.devices = new DeviceManager(this.map, this);
-            this.mapSettings = this.devices.getMapSettings();
+            this.mapOptions = this.devices.getMapSettings();
             this.terrain = new TileManager(this.map, this);
             this.teams = new TeamManager(this);
-            this.projectiles = new ProjectileManager(this);
 
             this.setState(new GimkitState({
                 gameCode: this.game.code,
                 ownerId: options.intentId,
                 map: this.map,
-                mapSettings: this.mapSettings
+                mapSettings: this.mapOptions
             }));
 
             PluginManager.trigger("onRoom", map.file.replace(".json", ""), this);

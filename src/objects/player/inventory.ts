@@ -12,9 +12,7 @@ export default class Inventory {
     constructor(player: Player, room: GameRoom) {
         this.player = player;
         this.room = room;
-        this.inventory = new InventorySchema({
-            infiniteAmmo: room.mapSettings.infiniteAmmo
-        });
+        this.inventory = new InventorySchema(this.room.mapOptions);
 
         player.onMsg("DROP_ITEM", this.onDrop.bind(this));
         player.onMsg("SET_ACTIVE_INTERACTIVE_ITEM", this.onSetInteractive.bind(this));
@@ -54,7 +52,7 @@ export default class Inventory {
         }
 
         // if it's an interactive item put it in the interactive slots
-        let slots = this.room.mapSettings.interactiveItemsSlots;
+        let slots = this.room.mapOptions.interactiveItemsSlots;
 
         if(item.type === "resource" || slots === 0) return 0;
         let maxStack = 1;
@@ -176,7 +174,7 @@ export default class Inventory {
     }
 
     onSetInteractive({ slotNum }: { slotNum: number }) {
-        if(slotNum < 0 || slotNum > this.room.mapSettings.interactiveItemsSlots) return;
+        if(slotNum < 0 || slotNum > this.room.mapOptions.interactiveItemsSlots) return;
         this.inventory.activeInteractiveSlot = slotNum;
     }
 
@@ -220,7 +218,7 @@ export default class Inventory {
         let newClip = activeItem.clipSize;
 
         // confirm that the player has the needed items if infinite ammo is disabled
-        if(!this.room.mapSettings.infiniteAmmo) {
+        if(!this.room.mapOptions.infiniteAmmo) {
             let item = this.getItemInfo(activeItem.itemId);
             if(item.type !== "weapon" || item.weapon.type !== "bullet") return;
 

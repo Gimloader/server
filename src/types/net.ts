@@ -52,3 +52,23 @@ export interface ProjectileAdded {
     ownerTeamId: string;
     damage: number;
 }
+
+export enum DamageType {
+    brokenShield = "b",
+    shield = "s",
+    health = "h",
+    fragility = "f"
+}
+
+export interface CharacterHit {
+    characterId: string;
+    damage: number;
+    type: DamageType;
+}
+
+export interface ProjectileHit {
+    hits: CharacterHit[];
+    id: string;
+    x: number;
+    y: number;
+}

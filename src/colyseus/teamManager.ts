@@ -14,7 +14,7 @@ export default class TeamManager {
     }
 
     start() {
-        let teamType = this.room.mapSettings.teams;
+        let teamType = this.room.mapOptions.teams;
 
         if(teamType === "Free For All") {
             let i = 1;
@@ -30,9 +30,9 @@ export default class TeamManager {
         } else {
             let teams: number;
             if(teamType === "Split Into Size") {
-                teams = Math.ceil(this.room.players.length / this.room.mapSettings.teamSize);
+                teams = Math.ceil(this.room.players.length / this.room.mapOptions.teamSize);
             } else {
-                teams = this.room.mapSettings.teamsNumber;
+                teams = this.room.mapOptions.teamsNumber;
             }
 
             let i = 1;
@@ -56,7 +56,7 @@ export default class TeamManager {
 
     onJoin(player: Player) {
         if(this.room.state.session.phase !== "game") return;
-        let teamType = this.room.mapSettings.teams;
+        let teamType = this.room.mapOptions.teams;
         let teamId: number;
 
         if(teamType === "Free For All") {
@@ -73,7 +73,7 @@ export default class TeamManager {
                 if(
                     this.teamSizes[i] &&
                     this.teamSizes[i] > 0 &&
-                    this.teamSizes[i] <= this.room.mapSettings.teamSize &&
+                    this.teamSizes[i] <= this.room.mapOptions.teamSize &&
                     this.teamSizes[i] < emptiest
                 ) {
                     emptiestTeam = i;
@@ -93,7 +93,7 @@ export default class TeamManager {
             let emptiestTeam: number | null = null;      
 
             // fixed number of teams
-            for(let i = 0; i < this.room.mapSettings.teamsNumber; i++) {
+            for(let i = 0; i < this.room.mapOptions.teamsNumber; i++) {
                 if(this.teamSizes[i] < emptiest) {
                     emptiest = this.teamSizes[i];
                     emptiestTeam = i;
