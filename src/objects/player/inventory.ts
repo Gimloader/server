@@ -265,6 +265,6 @@ export default class Inventory {
         // there is room to add other functionality to it
         this.removeItemSlot(this.inventory.activeInteractiveSlot, 1);
 
-        this.room.terrain.placeTile(message.x, message.y, item.terrainId, true, 6);
+        this.room.terrain.placeTile(6, message.x, message.y, item.terrainId, true);
     }
 }

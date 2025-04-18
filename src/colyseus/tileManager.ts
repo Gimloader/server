@@ -28,22 +28,23 @@ export default class TileManager {
         return coords.split("_").map((c) => parseInt(c));
     }
 
-    placeTile(x: number, y: number, terrain: string, collides: boolean, depth: number) {
-        const coords = `${x}_${y}`;
+    placeTile(depth: number, x: number, y: number, terrain: string, collides: boolean) {
+        const coords = `${depth}_${x}_${y}`;
         if(this.tiles.has(coords)) return false;
 
-        let info: TileInfo = { terrain, depth, collides };
+        let info: TileInfo = { terrain, collides };
         this.tiles.set(coords, info);
         this.added.set(coords, info);
 
         // create a collider for the new tile
-        if(collides) this.createHitbox(x, y, info);
+        if(collides) this.createHitbox(depth, x, y, info);
         
         this.startBroadcast();
     }
 
-    removeTile(x: number, y: number, depth: number) {
-        const coords = `${x}_${y}`;
+    removeTile(depth: number, x: number, y: number) {
+        console.log(depth, x, y)
+        const coords = `${depth}_${x}_${y}`;
         let tile = this.tiles.get(coords);
         this.tiles.delete(coords);
 
@@ -53,7 +54,6 @@ export default class TileManager {
             this.room.world.removeRigidBody(tile.rb);
         }
 
-        // it is unclear why depth is needed
         this.removedTiles.push(`${depth}_${coords}`);
 
         this.startBroadcast();
@@ -67,27 +67,27 @@ export default class TileManager {
 
         // add/replace any missing/incorrect tiles
         for(let coords in this.map.tiles) {
-            let [x,y] = this.tileCoords(coords);
+            let [depth, x, y] = this.tileCoords(coords);
             
             let mapTile = this.map.tiles[coords];
             let tile = this.tiles.get(coords);
 
             if(tile) {
                 // remove the existing tile
-                if(mapTile.depth !== tile.depth || mapTile.collides !== tile.collides || mapTile.terrain !== tile.terrain) {
-                    this.removeTile(tile.depth, x, y);
-                    this.placeTile(x, y, mapTile.terrain, mapTile.collides, mapTile.depth);
+                if(mapTile.collides !== tile.collides || mapTile.terrain !== tile.terrain) {
+                    this.removeTile(depth, x, y);
+                    this.placeTile(depth, x, y, mapTile.terrain, mapTile.collides);
                 }
             } else {
-                this.placeTile(x, y, mapTile.terrain, mapTile.collides, mapTile.depth);
+                this.placeTile(depth, x, y, mapTile.terrain, mapTile.collides);
             }
         }
 
         for(let coords in this.tiles) {
             if(this.map.tiles[coords]) continue;
-            let [x, y] = this.tileCoords(coords);
+            let [depth, x, y] = this.tileCoords(coords);
 
-            this.removeTile(x, y, this.tiles.get(coords).depth);
+            this.removeTile(depth, x, y);
         }
     }
 
@@ -128,13 +128,12 @@ export default class TileManager {
             let lengthX = 0;
             let lengthY = 0;
 
-            let [x, y] = this.tileCoords(coords);
+            let [depth, x, y] = this.tileCoords(coords);
             const tileMatches = (x: number, y: number) => {
-                let otherTile = this.tiles.get(`${x}_${y}`);
+                let otherTile = this.tiles.get(`${depth}_${x}_${y}`);
                 if(!otherTile) return;
                 return (
                     otherTile.collides === tile.collides &&
-                    otherTile.depth == tile.depth &&
                     otherTile.terrain === tile.terrain
                 )
             }
@@ -149,7 +148,7 @@ export default class TileManager {
             }
 
             // [x, y, terrainIndex, collides, depth, lengthX, lengthY]
-            let message = [x, y, terrainIndex, tile.collides ? 1 : 0, tile.depth];
+            let message = [x, y, terrainIndex, tile.collides ? 1 : 0, depth];
             if(lengthX > 0 || lengthY > 0) message.push(lengthX);
             if(lengthY > 0) message.push(lengthY);
 
@@ -174,12 +173,12 @@ export default class TileManager {
         for(let [coords, info] of this.tiles) {
             if(!info.collides) continue;
 
-            let [tX, tY] = this.tileCoords(coords);
-            this.createHitbox(tX, tY, info);
+            let [depth, tX, tY] = this.tileCoords(coords);
+            this.createHitbox(depth, tX, tY, info);
         }
     }
 
-    createHitbox(tX: number, tY: number, info: TileInfo) {
+    createHitbox(depth: number, tX: number, tY: number, info: TileInfo) {
         let x = (tX * tileSize + tileSize / 2) / physicsScale;
         let y = (tY * tileSize + tileSize / 2) / physicsScale;
         let width = tileSize / 2 / physicsScale;
@@ -203,7 +202,7 @@ export default class TileManager {
         info.collider = collider;
 
         this.room.projectiles.onHit(collider, ({ damage }) => {
-            const coords = `${tX}_${tY}`;
+            const coords = `${depth}_${tX}_${tY}`;
             let tile = this.tiles.get(coords);
 
             let terrain = worldOptions.terrainOptions.find(t => t.id === tile.terrain);
@@ -211,18 +210,16 @@ export default class TileManager {
             
             let currentHealth = this.health.get(coords) ?? terrain.health;
             let health = Math.max(0, currentHealth - damage);
-    
-            let [x, y] = this.tileCoords(coords);
-    
+        
             if(health > 0) {
                 this.health.set(coords, health);
             } else {
-                this.removeTile(x, y, tile.depth);
+                this.removeTile(depth, tX, tY);
                 this.health.delete(coords);
             }
     
             // [x, y, depth, healthPercent, damage]
-            this.modifiedHealth.push([ x, y, tile.depth, health / terrain.health * 100, damage ]);
+            this.modifiedHealth.push([ tX, tY, depth, health / terrain.health * 100, damage ]);
     
             this.startBroadcast();
         });

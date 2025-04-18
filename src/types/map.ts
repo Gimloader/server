@@ -13,7 +13,6 @@ export interface DeviceInfo<T extends keyof DeviceOptions> {
 
 export interface TileInfo {
     terrain: string;
-    depth: number;
     collides: boolean;
     rb?: RAPIER.RigidBody;
     collider?: RAPIER.Collider;
