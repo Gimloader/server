@@ -40,7 +40,7 @@ export default class Player {
         });
 
         this.room.onStart(this.moveToSpawnpointBound);
-        this.room.onRestore(this.moveToSpawnpointBound);
+        this.room.onRestore(this.restoreBound);
     }
 
     onMsg(type: string, callback: MsgCallback) {
@@ -114,32 +114,47 @@ export default class Player {
         this.room.projectiles.onHit(collider, ({ damage, ownerTeamId }) => {
             if(ownerTeamId === this.player.teamId) return;
 
-            // TODO: Fragility
-            let remaining = damage;
-            let type: DamageType;
-
-            if(this.player.health.shield > 0) {
-                let shieldDamage = Math.min(this.player.health.shield, remaining);
-                this.player.health.shield -= shieldDamage;
-                remaining -= shieldDamage;
-
-                if(remaining > 0) type = DamageType.brokenShield;
-                else type = DamageType.shield;
-            } else {
-                type = DamageType.health;
-            }
-            
-            let healthDamage = Math.min(this.player.health.health, remaining);
-            this.player.health.health -= healthDamage;
-
-            return {
-                characterId: this.id,
-                damage,
-                type
-            }
+            return this.takeDamage(damage);
         });
     }
 
+    restoreBound = this.restore.bind(this);
+    restore() {
+        this.moveToSpawnpoint();
+
+        this.player.health.health = this.room.mapOptions.startingHealth;
+        this.player.health.shield = this.room.mapOptions.startingShield;
+        this.player.health.fragility = this.room.mapOptions.startingFragility;
+    }
+
+    takeDamage(damage: number) {
+        // TODO: Fragility
+        let remaining = damage;
+        let type: DamageType;
+
+        if(this.player.health.shield > 0) {
+            let shieldDamage = Math.min(this.player.health.shield, remaining);
+            this.player.health.shield -= shieldDamage;
+            remaining -= shieldDamage;
+
+            if(remaining > 0) type = DamageType.brokenShield;
+            else type = DamageType.shield;
+        } else {
+            type = DamageType.health;
+        }
+        
+        let healthDamage = Math.min(this.player.health.health, remaining);
+        this.player.health.health -= healthDamage;
+
+        if(this.player.health.health <= 0) this.restore();
+
+        return {
+            characterId: this.id,
+            damage,
+            type
+        }
+    }
+    
     syncPhysics(teleport: boolean) {
         this.client.send("PHYSICS_STATE", {
             x: this.player.x,
@@ -178,7 +193,7 @@ export default class Player {
     leaveGame() {
         this.room.state.characters.delete(this.id);
         this.room.offStart(this.moveToSpawnpointBound);
-        this.room.offRestore(this.moveToSpawnpointBound);
+        this.room.offRestore(this.restoreBound);
     }
 
     onInput(message: number[]) {
@@ -195,9 +210,5 @@ export default class Player {
         this.player.physics.isGrounded = grounded;
         this.player.x = x * physicsScale;
         this.player.y = y * physicsScale;
-    }
-
-    takeDamage() {
-        
     }
 }

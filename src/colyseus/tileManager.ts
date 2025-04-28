@@ -43,7 +43,6 @@ export default class TileManager {
     }
 
     removeTile(depth: number, x: number, y: number) {
-        console.log(depth, x, y)
         const coords = `${depth}_${x}_${y}`;
         let tile = this.tiles.get(coords);
         this.tiles.delete(coords);
