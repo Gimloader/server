@@ -3,6 +3,7 @@ import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from ".
 import { gadgetOptions, physicsScale, worldOptions } from "../../consts";
 import Player from "./player";
 import type { DropItemOptions, FireOptions } from "$types/net";
+import { WaitOptions } from "$types/objects";
 
 export default class Inventory {
     player: Player;
@@ -233,14 +234,33 @@ export default class Inventory {
         }
 
         // temporarily disable the item
-        activeItem.waiting = true;
-        activeItem.waitingStartTime = Date.now();
-        activeItem.waitingEndTime = Date.now() + gadget.reloadTime;
+        this.startWait({
+            slot: activeItem,
+            duration: gadget.reloadTime,
+            onComplete: () => {
+                activeItem.currentClip = newClip;
+            }
+        });
+    }
 
-        setTimeout(() => {
-            activeItem.waiting = false;
-            activeItem.currentClip = newClip;
-        }, gadget.reloadTime);
+    startWait({ slot, duration, onComplete, moveCancels }: WaitOptions) {
+        slot.waiting = true;
+        slot.waitingStartTime = Date.now();
+        slot.waitingEndTime = Date.now() + duration;
+
+        let timeout = setTimeout(() => {
+            slot.waiting = false;
+            onComplete?.();
+            if(moveCancels) this.player.offMove(cancel);
+        }, duration);
+
+        const cancel = () => {
+            clearTimeout(timeout);
+            slot.waiting = false;
+            this.player.offMove(cancel);
+        }
+        
+        if(moveCancels) this.player.onMove(cancel);
     }
 
     setInteractiveSlotOrder(message: { order: number[] }) {
@@ -255,16 +275,51 @@ export default class Inventory {
     }
 
     onConsume(message: { x: number, y: number }) {
-        if(typeof message?.x !== "number" || typeof message?.y !== "number") return;
-        
         let slot = this.getActiveSlot();
         let item = this.getItemInfo(slot.itemId);
-        if(slot.count <= 0 || !item || item.type !== "item" || !item.terrainId) return;
+
+        if(slot.count <= 0 || !item || item.type !== "item") return;
+        let health = this.player.player.health;
         
         // currently onConsume is only used by Gimkit to place terrain, but it appears as if
         // there is room to add other functionality to it
-        this.removeItemSlot(this.inventory.activeInteractiveSlot, 1);
+        if(item.consumeType === "buildTerrain") {
+            if(typeof message?.x !== "number" || typeof message?.y !== "number") return;
 
-        this.room.terrain.placeTile(6, message.x, message.y, item.terrainId, true);
+            this.removeItemSlot(this.inventory.activeInteractiveSlot, 1);
+    
+            this.room.terrain.placeTile(6, message.x, message.y, item.terrainId, true);
+        } else if(item.id === "shield-can") {
+            // TODO: Move this elsewhere
+            if(health.health === health.maxHealth) {
+                this.player.client.send("CONSUME_ITEM_ERROR", {
+                    slot: this.inventory.activeInteractiveSlot,
+                    errorMessage: "Shield Can Limit Reached"
+                });
+                return;
+            }
+
+            this.startWait({
+                slot: this.getActiveSlot(),
+                duration: 3000,
+                onComplete: () => health.shield = Math.min(health.maxShield, health.shield + 25),
+                moveCancels: true
+            });
+        } else if(item.id === "medpack") {
+            if(health.health === health.maxHealth) {
+                this.player.client.send("CONSUME_ITEM_ERROR", {
+                    slot: this.inventory.activeInteractiveSlot,
+                    errorMessage: "Already At Full Health"
+                });
+                return;
+            }
+
+            this.startWait({
+                slot: this.getActiveSlot(),
+                duration: 6300,
+                onComplete: () => health.health = health.maxHealth,
+                moveCancels: true
+            });
+        }
     }
 }

@@ -184,9 +184,7 @@ export default class Player {
     moveToSpawnpoint() {
         let { x, y } = this.getSpawnpoint();
 
-        this.player.x = x;
-        this.player.y = y;
-        this.physicsObjects.rb.setTranslation({ x, y }, true);
+        this.move(x, y);
         this.syncPhysics(true);
     }
 
@@ -196,10 +194,14 @@ export default class Player {
         this.room.offRestore(this.restoreBound);
     }
 
-    onInput(message: number[]) {
-        let [packetId, jumped, angle, x, y, moveSpeed, teleportCount, lastTerrainUpdate] = message;
+    moveCallbacks: (() => void)[] = [];
+    onMove(callback: () => void) { this.moveCallbacks.push(callback) }
+    offMove(callback: () => void) { this.moveCallbacks = this.moveCallbacks.filter(c => c !== callback) }
 
-        this.physicsObjects.rb.setTranslation({ x, y }, true);
+    move(x: number, y: number) {
+        if(this.player.x === x && this.player.y === y) return;
+
+        this.physicsObjects.rb.setTranslation({ x: x / physicsScale, y: y / physicsScale }, true);
 
         // TODO: Actually validate movement
         this.physicsObjects.controller.computeColliderMovement(this.physicsObjects.collider, { x: 0, y: 0.01 });
@@ -208,7 +210,15 @@ export default class Player {
         let grounded = this.physicsObjects.controller.computedGrounded();
 
         this.player.physics.isGrounded = grounded;
-        this.player.x = x * physicsScale;
-        this.player.y = y * physicsScale;
+        this.player.x = x;
+        this.player.y = y;
+
+        for(let cb of this.moveCallbacks) cb();
+    }
+
+    onInput(message: number[]) {
+        let [packetId, jumped, angle, x, y, moveSpeed, teleportCount, lastTerrainUpdate] = message;
+
+        this.move(x * 100, y * 100);
     }
 }
