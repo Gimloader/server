@@ -19,6 +19,28 @@ export const topDownPropOptions: PropOption[] = readData("topDownPropOptions");
 export const platformerPropOptions: PropOption[] = readData("platformerPropOptions");
 export const gadgetOptions: Record<string, GadgetOption> = readData("gadgetOptions");
 
+export const defaultSkins = [
+    "default_yellow",
+    "default_orange",
+    "default_lime",
+    "default_red",
+    "default_pink",
+    "default_maroon",
+    "default_lightyellow",
+    "default_lightpurple",
+    "default_lightpink",
+    "default_lightgreen",
+    "default_lightbrown",
+    "default_hotpink",
+    "default_grayblue",
+    "default_gray",
+    "default_darkpurple",
+    "default_darkgreen",
+    "default_darkblue",
+    "default_cyan",
+    "default_graybrown"
+];
+
 export const defaultPhysicsState: PhysicsState = {
     gravity: 0.001,
     velocity: { x: 0, y: 0, desiredX: 0, desiredY: 0.001 }, 

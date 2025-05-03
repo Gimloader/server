@@ -2,13 +2,13 @@ import type { Client } from "colyseus";
 import type { GameRoom } from "../../colyseus/room";
 import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../../utils";
 import { CharactersItem } from "../../colyseus/schema";
-import { defaultPhysicsState, physicsConsts, physicsScale, worldOptions } from "../../consts";
+import { defaultPhysicsState, defaultSkins, physicsConsts, physicsScale, worldOptions } from "../../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
 import Inventory from "./inventory";
 import { EventEmitter } from "node:stream";
 import type { Cosmetics } from "$types/schema";
 import type { PhysicsObjects, PhysicsState } from "$types/physics";
-import { DamageType } from "$types/net";
+import { CosmeticSelect, DamageType } from "$types/net";
 
 type MsgCallback = (message: any) => void;
 
@@ -38,6 +38,7 @@ export default class Player {
         this.onMsg("AIMING", ({ angle }: { angle: number }) => {
             this.player.projectiles.aimAngle = angle;
         });
+        this.onMsg("SELECT_COSMETIC", this.onSelectCosmetic.bind(this));
 
         this.room.onStart(this.moveToSpawnpointBound);
         this.room.onRestore(this.restoreBound);
@@ -220,5 +221,14 @@ export default class Player {
         let [packetId, jumped, angle, x, y, moveSpeed, teleportCount, lastTerrainUpdate] = message;
 
         this.move(x * 100, y * 100);
+    }
+
+    onSelectCosmetic({ cosmeticId, cosmeticType, editStyles }: CosmeticSelect) {
+        if(cosmeticType === "character") {
+            if(!cosmeticId) cosmeticId = "character_" + randomItem(defaultSkins);
+            this.player.appearance.skin = JSON.stringify({ id: cosmeticId, editStyles });
+        } else {
+            this.player.appearance.trailId = cosmeticId;
+        }
     }
 }

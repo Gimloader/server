@@ -2,6 +2,8 @@ import { Schema, ArraySchema, MapSchema, type } from "@colyseus/schema";
 import type { CodeGrid, MapInfo } from "$types/map";
 import type { CharacterOptions, Cosmetics, InteractiveSlotOptions, SessionOptions, StateOptions } from "$types/schema";
 import { MapOptionsOptions } from "$types/devices";
+import { defaultSkins } from "../consts";
+import { randomItem } from "../utils";
 
 export class Hooks extends Schema {
     @type("string") hookJSON: string = '{"hooks":[]}';
@@ -123,7 +125,7 @@ export class Permissions extends Schema {
 }
 
 export class Appearance extends Schema {
-    @type("string") skin: string = '{"id":"character_default_gray"}';
+    @type("string") skin: string = `{"id":"character_${randomItem(defaultSkins)}"}`;
     @type("string") trailId: string = "";
     @type("string") transparencyModifierId: string = "";
     @type("string") tintModifierId: string = "";

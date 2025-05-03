@@ -72,3 +72,9 @@ export interface ProjectileHit {
     x: number;
     y: number;
 }
+
+export interface CosmeticSelect {
+    cosmeticId: string;
+    cosmeticType: "character" | "trail";
+    editStyles: Record<string, string>;
+}
