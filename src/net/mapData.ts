@@ -1,6 +1,6 @@
 import type { ExperienceCategory, Map, MapInfo, MapMeta } from '$types/map';
 import PluginManager from '../plugins';
-import { formatList } from '../utils';
+import { error, formatList, info, success } from '../utils';
 import express from './express';
 import fs from 'fs/promises';
 import { join } from 'node:path';
@@ -14,7 +14,7 @@ export default class MapData {
     static getByPageId(id: string) { return this.maps.find((m) => m.pageId === id) }
 
     static warnNoMaps() {
-        console.log('💡 There are currently no maps in the maps folder');
+        info('There are currently no maps in the maps folder');
     }
 
     static init() {
@@ -87,6 +87,8 @@ export default class MapData {
         for(let file of files) {
             await this.readMap(file);
         }
+
+        success(`Loaded ${this.maps.length} map${this.maps.length > 1 ? 's' : ''}`)
     }
 
     static async readMap(file: string) {
@@ -106,7 +108,7 @@ export default class MapData {
                 }
             
                 if(missing.length > 0) {
-                    console.log(`❌ The map "${id}" is missing the plugin${missing.length > 1 ? 's' : ''} ${formatList(missing)}`);
+                    error(`The map "${id}" is missing the plugin${missing.length > 1 ? 's' : ''} ${formatList(missing)}`);
                     return;
                 }
             }
@@ -119,7 +121,7 @@ export default class MapData {
                 meta: mapMeta
             });
         } catch {
-            console.log(`❌ Error reading map ${file}`);
+            error(`Error reading map ${file}`);
         }
     }
 
@@ -131,10 +133,10 @@ export default class MapData {
             if(event.eventType === "rename") {
                 // create/remove the map
                 if(index === -1) {
-                    console.log(`💡 Reading map ${event.filename}`);
+                    info(`Reading map ${event.filename}`);
                     await this.readMap(event.filename);
                 } else {
-                    console.log(`❌ Deleting map ${this.maps[index].meta.name}`);
+                    error(`Deleting map ${this.maps[index].meta.name}`);
                     this.maps.splice(index, 1);
                 }
             } else if(index !== -1) {

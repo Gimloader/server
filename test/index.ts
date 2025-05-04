@@ -8,15 +8,14 @@ import { Room as ClientRoom } from "colyseus.js";
 import { GameRoom } from "../src/colyseus/room";
 import Player from "../src/objects/player/player";
 import { defaultCosmetics } from "../src/consts";
-import app from "../src/colyseus/app.config";
+import app from "../src/colyseus/server";
 
 export let colyseus: ColyseusTestServer;
 export let client: ClientRoom;
 export let room: GameRoom;
 export let player: Player;
 await RAPIER.init();
-
-MapData.init();
+await MapData.readMaps();
 
 let intentId = crypto.randomUUID();
 let game = {

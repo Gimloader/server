@@ -1,5 +1,9 @@
 import type { ServerConfig, UserConfig } from "$types/config";
 
+export function success(...data: any[]) { console.log(`✅`, ...data) };
+export function error(...data: any[]) { console.log(`❌`, ...data) };
+export function info(...data: any[]) { console.log(`💡`, ...data) };
+
 export function config(config: UserConfig): ServerConfig {
     if(!config.address.startsWith("http://") && !config.address.startsWith("https://")) {
         config.address = "http://" + config.address;
