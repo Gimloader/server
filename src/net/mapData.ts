@@ -76,43 +76,72 @@ export default class MapData {
     }
 
     static async readMaps() {
-        if(!fs.exists(mapsPath)) return this.warnNoMaps();
+        if(!fs.exists(mapsPath)) await fs.mkdir(mapsPath);
+
+        this.watchMaps();
 
         let files = await fs.readdir(mapsPath);
         files = files.filter(name => name.endsWith(".json"));
         if(files.length === 0) return this.warnNoMaps();
         
         for(let file of files) {
-            try {
-                let json: MapInfo = await Bun.file(join(mapsPath, file)).json();
-                let mapMeta = json.meta ?? this.getMapMeta(file);
+            await this.readMap(file);
+        }
+    }
 
-                // confirm that we have all the needed map plugins
-                if(json.requiredPlugins) {
-                    let missing: string[] = [];
-                    let id = file.replace(".json", "");
+    static async readMap(file: string) {
+        try {
+            let json: MapInfo = await Bun.file(join(mapsPath, file)).json();
+            let mapMeta = json.meta ?? this.getMapMeta(file);
 
-                    for(let plugin of json.requiredPlugins) {
-                        if(!PluginManager.pluginLoaded(plugin, id)) {
-                            missing.push(plugin);
-                        }
-                    }
-                
-                    if(missing.length > 0) {
-                        console.log(`❌ The map "${id}" is missing the plugin${missing.length > 1 ? 's' : ''} ${formatList(missing)}`);
-                        continue;
+            // confirm that we have all the needed map plugins
+            if(json.requiredPlugins) {
+                let missing: string[] = [];
+                let id = file.replace(".json", "");
+
+                for(let plugin of json.requiredPlugins) {
+                    if(!PluginManager.pluginLoaded(plugin, id)) {
+                        missing.push(plugin);
                     }
                 }
-    
-                this.maps.push({
-                    file,
-                    id: `gimloader-${crypto.randomUUID()}`,
-                    mapId: crypto.randomUUID(),
-                    pageId: crypto.randomUUID(),
-                    meta: mapMeta
-                });
-            } catch {
-                console.log(`❌ Error reading map ${file}`);
+            
+                if(missing.length > 0) {
+                    console.log(`❌ The map "${id}" is missing the plugin${missing.length > 1 ? 's' : ''} ${formatList(missing)}`);
+                    return;
+                }
+            }
+
+            this.maps.push({
+                file,
+                id: `gimloader-${crypto.randomUUID()}`,
+                mapId: crypto.randomUUID(),
+                pageId: crypto.randomUUID(),
+                meta: mapMeta
+            });
+        } catch {
+            console.log(`❌ Error reading map ${file}`);
+        }
+    }
+
+    static async watchMaps() {
+        const watcher = fs.watch(mapsPath);
+        for await (const event of watcher) {
+            let index = this.maps.findIndex(m => m.file === event.filename);
+
+            if(event.eventType === "rename") {
+                // create/remove the map
+                if(index === -1) {
+                    console.log(`💡 Reading map ${event.filename}`);
+                    await this.readMap(event.filename);
+                } else {
+                    console.log(`❌ Deleting map ${this.maps[index].meta.name}`);
+                    this.maps.splice(index, 1);
+                }
+            } else if(index !== -1) {
+                // reload the map
+                console.log(`🔄 Reloading map ${this.maps[index].meta.name}`);
+                this.maps.splice(index, 1);
+                this.readMap(event.filename);
             }
         }
     }
