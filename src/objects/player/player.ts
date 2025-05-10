@@ -2,7 +2,7 @@ import type { Client } from "colyseus";
 import type { GameRoom } from "../../colyseus/room";
 import { CollisionGroups, createCollisionGroup, degToRad, randomItem } from "../../utils";
 import { CharactersItem } from "../../colyseus/schema";
-import { defaultPhysicsState, defaultSkins, physicsConsts, physicsScale, worldOptions } from "../../consts";
+import { defaultPhysicsState, defaultSkins, physicsConsts, physicsScale } from "../../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
 import Inventory from "./inventory";
 import { EventEmitter } from "node:stream";
@@ -80,7 +80,7 @@ export default class Player {
         this.client.send("INFO_BEFORE_WORLD_SYNC", { x, y });
 
         // TODO: Only send needed world options
-        this.client.send("WORLD_OPTIONS", worldOptions);
+        this.client.send("WORLD_OPTIONS", this.room.data.worldOptions);
 
         let capsuleSize = this.room.map.mapStyle === "platformer" ? physicsConsts.capsule.platformer : physicsConsts.capsule.topDown;
 

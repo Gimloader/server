@@ -1,5 +1,5 @@
 import type { ExperienceCategory, Map, MapInfo, MapMeta } from '$types/map';
-import PluginManager from '../plugins';
+import PluginManager from '../plugins/manager';
 import { error, formatList, info, success } from '../utils';
 import express from './express';
 import fs from 'fs/promises';

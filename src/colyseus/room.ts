@@ -6,13 +6,13 @@ import TileManager from "./tileManager";
 import Player from "../objects/player/player";
 import PhysicsManager from "./physics";
 import MapData from "../net/mapData";
-import RAPIER from "@dimforge/rapier2d-compat";
+import RAPIER, { World } from "@dimforge/rapier2d-compat";
 import TeamManager from "./teamManager";
 import EventEmitter from "node:events";
-import PluginManager from "../plugins";
+import PluginManager from "../plugins/manager";
 import { join } from "node:path";
-import { mapsPath } from "../consts";
-import type { MapInfo } from "$types/map";
+import { dataPath, mapsPath } from "../consts";
+import type { MapInfo, WorldData } from "$types/map";
 import { MapOptionsOptions } from "$types/devices";
 import ProjectileManager from "./projectiles";
 
@@ -41,10 +41,11 @@ export class GameRoom extends Room<GimkitState> {
     players: Player[] = [];
     host: Player;
     gameStarted: number = 0;
+    data: WorldData;
+
     messageEvents = new EventEmitter();
     startCallbacks = new Set<() => void>();
     restoreCallbacks = new Set<() => void>();
-
     onMsg(type: string, callback: MsgCallback) { this.messageEvents.on(type, callback); }
     offMsg(type: string, callback: MsgCallback) { this.messageEvents.off(type, callback); }
     onStart(callback: () => void) { this.startCallbacks.add(callback); }
@@ -57,9 +58,11 @@ export class GameRoom extends Room<GimkitState> {
 
         if(this.game) {
             this.game.colyseusRoomId = this.roomId;
-            let map = MapData.getByMapId(this.game.mapId);
 
+            let map = MapData.getByMapId(this.game.mapId);
             this.map = await Bun.file(join(mapsPath, map.file)).json();
+            this.data = await this.loadData();
+
             this.physics = new PhysicsManager(this);
             this.projectiles = new ProjectileManager(this);
             this.world = this.physics.world;
@@ -75,7 +78,7 @@ export class GameRoom extends Room<GimkitState> {
                 mapSettings: this.mapOptions
             }));
 
-            PluginManager.trigger("onRoom", map.file.replace(".json", ""), this);
+            PluginManager.initRoom(this, map.file.replace(".json", ""));
         } else {
             this.disconnect();
             return;
@@ -129,6 +132,20 @@ export class GameRoom extends Room<GimkitState> {
         this.updateTimeInterval = setInterval(() => {
 			this.state.session.gameTime = Date.now();
 		}, 500);
+    }
+
+    async loadData(): Promise<WorldData> {
+        const readData = (name: string) => {
+            return Bun.file(join(dataPath, `${name}.json`)).json();
+        }
+
+        const [worldOptions, propOptions, gadgetOptions] = await Promise.all([
+            readData("worldOptions"),
+            readData(`${this.map.mapStyle}PropOptions`),
+            readData("gadgetOptions")
+        ]);
+
+        return { worldOptions, propOptions, gadgetOptions }
     }
 
     onDispose() {

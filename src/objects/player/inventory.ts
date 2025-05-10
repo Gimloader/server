@@ -1,6 +1,5 @@
 import { GameRoom } from "../../colyseus/room";
 import { InteractiveSlotsItem, Inventory as InventorySchema, SlotsItem } from "../../colyseus/schema"
-import { gadgetOptions, physicsScale, worldOptions } from "../../consts";
 import Player from "./player";
 import type { DropItemOptions, FireOptions } from "$types/net";
 import { WaitOptions } from "$types/objects";
@@ -39,7 +38,7 @@ export default class Inventory {
         return this.inventory.interactiveSlots.get(this.inventory.activeInteractiveSlot.toFixed());
     }
 
-    getItemInfo(id: string) { return worldOptions.itemOptions.find((i: any) => i.id === id) }
+    getItemInfo(id: string) { return this.room.data.worldOptions.itemOptions.find((i: any) => i.id === id) }
 
     addItem(id: string, amount: number, currentClip?: number) {        
         let item = this.getItemInfo(id);
@@ -80,7 +79,7 @@ export default class Inventory {
 
             slot.itemId = id;
             if(item.type === "weapon" && item.weapon.type !== "melee") {
-                let gadget = gadgetOptions[item.id];
+                let gadget = this.room.data.gadgetOptions[item.id];
                 slot.currentClip = currentClip ?? gadget.clipSize;
                 slot.clipSize = gadget.clipSize;
             }
@@ -183,7 +182,7 @@ export default class Inventory {
         let activeItem = this.getActiveSlot();
         if(!activeItem) return;
 
-        let gadget = gadgetOptions[activeItem.itemId];
+        let gadget = this.room.data.gadgetOptions[activeItem.itemId];
         let item = this.getItemInfo(activeItem.itemId);
         if(!gadget || item.type !== "weapon") return;
 
@@ -213,7 +212,7 @@ export default class Inventory {
         let activeItem = this.getActiveSlot();
         if(!activeItem || activeItem.currentClip === activeItem.clipSize || activeItem.waiting) return;
 
-        let gadget = gadgetOptions[activeItem.itemId];
+        let gadget = this.room.data.gadgetOptions[activeItem.itemId];
         if(!gadget || !gadget.clipSize) return;
 
         let newClip = activeItem.clipSize;

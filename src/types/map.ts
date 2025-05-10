@@ -216,3 +216,9 @@ export interface GadgetOption {
     distance: number;
     speed: number;
 }
+
+export interface WorldData {
+    worldOptions: WorldOptions;
+    propOptions: PropOption[];
+    gadgetOptions: GadgetOption[];
+}

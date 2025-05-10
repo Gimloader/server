@@ -1,4 +1,4 @@
-import { physicsScale, tileSize, worldOptions } from "../consts";
+import { physicsScale, tileSize } from "../consts";
 import RAPIER from "@dimforge/rapier2d-compat";
 import { GameRoom } from "./room";
 import type { MapInfo, TileInfo } from "$types/map";
@@ -204,7 +204,7 @@ export default class TileManager {
             const coords = `${depth}_${tX}_${tY}`;
             let tile = this.tiles.get(coords);
 
-            let terrain = worldOptions.terrainOptions.find(t => t.id === tile.terrain);
+            let terrain = this.room.data.worldOptions.terrainOptions.find(t => t.id === tile.terrain);
             if(!terrain.health) return;
             
             let currentHealth = this.health.get(coords) ?? terrain.health;

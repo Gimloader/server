@@ -22,8 +22,7 @@ export default class PropDevice extends BaseDevice<"prop"> {
     }
 
     createColliders() {
-        let propOptions = this.deviceManager.getPropOptions();
-        let prop = propOptions.find((p: any) => p.id === this.options.propId);
+        let prop = this.room.data.propOptions.find((p: any) => p.id === this.options.propId);
         if(!prop) return;
         const scale = this.options.Scale;
 

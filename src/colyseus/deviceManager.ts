@@ -1,4 +1,3 @@
-import { topDownPropOptions, platformerPropOptions } from "../consts";
 import { createValuesArray, staggered } from "../utils";
 import { GameRoom } from "./room";
 import BaseDevice from "../objects/devices/base";
@@ -126,22 +125,16 @@ export default class DeviceManager {
         this.room.broadcast("WORLD_CHANGES", message);
     }
 
-    getPropOptions() {
-        if(this.map.mapStyle === "platformer") return platformerPropOptions;
-        return topDownPropOptions;
-    }
-
     getInitialWorld() {
         let props: any[] = [];
         let propsSet: Set<string> = new Set();
 
         let addedDevices = this.devicesToAdded(this.devices);
-        let propOptions = this.getPropOptions();
 
         for(let device of this.devices) {
             if(device.deviceId === "prop" && !propsSet.has(device.options.propId)) {
                 let propId = device.options.propId;
-                let prop = propOptions.find((p: any) => p.id === propId);
+                let prop = this.room.data.propOptions.find((p: any) => p.id === propId);
                 props.push(prop);
                 propsSet.add(propId);
             }

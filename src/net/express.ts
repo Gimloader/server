@@ -2,7 +2,7 @@ import config from "$config";
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
-import PluginManager from '../plugins';
+import PluginManager from '../plugins/manager';
 import { publicPath } from "../consts";
 import { success } from "../utils";
 

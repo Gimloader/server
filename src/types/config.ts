@@ -1,5 +1,5 @@
 import type { Express } from 'express';
-import type { GameRoom } from '../colyseus/room';
+import type PluginApi from '../plugins/api';
 
 export interface UserConfig {
     address: string;
@@ -19,7 +19,7 @@ export type ServerConfig = Modify<Required<UserConfig>, {
 export interface Plugin {
     name: string;
     onExpress?: (express: Express) => void;
-    onRoom?: (room: GameRoom) => void;
+    onRoom?: (api: PluginApi) => void;
 }
 
 export type PluginFunctions = Omit<Plugin, "name">;

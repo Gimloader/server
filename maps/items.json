@@ -1,0 +1,185 @@
+{
+    "tiles": {
+        "3_250_247": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_251_247": {
+            "terrain": "Dynamic Diamond",
+            "collides": true
+        },
+        "3_252_247": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_253_247": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_254_247": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_255_247": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_249_247": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_255_249": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_255_250": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_255_251": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_255_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_255_248": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_254_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_253_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_252_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_251_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_250_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        },
+        "3_249_252": {
+            "terrain": "Dynamic Dirt",
+            "collides": true
+        }
+    },
+    "devices": [
+        {
+            "id": "17Ps-re_VEb18c5KlivI5",
+            "x": 0,
+            "y": 0,
+            "depth": null,
+            "deviceId": "mapOptions",
+            "options": {
+                "backgroundTerrain": "Grass",
+                "platformerBackground": "sky",
+                "bottomTerrain": "platformer_grass",
+                "gameClockMode": "Off",
+                "countdownTimeMinutes": 10,
+                "allowedGameClockModeType": "liveGame",
+                "musicUrl": "",
+                "presetMusicId": "the_shakedown",
+                "musicVolume": 100,
+                "minPlayers": 1,
+                "teams": "Free For All",
+                "teamSize": 4,
+                "teamsNumber": 4,
+                "splitModeForSpecificTeamAmount": "Split Evenly",
+                "latePlayersJoinAsSpectators": false,
+                "allyIndicator": "Disabled",
+                "enemyIndicator": "Disabled",
+                "matchNametagToTeamColor": false,
+                "allowGameOwnerToSpectate": true,
+                "useInfiniteLives": true,
+                "numOfLives": 3,
+                "healthMode": "healthAndShield",
+                "maxHealth": 100,
+                "maxShield": 100,
+                "startingHealth": 100,
+                "startingShield": 100,
+                "startingFragility": 0,
+                "showHealthAndShield": true,
+                "spawnImmunity": 10,
+                "playerVsPlayerDamageEnabled": true,
+                "interactiveItemsSlots": 3,
+                "infiniteAmmo": true,
+                "instantReload": false,
+                "allowWeaponDrop": true,
+                "allowItemDrop": true,
+                "allowResourceDrop": true,
+                "weaponRespawnBehavior": "Keep",
+                "itemRespawnBehavior": "Keep",
+                "resourceRespawnBehavior": "Keep",
+                "infiniteDurability": true,
+                "droppedItemScope": "global",
+                "useScoreboard": true,
+                "scoreType": "Knockout",
+                "scoreResource": "cash",
+                "propertyResource": "",
+                "scoreName": "Score",
+                "scoreGroup": "team",
+                "sortMode": "Highest to lowest",
+                "showScoreboardOnGameEnd": true,
+                "includeSpectatorsInScoreboard": false,
+                "showPlayersPlacement": true,
+                "knockoutActivityFeedDisabled": false,
+                "dynamicBuildingAllowFloatingBuilds": true,
+                "dynamicBuildingHealthMultiplier": 1,
+                "disableDestructionOfDynamicBuildings": false,
+                "grantWhenDynamicBuildingDestroyed": true,
+                "maxGravityPerSecond": 10,
+                "timeToMaxGravityMS": 630,
+                "yTravelUntilMaxGravity": 3.5,
+                "jumpHeight": 1.92,
+                "jumpDurationMS": 400,
+                "jumpHangTimeMS": 50,
+                "subsequentJumpMultiplier": 0.66,
+                "maxJumps": 2,
+                "lookAroundWithMouse": false
+            }
+        },
+        {
+            "id": "etolO9DlvYUp_bn6RHqlb",
+            "x": 16085,
+            "y": 15998,
+            "deviceId": "button",
+            "options": {
+                "guiMessage": "Interact",
+                "channel": "grant",
+                "visibleInGame": true,
+                "interactionDuration": 1,
+                "activeOnStart": true,
+                "activateChannel": "",
+                "deactivateChannel": "",
+                "scope": "global",
+                "radius": 100,
+                "size": 26
+            }
+        },
+        {
+            "id": "OuNnd2VWOSo5IFZY-Ol_f",
+            "x": 16181,
+            "y": 15986,
+            "deviceId": "itemGranter",
+            "options": {
+                "itemId": "medpack",
+                "itemChange": 5,
+                "grantWhenReceivingFromChannel": "grant",
+                "fullStrategy": "overflow"
+            }
+        }
+    ],
+    "wires": [],
+    "mapStyle": "topDown",
+    "codeGrids": {}
+}
